@@ -1,0 +1,101 @@
+﻿@model IEnumerable<realbau_app.Models.Import.NewAddress>
+@{  
+    ViewBag.Title = "Index";  
+}  
+<div><b>Table Format Data Displaying in ForEach</b><br /></div>  
+@*<form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST">*@
+     using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
+    {
+<table class="table table-bordered table-responsive table-hover">  
+    <tr>  
+        <th>Accepted</th>
+        <th>Bestellnummer </th>  
+        <th>SP_Name </th>  
+        <th>Name </th>  
+        <th>Telefon</th>  
+        <th>Handy</th>  
+        <th>Email</th>  
+        <th>Ort</th>  
+        <th>Zipcode</th>  
+        <th>Straße</th>  
+               <th>Nummer</th>
+                      <th>NrZusats</th>  
+                             <th>WeitereSusatz</th>  
+                  <th>AnschlussStatus</th>  
+                   <th>AccessLocation</th>  
+                    <th>IP_ODF</th>  
+                     <th>IP_Port</th>  
+                      <th>TV_ODF</td>  
+                       <th>Projectcode</th>  
+                        <th>Kennwort</th>  
+                         <th>Subtype</th>  
+    </tr>  
+    @foreach (var d in Model)  
+    {  
+        <tr>  
+            <td>@Html.CheckBox(d.Accepted.ToString())</td>
+            <td>@d.Bestellnummer</td>  
+            <td>@d.SP_Name</td>  
+            <td>@d.Name</td>  
+            <td>@d.Telefon</td>  
+            <td>@d.Handy</td>  
+            <td>@d.Email</td>  
+            <td>@d.Ort</td>  
+             <td>@d.Zipcode</td>  
+              <td>@d.Straße</td>  
+               <td>@d.Nummer</td>  
+                <td>@d.NrZusatz</td>  
+                 <td>@d.WeitereSusatz</td>  
+                  <td>@d.AnschlussStatus</td>  
+                   <td>@d.AccessLocation</td>  
+                    <td>@d.IP_ODF</td>  
+                     <td>@d.IP_Port</td>  
+                      <td>@d.TV_ODF</td>  
+                       <td>@d.Projectcode</td>  
+                        <td>@d.Kennwort</td>  
+                         <td>@d.Subtype</td>  
+
+
+  
+        </tr>  
+    }  
+   
+    @*@Html.ActionLink("Submit", "Addresses", "Home", null, null)*@
+
+</table>  
+ <input id="submitAddresses" class="btn" value="Submit" type="submit"/>
+}
+
+@section Scripts{
+<script type="text/javascript">
+        $(function () {
+            $("#submit").click(function () {
+                document.forms[0].submit();
+                return false;
+            });
+        });
+    </script>
+}
+@*@*<button id="submitAddresses" class="btn" value="Submit" type="submit">Submit</button>*@
+@*@Html.ActionLink("Home","Addresses",Model)*@
+@*</form>*@
+
+                 @*@section Scripts{
+                     <script>
+$(function() {
+                         $("#submitAddresses").click(function(){
+                             $.ajax({
+                                 url: "/Home/Addresses",
+                                 method: "POST",
+                                 data: $("#addresses").serialize(),
+                                 success: function(){
+                                     alert("Success")
+                                 },
+                                 error: function(error) {
+                                     alert(JSON.stringify(error))
+                                 }
+                             })
+                         })
+                          })
+                     </script>
+                 }*@

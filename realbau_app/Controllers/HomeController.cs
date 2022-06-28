@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using realbau_app.Models;
+using realbau_app.Models.Import;
 using System.Diagnostics;
 
 namespace realbau_app.Controllers
@@ -19,6 +20,11 @@ namespace realbau_app.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Addresses(List<NewAddress> newAddresses)
         {
             return View();
         }
