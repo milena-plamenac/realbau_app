@@ -24,7 +24,7 @@ namespace realbau_app.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Addresses(List<NewAddress> newAddresses)
+        public IActionResult Addresses(NewAddress newAddress)
         {
             return View();
         }

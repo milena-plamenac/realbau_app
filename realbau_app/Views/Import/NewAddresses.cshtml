@@ -4,8 +4,8 @@
 }  
 <div><b>Table Format Data Displaying in ForEach</b><br /></div>  
 @*<form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST">*@
-     using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
-    {
+    @* using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
+    {*@
 <table class="table table-bordered table-responsive table-hover">  
     <tr>  
         <th>Accepted</th>
@@ -32,8 +32,11 @@
     </tr>  
     @foreach (var d in Model)  
     {  
+        <form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST" data="@d">
+
         <tr>  
             <td>@Html.CheckBox(d.Accepted.ToString())</td>
+                <td><input type="submit" value="Accept" /></td>
             <td>@d.Bestellnummer</td>  
             <td>@d.SP_Name</td>  
             <td>@d.Name</td>  
@@ -58,9 +61,9 @@
 
   
         </tr>  
-    }  
-   
-    @*@Html.ActionLink("Submit", "Addresses", "Home", null, null)*@
+   </form>
+   }
+
 
 </table>  
  <input id="submitAddresses" class="btn" value="Submit" type="submit"/>
