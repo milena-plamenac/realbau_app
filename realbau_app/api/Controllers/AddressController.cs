@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using realbau_app.api.Models;
 
-namespace realbau_app.api.Controller
+namespace realbau_app.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

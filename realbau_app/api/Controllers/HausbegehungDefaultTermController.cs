@@ -50,14 +50,14 @@ namespace realbau_app.api.Controllers
         {
             using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             {
-                String query = "insert into dbo.hausbegehung_default_term (hbfrom, hbto, created_by, created_on) values (@hbfrom, @hbto, @created_by, @created_on)";
+                String query = "insert into dbo.hausbegehung_default_term (hbfrom, hbto) values (@hbfrom, @hbto)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@hbfrom", term.hbfrom);
                     command.Parameters.AddWithValue("@hbto", term.hbto);
-                    command.Parameters.AddWithValue("@created_by", term.created_by);
-                    command.Parameters.AddWithValue("@creted_on", term.created_on);
+                    //command.Parameters.AddWithValue("@created_by", null);
+                    //command.Parameters.AddWithValue("@creted_on", null);
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();
