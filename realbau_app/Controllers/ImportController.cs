@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using realbau_app.api.Models;
 using realbau_app.Models.Import;
 using System.Data;
 using System.Globalization;
@@ -49,8 +50,46 @@ namespace realbau_app.Controllers
 
                     while (csv.Parser.Read())
                     {
+                        
                         //data.Add(csv.Parser.Record);
                         var rec = csv.Parser.Record;
+
+                        if (rec[22] != "ACCEPTED")
+                            continue;
+
+                        IEnumerable <AddressDB> addressDBs = null;
+                        var exists = 0;
+
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + rec[11]);
+                            //HTTP GET
+                            
+                            
+                            var responseTask = client.GetAsync("");
+                            responseTask.Wait();
+
+                            var result = responseTask.Result;
+                            var readResult = result.Content.ReadFromJsonAsync<int>();
+                            readResult.Wait();
+
+                            exists = readResult.Result;
+                            //if (result.IsSuccessStatusCode)
+                            //{
+                            //    var readTask = result.Content.ReadFromJsonAsync<IList<HausbegehungDefaultTermDB>>();
+                            //    readTask.Wait();
+
+                            //    terms = readTask.Result;
+                            //}
+                            //else //web api sent error response 
+                            //{
+                            //    log response status here..terms = Enumerable.Empty<HausbegehungDefaultTermDB>();
+
+                            //    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                            //}
+                        }
+
+                        if (exists == 0)
                         newAddresses.Add(new NewAddress()
                         {
                             Bestellnummer = rec[0],
@@ -74,6 +113,9 @@ namespace realbau_app.Controllers
                             Kennwort = rec[28],
                             Subtype = rec[35]
                         });
+
+                        //if(newAddresses.Count() >0)
+                        //return View("NewAddresses", newAddresses);
                     }
                 }
 

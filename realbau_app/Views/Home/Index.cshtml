@@ -1,8 +1,131 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<realbau_app.api.Models.AddressDB>
+@{
+    ViewBag.Title = "Index";
 }
+<h4 class="text-center"><b>Active addresses</b><br /></h4>
+@*<form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST">*@
+@* using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
+    {*@
+<table class="table table-responsive" id="newaddresses" style="overflow:scroll; font-size:0.9rem">
+    <tr>
+        <td>Filters:</td>
+            @*<td><input id="orderid" /></td>*@
+            <td><input class="form-control" id="orderdate" /></td>
+            <td><input class="form-control" id="projectcode" /></td>
+            @*<td><input id="projectname" /></td>*@
+            <td><input class="form-control" id="name" /></td>
+            <td><input class="form-control" id="email" /></td>
+            <td><input class="form-control" id="phone" /></td>
+            <td><input class="form-control" id="phone2" /></td>
+            <td><input class="form-control" id="city" /></td>
+            <td><input class="form-control" id="tzip" /></td>
+            <td><input class="form-control" id="street" /></td>
+            <td><input class="form-control" id="housenumber" /></td>
+            <td><input class="form-control" id="unit" /></td>
+            <td><input class="form-control" id="dp" /></td>
+            <td><input class="form-control" id="areapop" /></td>
+            
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+        </tr>
+    <tr>
+         <th></th>
+        @*<th>orderid</th>*@
+        <th>order date</th>
+        <th>project code</th>
+        @*<th>projectname</th>*@
+        <th>name</th>
+        <th>email</th>
+        <th>phone</th>
+        <th>phone2</th>
+        <th>city</th>
+        <th>tzip</th>
+        <th>street</th>
+        <th>house number</th>
+        <th>unit</th>
+        <th>dp</th>
+        <th>areapop</th>
+       
+    </tr>
+    @foreach (var d in Model)
+    {
+
+
+        <tr>
+            <td>
+                @Html.ActionLink("Details", 
+                "AddressDetails",   
+                "Home",  
+                new { id = @d.id }, 
+                null  
+                )
+
+            </td>
+            @*<td>@d.orderid</td>*@
+            <td>@d.orderdate</td>
+            <td>@d.projectcode</td>
+            @*<td>@d.projectname</td>*@
+            <td>@d.name</td>
+            <td>@d.email</td>
+            <td>@d.phone</td>
+            <td>@d.phone2</td>
+            <td>@d.city</td>
+            <td>@d.tzip</td>
+            <td>@d.street</td>
+            <td>@d.housenumber</td>
+            <td>@d.unit</td>
+            <td>@d.dp</td>
+            <td>@d.areapop</td>
+            
+
+
+
+        </tr>
+
+    }
+
+
+</table>
+
+
+@*@section Scripts{*@
+@*<script type="text/javascript">
+        $(function() {
+            $("#submit").click(function() {
+                document.forms[0].submit();
+                return false;
+            });
+        });
+    </script>*@
+@*}
+*@    @*@*<button id="submitAddresses" class="btn" value="Submit" type="submit">Submit</button>*@
+@*@Html.ActionLink("Home","Addresses",Model)*@
+@*</form>*@
+
+@*@section Scripts{
+                     <script>
+$(function() {
+                         $("#submitAddresses").click(function(){
+                             $.ajax({
+                                 url: "/Home/Addresses",
+                                 method: "POST",
+                                 data:  $("#addresses").serialize(),
+                                 success: function(){
+                                     alert("Success")
+                                 },
+                                 error: function(error) {
+                                     alert(JSON.stringify(error))
+                                 }
+                             })
+                         })
+                          })
+                     </script>
+                 }*@
+
+@section Scripts{
+
+    <script>
+
+    </script>
+                                 }
