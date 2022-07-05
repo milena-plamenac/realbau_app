@@ -154,7 +154,7 @@ namespace realbau_app.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<dynamic>> GetAddress(int id)
+        public async Task<ActionResult<AddressDetails>> GetAddress(int id)
         {
             List<AddressDB> result = new List<AddressDB>();
             AddressDetails addressDB = new AddressDetails();
@@ -241,9 +241,9 @@ namespace realbau_app.api.Controllers
                     addressDB.subtype = Convert.IsDBNull(reader["subtype"]) ? null : (string?)reader["subtype"];
 
                     addressDB.hbId = Convert.IsDBNull(reader["hbId"]) ? null : (int?)reader["hbId"];
-                    addressDB.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateOnly?)reader["hbdate"];
-                    addressDB.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (TimeSpan?)reader["hbfrom"];
-                    addressDB.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (TimeSpan?)reader["hbto"];
+                    addressDB.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateTime?)reader["hbdate"];
+                    addressDB.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (DateTime?)reader["hbfrom"];
+                    addressDB.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
                     addressDB.hbcalldate = Convert.IsDBNull(reader["hbcalldate"]) ? null : (DateTime?)reader["hbcalldate"];
                     addressDB.hbfinished = Convert.IsDBNull(reader["hbfinished"]) ? null : (int?)reader["hbfinished"];
 

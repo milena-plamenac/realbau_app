@@ -72,11 +72,8 @@ namespace realbau_app.Controllers
             //return View();
         }
 
-        public IActionResult Terms()
-
-
+        public IActionResult Terms(int address_id)
         {
-
             List<HausbegehungTermDB> result = new List<HausbegehungTermDB>();
             using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             {

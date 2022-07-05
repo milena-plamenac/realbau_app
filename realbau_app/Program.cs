@@ -1,4 +1,11 @@
+
+//using Microsoft.AspNetCore.Http.Json;
+using realbau_app.Utilities.Converters;
+//using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 using System.Text.Unicode;
+using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +14,18 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddWebEncoders(o => {
     o.TextEncoderSettings = new System.Text.Encodings.Web.TextEncoderSettings(UnicodeRanges.All);
+});
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new DateOnlyConverter());
+    options.SerializerOptions.Converters.Add(new TimeOnlyConverter());
+});
+
+builder.Services.Configure<JsonSerializerOptions>(options =>
+{
+    options.Converters.Add(new DateOnlyConverter());
+    options.Converters.Add(new TimeOnlyConverter());
 });
 
 var app = builder.Build();

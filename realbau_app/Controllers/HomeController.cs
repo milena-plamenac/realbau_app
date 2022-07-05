@@ -17,6 +17,8 @@ namespace realbau_app.Controllers
 
         public IActionResult Index()
         {
+
+
             IEnumerable<AddressDB> addresses = null;
             var exists = 0;
 

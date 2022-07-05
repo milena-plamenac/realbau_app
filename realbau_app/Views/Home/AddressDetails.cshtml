@@ -14,38 +14,39 @@
 
 <p>Address: @Model.street  @Model.housenumber, @Model.city </p>
 <p>Contact: @Model.email  @Model.phone, @Model.phone2 </p>
+<span id="addressId" hidden>@Model.id</span>
 
- <div class="row">
+<div class="row">
     <div class="col s12 m6 l6">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Hausbegehung</span>
-          <p>Date: @Model.hbdate</p>
-          <p>Termin: @Model.hbfrom - @Model.hbto</p>
-          <p>Call date: @Model.hbcalldate</p>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Hausbegehung</span>
+                <p>Date: @Model.hbdate?.ToString("dd.MM.yyyy")</p>
+                <p>Termin: @Model.hbfrom?.ToString("HH:mm") - @Model.hbto?.ToString("HH:mm")</p>
+                <p>Call date: <span id="hbCallDate">@Model.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" style="background-color: #9e9d24"><i class="material-icons left">date_range</i>Get HB term</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbcalldate != null)" href="#" style="background-color: #f57c00;" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
+            </div>
         </div>
-        <div class="card-action">
-          <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" style="background-color: #ffc107;"><i class="material-icons left">date_range</i>Get HB term</a>
-          <a class="waves-effect waves-light btn" href="#" style="background-color: cadetblue;"><i class="material-icons left" >phone</i>Customer called</a>
-          <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">check</i>HB finished</a>
-        </div>
-      </div>
     </div>
 
     <div class="col s12 m6 l6">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Tiefbau</span>
-          <p>Date: @Model.tdate</p>
-          <p>Meter: @Model.meter</p>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Tiefbau</span>
+                <p>Date: @Model.tdate</p>
+                <p>Meter: @Model.meter</p>
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">check</i>Tiefbau finished</a>
+
+            </div>
         </div>
-        <div class="card-action">
-           <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">check</i>Tiefbau finished</a>
-      
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 @*<div class="row">
     <div class="col s12">
@@ -63,7 +64,7 @@
 </div>*@
 
 <h5>Hausbegehung</h5>
-<p>Id: @Model.hbId</p>
+<p>Id: <span id="hbId">@Model.hbId</span></p>
 <p>Date: @Model.hbdate</p>
 <p>Termin from: @Model.hbfrom</p>
 <p>Termin to: @Model.hbto</p>
@@ -98,7 +99,47 @@
 <p>Done: @Model.afinished</p>
 
 @section Scripts{
-    $(document).ready(function(){
-    $('.tabs').tabs();
-  });
+    <script>
+        //  $(document).ready(function(){
+        //  $('.tabs').tabs();
+        //});
+
+        //$("#hbCustomerCalled").on("click", function(){
+        //    alert("hbCustomerClicked");
+        //});
+
+        //$("#hbFinished").on("click", function(){
+        //    alert("hbFinished");
+        //});
+
+        $(function() {
+            $("#hbCustomerCalled").click(function() {
+                console.log($("#addressId"));
+                var addressId = $("#addressId")[0].innerText;
+                console.log($("#addressId")[0]);
+                //alert(addressId);
+                var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+                var hbData = {};
+                hbData.calldate = currentTime;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Hausbegehung/" + addressId,
+                    data: JSON.stringify(hbData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        $("#hbCustomerCalled").attr("disabled", "disabled");
+                        $("#hbCallDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed()-1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            })
+        })
+    </script>
 }

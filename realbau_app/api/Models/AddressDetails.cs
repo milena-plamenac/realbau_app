@@ -38,9 +38,9 @@
 		public string? subtype { get; set; }
 
 		public int? hbId { get; set; }
-		public DateOnly? hbdate { get; set; }
-		public TimeSpan? hbfrom { get; set; }
-		public TimeSpan? hbto { get; set; }
+		public DateTime? hbdate { get ; set; }
+		public DateTime? hbfrom { get; set; }
+		public DateTime? hbto { get; set; }
 		public DateTime? hbcalldate { get; set; }
 		public int? hbfinished { get; set; }
 

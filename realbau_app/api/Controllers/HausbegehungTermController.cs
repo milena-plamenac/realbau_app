@@ -57,10 +57,10 @@ namespace realbau_app.api.Controllers
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@hbdate", term.hbdate);
-                    command.Parameters.AddWithValue("@hbfrom", term.hbfrom);
-                    command.Parameters.AddWithValue("@hbto", term.hbto);
-                    command.Parameters.AddWithValue("@busy", term.busy);
+                    command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
+                    command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
+                    command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
+                    command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
                     //command.Parameters.AddWithValue("@created_by", null);
                     //command.Parameters.AddWithValue("@creted_on", null);
 
@@ -81,10 +81,10 @@ namespace realbau_app.api.Controllers
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@hbdate", term.hbdate);
-                    command.Parameters.AddWithValue("@hbfrom", term.hbfrom);
-                    command.Parameters.AddWithValue("@hbto", term.hbto);
-                    command.Parameters.AddWithValue("@busy", term.busy);
+                    command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
+                    command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
+                    command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
+                    command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
                     //command.Parameters.AddWithValue("@created_by", term.created_by);
                     //command.Parameters.AddWithValue("@creted_on", term.created_on);
                     command.Parameters.AddWithValue("@id", term.id);
