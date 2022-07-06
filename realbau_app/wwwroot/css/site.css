@@ -22,3 +22,19 @@ table{
     width: 300px;
     overflow: scroll;
 }
+
+.backgroundRed {
+    background-color: #e57373 !important;
+}
+
+.backgroundGrey {
+    background-color: #fafafa !important;
+}
+
+.backgroundBrown {
+    background-color: #a1887f !important;
+}
+
+.backgroundOrange {
+    background-color: #ff8a65 !important;
+}

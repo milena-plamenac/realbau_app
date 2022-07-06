@@ -4,18 +4,23 @@
 @{
 }
 @model IEnumerable<realbau_app.api.Models.HausbegehungTermDB>
-<h1>Hausbegehung terms</h1>
+<h4 class="text-center">Hausbegehung terms</h4>
 <div class="row">
-    <div class="col-3" style="border: 1px solid red">
-        <button class="btn btn-warning" id="prev">Prev
-        </button>
+    <div class="col-4"></div>
+    <div class="col-1">
+        <a style="color: #039be5; cursor: pointer;" id="prev">
+        Prev
+        </a>
+        @*<a class="waves-effect waves-light btn" id="prev"><i class="material-icons left">keyboard_arrow_left</i>Prev</a>*@
     </div>
-    <div class="col-6"  style="border: 1px solid red">
-        <input id="currentdate" type="date" />
+    <div class="col-2">
+        <input id="currentdate" type="text" disabled />
     </div>
-    <div class="col-3"  style="border: 1px solid red">
-        <button class="btn btn-warning" id="next">Next
-        </button>
+    <div class="col-1">
+        <a style="color: #039be5; cursor: pointer;" id="next">
+        Next
+        </a>
+        @*<a class="waves-effect waves-light btn" id="next"><i class="material-icons right">keyboard_arrow_right</i>Next</a>*@
     </div>
 
 </div>
@@ -40,18 +45,20 @@
                 <td>@d.hbto</td>
                 @* <td><input type="time" value="@d.hbfrom" /></td>
             <td><input type="time" value="@d.hbto" /></td>*@
-                <td><input class="btn btn-danger" type="button" id="btnRemove" value="Remove" /></td>
+                <td><input class="btn" disabled="@(d.busy == 1)" type="button" id="btnReserve" value="Reserve"/></td>
+                <td><input class="btn backgroundRed" disabled="@(d.busy == 0)" type="button" id="btnCancel" value="Cancel" /></td>
+                <td><input class="btn backgroundRed" disabled="@(d.busy == 1)" type="button" id="btnRemove" value="Remove" /></td>
             </tr>
         }
     </tbody>
-    <tfoot>
+    @*<tfoot>
         <tr>
             <td hidden></td>
             <td><input class="form-control" type="time" id="newHbFrom" /></td>
             <td><input class="form-control" type="time" id="newHbTo" /></td>
             <td><input class="btn btn-primary" type="button" id="btnAdd" value="Add" /></td>
         </tr>
-    </tfoot>
+    </tfoot>*@
 </table>
 
 @*<input type="button" id="btnSave" value="Save All" />*@
@@ -83,20 +90,112 @@
     <script type="text/javascript">
         $(document).ready(
             function() {
-                document.getElementById("currentdate").valueAsDate = new Date();
-               // $("#currentDate").val('2022-06-30');
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+                console.log(params);
+                // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                let year = params.year;
+                let month = params.month;
+                let date = params.date;
+                $("#currentdate").val(date + '.' + (Number(month) + 1) + '.' + year);
 
-                $("#prev").on("click", function() {
-                    console.log(document.getElementById("currentdate").value);// = document.getElementById("currentdate").valueAsDate.addDays(-1);
-                    console.log(new Date(document.getElementById("currentdate").value));
-                    document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(-1);
+
+                $("#prev").click(function() {
+                    //const params = new Proxy(new URLSearchParams(window.location.search), {
+                    //    get: (searchParams, prop) => searchParams.get(prop),
+                    //});
+                    //console.log(params);
+                    //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                    //let year = params.year;
+                    //let month = params.month;
+                    //let date = params.date;
+
+
+                    const params = new Proxy(new URLSearchParams(window.location.search), {
+                        get: (searchParams, prop) => searchParams.get(prop),
+                    });
+                    console.log(params);
+                    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                    let addressId = params.address_id;
+                    let year = params.year;
+                    let month = params.month;
+                    let date = params.date;
+
+                    let prevDate = new Date(year, month, date);
+                    prevDate.setDate(prevDate.getDate() - 1);
+
+                    window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + prevDate.getFullYear() + '&month=' + (prevDate.getMonth().toFixed()) + '&date=' + prevDate.getDate();
+                    //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
+
+                    // PART BELOW WAS BEFORE REAL
+
+                    //let currentDateValues = $("#currentdate").val().split('.');
+                    //date = currentDateValues[0];
+                    //month = currentDateValues[1]-1;
+                    //year = currentDateValues[2];
+
+
+
+                    //let prevDate = new Date(year, month, date);
+                    //prevDate.setDate(prevDate.getDate() - 1);
+                    //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
+                    //alert(prevDate);
                 });
 
-                $("#next").on("click", function() {
-                    document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(1);
-                    //document.getElementById("currentdate").valueAsDate = document.getElementById("currentdate").valueAsDate.addDays(1);
+                $("#next").click(function() {
+                    //const params = new Proxy(new URLSearchParams(window.location.search), {
+                    //    get: (searchParams, prop) => searchParams.get(prop),
+                    //});
+                    //console.log(params);
+                    //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                    //let year = params.year;
+                    //let month = params.month;
+                    //let date = params.date;
+
+
+                    const params = new Proxy(new URLSearchParams(window.location.search), {
+                        get: (searchParams, prop) => searchParams.get(prop),
+                    });
+                    console.log(params);
+                    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                    let addressId = params.address_id;
+                    let year = params.year;
+                    let month = params.month;
+                    let date = params.date;
+
+                    let nextDate = new Date(year, month, date);
+                    nextDate.setDate(nextDate.getDate() + 1);
+
+                    window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + nextDate.getFullYear() + '&month=' + (nextDate.getMonth().toFixed()) + '&date=' + nextDate.getDate();
+
+                    // CODE BELOW 
+
+                    //let currentDateValues = $("#currentdate").val().split('.');
+                    //date = currentDateValues[0];
+                    //month = currentDateValues[1] - 1;
+                    //year = currentDateValues[2];
+
+                    //let nextDate = new Date(year, month, date);
+                    //nextDate.setDate(nextDate.getDate() + 1);
+                    //$("#currentdate").val(nextDate.getDate() + '.' + (Number(nextDate.getMonth()) + 1) + '.' + nextDate.getFullYear());
+                    //alert(nextDate);
                 });
-                
+                //alert(value);
+                // document.getElementById("currentdate").valueAsDate = new Date();
+                //// $("#currentDate").val('2022-06-30');
+
+                // $("#prev").on("click", function() {
+                //     console.log(document.getElementById("currentdate").value);// = document.getElementById("currentdate").valueAsDate.addDays(-1);
+                //     console.log(new Date(document.getElementById("currentdate").value));
+                //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(-1);
+                // });
+
+                // $("#next").on("click", function() {
+                //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(1);
+                //     //document.getElementById("currentdate").valueAsDate = document.getElementById("currentdate").valueAsDate.addDays(1);
+                // });
+
             }
         );
         $("body").on("click", "#btnAdd", function() {
@@ -243,28 +342,28 @@
             //}
         });
 
-                                                                                        //$("body").on("click", "#btnSave", function () {
-                                                                                        //    //Loop through the Table rows and build a JSON array.
-                                                                                        //    var customers = new Array();
-                                                                                        //    $("#tblCustomers TBODY TR").each(function () {
-                                                                                        //        var row = $(this);
-                                                                                        //        var customer = {};
-                                                                                        //        customer.Name = row.find("TD").eq(0).html();
-                                                                                        //        customer.Country = row.find("TD").eq(1).html();
-                                                                                        //        customers.push(customer);
-                                                                                        //    });
+                                                                                                                //$("body").on("click", "#btnSave", function () {
+                                                                                                                //    //Loop through the Table rows and build a JSON array.
+                                                                                                                //    var customers = new Array();
+                                                                                                                //    $("#tblCustomers TBODY TR").each(function () {
+                                                                                                                //        var row = $(this);
+                                                                                                                //        var customer = {};
+                                                                                                                //        customer.Name = row.find("TD").eq(0).html();
+                                                                                                                //        customer.Country = row.find("TD").eq(1).html();
+                                                                                                                //        customers.push(customer);
+                                                                                                                //    });
 
-                                                                                        //    //Send the JSON array to Controller using AJAX.
-                                                                                        //    $.ajax({
-                                                                                        //        type: "POST",
-                                                                                        //        url: "/Home/InsertCustomers",
-                                                                                        //        data: JSON.stringify(customers),
-                                                                                        //        contentType: "application/json; charset=utf-8",
-                                                                                        //        dataType: "json",
-                                                                                        //        success: function (r) {
-                                                                                        //            alert(r + " record(s) inserted.");
-                                                                                        //        }
-                                                                                        //    });
-                                                                                        //});
+                                                                                                                //    //Send the JSON array to Controller using AJAX.
+                                                                                                                //    $.ajax({
+                                                                                                                //        type: "POST",
+                                                                                                                //        url: "/Home/InsertCustomers",
+                                                                                                                //        data: JSON.stringify(customers),
+                                                                                                                //        contentType: "application/json; charset=utf-8",
+                                                                                                                //        dataType: "json",
+                                                                                                                //        success: function (r) {
+                                                                                                                //            alert(r + " record(s) inserted.");
+                                                                                                                //        }
+                                                                                                                //    });
+                                                                                                                //});
     </script>
 }          

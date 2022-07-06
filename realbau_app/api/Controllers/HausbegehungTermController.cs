@@ -35,6 +35,29 @@ namespace realbau_app.api.Controllers
 
                     result.Add(resultItem);
                 }
+
+                if (result.Count() == 0)
+                {
+                    reader.Close();
+                    var cmd1 = new SqlCommand("select * from dbo.hausbegehung_default_term", con);
+                    SqlDataReader reader1 = cmd1.ExecuteReader();
+
+                    while (reader1.Read())
+                    {
+                        HausbegehungTermDB resultItem = new HausbegehungTermDB();
+                        resultItem.id = Convert.IsDBNull(reader1["id"]) ? null : (int?)reader1["id"];
+                        resultItem.hbdate = null; // Convert.IsDBNull(reader["hbdate"]) ? null : DateOnly.FromDateTime((DateTime)reader["hbdate"]);
+                        resultItem.hbfrom = Convert.IsDBNull(reader1["hbfrom"]) ? null : (TimeSpan?)reader1["hbfrom"];
+                        resultItem.hbto = Convert.IsDBNull(reader1["hbto"]) ? null : (TimeSpan?)reader1["hbto"];
+                        resultItem.busy = 0; // Convert.IsDBNull(reader["busy"]) ? null : (int?)reader["busy"];
+                        resultItem.created_by = Convert.IsDBNull(reader1["created_by"]) ? null : (int?)reader1["created_by"];
+                        resultItem.created_on = Convert.IsDBNull(reader1["created_on"]) ? null : (DateTime?)reader1["created_on"];
+
+                        result.Add(resultItem);
+
+                        this.Post(resultItem);
+                    }
+                }
             }
 
             return result;

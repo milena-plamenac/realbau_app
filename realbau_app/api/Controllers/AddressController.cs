@@ -163,11 +163,11 @@ namespace realbau_app.api.Controllers
                 con.Open();
                 var cmd = new SqlCommand(@"
                             select a.*, 
-                            h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, 
-                            t.id as tId, t.tdate, t.meter, t.finished as tfinished,
-                            f.fdate, f.finished as ffinished,
-                            m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished,
-                            ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished
+                            h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
+                            t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                            f.fdate, f.finished as ffinished, f.fcomment,
+                            m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
+                            ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment
                             from dbo.address a 
                             inner join dbo.hausbegehung h on a.id = h.address_id 
                             inner join dbo.tiefbau t on a.id = t.address_id
@@ -246,14 +246,17 @@ namespace realbau_app.api.Controllers
                     addressDB.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
                     addressDB.hbcalldate = Convert.IsDBNull(reader["hbcalldate"]) ? null : (DateTime?)reader["hbcalldate"];
                     addressDB.hbfinished = Convert.IsDBNull(reader["hbfinished"]) ? null : (int?)reader["hbfinished"];
+                    addressDB.hbcomment = Convert.IsDBNull(reader["hbcomment"]) ? null : (string?)reader["hbcomment"];
 
                     addressDB.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
                     addressDB.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
                     addressDB.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
                     addressDB.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
+                    addressDB.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
 
                     addressDB.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];
                     addressDB.ffinished = Convert.IsDBNull(reader["ffinished"]) ? null : (int?)reader["ffinished"];
+                    addressDB.fcomment = Convert.IsDBNull(reader["fcomment"]) ? null : (string?)reader["fcomment"];
 
                     addressDB.mId = Convert.IsDBNull(reader["mId"]) ? null : (int?)reader["mId"];
                     addressDB.mdate = Convert.IsDBNull(reader["mdate"]) ? null : (DateOnly?)reader["mdate"];
@@ -261,12 +264,14 @@ namespace realbau_app.api.Controllers
                     addressDB.mto = Convert.IsDBNull(reader["mto"]) ? null : (TimeSpan?)reader["mto"];
                     addressDB.mcalldate = Convert.IsDBNull(reader["mcalldate"]) ? null : (DateTime?)reader["mcalldate"];
                     addressDB.mfinished = Convert.IsDBNull(reader["mfinished"]) ? null : (int?)reader["mfinished"];
+                    addressDB.mcomment = Convert.IsDBNull(reader["mcomment"]) ? null : (string?)reader["mcomment"];
 
                     addressDB.aId = Convert.IsDBNull(reader["aId"]) ? null : (int?)reader["aId"];
                     addressDB.adate = Convert.IsDBNull(reader["adate"]) ? null : (DateOnly?)reader["adate"];
                     addressDB.afrom = Convert.IsDBNull(reader["afrom"]) ? null : (TimeSpan?)reader["afrom"];
                     addressDB.ato = Convert.IsDBNull(reader["ato"]) ? null : (TimeSpan?)reader["ato"];
                     addressDB.afinished = Convert.IsDBNull(reader["afinished"]) ? null : (int?)reader["afinished"];
+                    addressDB.acomment = Convert.IsDBNull(reader["acomment"]) ? null : (string?)reader["acomment"];
 
                     //Korisnik k = new Korisnik();
                     //k.ORDERDATE = Convert.IsDBNull(reader["ORDERDATE"]) ? null : (DateTime?)reader["ORDERDATE"]; ;

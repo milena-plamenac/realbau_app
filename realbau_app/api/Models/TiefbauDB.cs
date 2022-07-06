@@ -4,17 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace realbau_app.api.Models
 {
-    public class HausbegehungDB
+    public class TiefbauDB
     {
         public int? id { get; set; }
         public int? address_id { get; set; }
 
 
-        public DateTime? hbdate { get; set; }
-        public DateTime? hbfrom { get; set; }
-        public DateTime? hbto { get; set; }
-        public DateTime? calldate { get; set; }
+        public DateTime? tdate { get; set; }
+        public int? meter { get; set; }
         public int? finished { get; set; }
+        public string? tcomment { get; set; }
         public int? created_by { get; set; }
         public DateTime? created_on { get; set; }
     }
