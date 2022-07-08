@@ -165,13 +165,45 @@
 <p>Date: @Model.fdate</p>
 <p>Done: @Model.ffinished</p>*@
 
-<h5>Montaze</h5>
-<p>Id: @Model.mId</p>
-<p>Date: @Model.mdate</p>
-<p>Termin from: @Model.mfrom</p>
-<p>Termin to: @Model.mto</p>
-<p>Call date: @Model.mcalldate</p>
-<p>Done: @Model.mfinished</p>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Montaze</span>
+                <div class="row">
+                    <div class="col s6 m6 l6">
+                        <p>Date: @Model.mdate?.ToString("dd.MM.yyyy")</p>
+                        <p>Termin: @Model.mfrom?.ToString("HH:mm") - @Model.mto?.ToString("HH:mm")</p>
+                        <p>Call date: <span id="mCallDate">@Model.mcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+                    </div>
+                    <div class="input-field col s6 m6 l6">
+                        <textarea class="materialize-textarea" id="mComment">@Model.mcomment</textarea>
+                        <label for="mComment">Montaze comment</label>
+
+                    </div>
+                </div>
+
+                @*<div class="row">
+                    <div class="col s12 m12 l12">
+                    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+                        <input type="file" name="file" />
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                    </div>
+                </div>*@
+
+
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" id="mGetTerm"><i class="material-icons left">date_range</i>Get montaze term</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.mcalldate != null)" href="#" id="mCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mAddImages"><i class="material-icons left">image</i>Add image</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mFinished"><i class="material-icons left">check</i>Montaze finished</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <h5>Aktivirung</h5>
 <p>Id: @Model.aId</p>
@@ -247,7 +279,7 @@
                     //dataType: "json",
                     success: function(r) {
                         alert("Success");
-                        hbCommentInput.val(hbData.comment);
+                        hbCommentInput.val(hbData.hbcomment);
                         //$("#hbCustomerCalled").attr("disabled", "disabled");
                         //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                     },
@@ -298,6 +330,11 @@
                 var currentTime = new Date();
                 let date = currentTime.getFullYear() + '-' + (currentTime.getMonth().toFixed() - 1) + '-' + currentTime.getDate();
                 window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();
+            })
+
+            $("#hbAddImages").click(function() { 
+                var addressId = $("#addressId")[0].innerText;
+                window.location.href = "/StreamFileUpload/?type=hausbegehung&address_id=" + addressId;
             })
 
             $("#tSaveChanges").click(function() {
@@ -451,11 +488,116 @@
                 });
             })
 
-            $("#hbAddImages").click(function() { 
+            
+
+
+
+             $("#mCustomerCalled").click(function() {
+                console.log($("#addressId"));
                 var addressId = $("#addressId")[0].innerText;
-                window.location.href = "/StreamFileUpload/?type=hausbegehung&address_id=" + addressId;
+                console.log($("#addressId")[0]);
+                //alert(addressId);
+                var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+                var mData = {};
+                mData.calldate = currentTime;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Montaze/" + addressId,
+                    data: JSON.stringify(mData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        $("#mCustomerCalled").attr("disabled", "disabled");
+                        $("#mCallDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            });
+
+            $("#mSaveChanges").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                let mCommentInput = $("#mComment")[0];
+                console.log(mCommentInput.value);
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var mData = {};
+                mData.mcomment = mCommentInput.value;
+
+                var addressId = $("#addressId")[0].innerText;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Montaze/" + addressId,
+                    data: JSON.stringify(mData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        mCommentInput.val(mData.mcomment);
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
             })
 
+            $("#mFinished").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                //let hbCommentInput = $("#hbComment")[0];
+                //console.log(hbCommentInput.value);
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var mData = {};
+                mData.finished = 1;
+
+                var addressId = $("#addressId")[0].innerText;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Montaze/" + addressId,
+                    data: JSON.stringify(mData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        $("#mGetTerm").attr("disabled", "disabled");
+                        $("#mCustomerCalled").attr("disabled", "disabled");
+                        $("#mFinished").attr("disabled", "disabled");
+                        $("#mSaveChanges").attr("disabled", "disabled");
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            })
+
+            $("#mGetTerm").click(function() {
+                var addressId = $("#addressId")[0].innerText;
+                var currentTime = new Date();
+                let date = currentTime.getFullYear() + '-' + (currentTime.getMonth().toFixed() - 1) + '-' + currentTime.getDate();
+                window.location.href = "/Montaze/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();
+            })
+
+            $("#mAddImages").click(function() { 
+                var addressId = $("#addressId")[0].innerText;
+                window.location.href = "/StreamFileUpload/?type=montaze&address_id=" + addressId;
+            })
             
         })
     </script>
