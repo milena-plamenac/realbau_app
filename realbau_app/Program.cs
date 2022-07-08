@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.Http.Json;
+using realbau_app.Interfaces;
+using realbau_app.Services;
+using realbau_app.api.Repositories.Interfaces;
+using realbau_app.api.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +31,10 @@ builder.Services.Configure<JsonSerializerOptions>(options =>
     options.Converters.Add(new DateOnlyConverter());
     options.Converters.Add(new TimeOnlyConverter());
 });
+
+builder.Services.AddTransient<IImageRepository, ImageRepository>();
+builder.Services.AddTransient<IStreamFileUploadService, StreamFileUploadLocalService>();
+
 
 var app = builder.Build();
 

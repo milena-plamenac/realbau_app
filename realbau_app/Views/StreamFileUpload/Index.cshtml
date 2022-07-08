@@ -1,0 +1,31 @@
+﻿<h4 class="text-center">Upload image</h4>
+
+<hr />
+
+<div>
+    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+        <input type="file" name="file" />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+
+@if (ViewBag.type != null)
+{
+    <div class="alert" style="margin-top:20px">
+        @ViewBag.type
+    </div>
+}
+
+@if (ViewBag.address_id != null)
+{
+    <div class="alert" style="margin-top:20px">
+        @ViewBag.address_id
+    </div>
+}

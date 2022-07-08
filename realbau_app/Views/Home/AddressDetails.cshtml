@@ -35,14 +35,23 @@
                     </div>
                 </div>
 
+                @*<div class="row">
+                    <div class="col s12 m12 l12">
+                    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+                        <input type="file" name="file" />
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                    </div>
+                </div>*@
 
 
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn backgroundBrown" disabled="@(Model.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
-                <a class="waves-effect waves-light btn backgroundOrange" disabled="@(Model.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
                 <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbAddImages"><i class="material-icons left">image</i>Add image</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
             </div>
         </div>
     </div>
@@ -106,9 +115,9 @@
                     </div>
                 </div>
                 @*<div class="row">
-                    <div class="col s12 m12 l12">
-                        <p>Date: <span id="tDate">@Model.tdate</span></p>
-                    </div>
+                <div class="col s12 m12 l12">
+                <p>Date: <span id="tDate">@Model.tdate</span></p>
+                </div>
                 </div>*@
                 @* <p>Date: @Model.tdate</p>
                 <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
@@ -186,6 +195,9 @@
         //});
 
         $(function() {
+
+           
+
             $("#hbCustomerCalled").click(function() {
                 console.log($("#addressId"));
                 var addressId = $("#addressId")[0].innerText;
@@ -353,7 +365,7 @@
                         $("#tFinished").attr("disabled", "disabled");
                         $("#tSaveChanges").attr("disabled", "disabled");
                         $("#tDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
-                        
+
                         //$("#hbCustomerCalled").attr("disabled", "disabled");
                         //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                     },
@@ -369,13 +381,13 @@
                 //var addressId = $("#addressId")[0].innerText;
                 let fCommentInput = $("#fCommentInput")[0];
                 console.log(fCommentInput.value);
-     
+
                 //alert(addressId);
                 //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
                 var fData = {};
                 fData.fcomment = fCommentInput.value;
-     
+
 
                 var addressId = $("#addressId")[0].innerText;
 
@@ -412,7 +424,7 @@
                 var addressId = $("#addressId")[0].innerText;
 
                 var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
-       
+
                 fData.fdate = currentTime;
 
                 $.ajax({
@@ -428,7 +440,7 @@
                         $("#fFinished").attr("disabled", "disabled");
                         $("#fSaveChanges").attr("disabled", "disabled");
                         $("#fDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
-                        
+
                         //$("#hbCustomerCalled").attr("disabled", "disabled");
                         //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                     },
@@ -438,6 +450,13 @@
                     }
                 });
             })
+
+            $("#hbAddImages").click(function() { 
+                var addressId = $("#addressId")[0].innerText;
+                window.location.href = "/StreamFileUpload/?type=hausbegehung&address_id=" + addressId;
+            })
+
+            
         })
     </script>
 }
