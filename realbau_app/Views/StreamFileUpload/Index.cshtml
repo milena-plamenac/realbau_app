@@ -3,8 +3,10 @@
 <hr />
 
 <div>
-    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+    <form enctype="multipart/form-data" method="POST">
         <input type="file" name="file" />
+       @* <input type="text" name="type" value="haus"/>
+        <input type="text" name="address_id" value="12"/>*@
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>

@@ -13,20 +13,21 @@ namespace realbau_app.Controllers
             _streamFileUploadService = streamFileUploadService;
         }
         [HttpGet]
-        public IActionResult Index(string type, int address_id)
+        public IActionResult Index()
         {
-            ViewBag.type = type;
-            ViewBag.address_id = address_id;
+            //ViewBag.type = type;
+            //ViewBag.address_id = address_id;
             return View();
         }
         [ActionName("Index")]
         [HttpPost]
-    
-        public async Task<IActionResult> SaveFileToPhysicalFolder()
+
+        [DisableFormValueModelBinding]
+        public async Task<IActionResult> SaveFileToPhysicalFolder(string type, int address_id)
         {
             try
             {
-
+                
 
                 var boundary = HeaderUtilities.RemoveQuotes(
                     MediaTypeHeaderValue.Parse(Request.ContentType).Boundary
@@ -37,7 +38,7 @@ namespace realbau_app.Controllers
                 string response = string.Empty;
                 try
                 {
-                    if (await _streamFileUploadService.UploadFile(reader, section))
+                    if (await _streamFileUploadService.UploadFile(reader, section, "hausbegehung", 12))
                     {
                         ViewBag.Message = "File Upload Successful";
                     }

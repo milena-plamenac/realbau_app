@@ -15,7 +15,7 @@ namespace realbau_app.Services
             this.imageRepository = imageRepository;
         }
 
-        public async Task<bool> UploadFile(MultipartReader reader, MultipartSection? section)
+        public async Task<bool> UploadFile(MultipartReader reader, MultipartSection? section, string type, int address_id)
         {
             while (section != null)
             {
@@ -43,7 +43,7 @@ namespace realbau_app.Services
                 }
                 section = await reader.ReadNextSectionAsync();
 
-                var saveImageResult = this.imageRepository.Save("hausbegehung", 12, contentDisposition.FileName.Value);
+                var saveImageResult = this.imageRepository.Save(type, address_id, contentDisposition.FileName.Value);
 
                 return saveImageResult.Result;
             }
