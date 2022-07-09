@@ -28,7 +28,7 @@ namespace realbau_app.Controllers
         {
             List<NewAddress> newAddresses = new List<NewAddress>();
 
-            using (var reader = new StreamReader(addressFile.OpenReadStream(), Encoding.Default))
+            using (var reader = new StreamReader(addressFile.OpenReadStream(), Encoding.GetEncoding("Windows-1252")))
             {
                 List<string> badRecord = new List<string>();
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -244,7 +244,7 @@ namespace realbau_app.Controllers
 
             List<NewAddress> newAddresses = new List<NewAddress>();
 
-            using (var reader = new StreamReader(rncUpdateFile.OpenReadStream(), Encoding.Default))
+            using (var reader = new StreamReader(rncUpdateFile.OpenReadStream(), Encoding.GetEncoding("Windows-1252")))
             {
                 List<string> badRecord = new List<string>();
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)

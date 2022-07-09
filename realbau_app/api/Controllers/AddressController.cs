@@ -598,7 +598,7 @@ namespace realbau_app.api.Controllers
                     using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                     {
                         con.Open();
-                        var cmd = new SqlCommand("update address set arsstatus = @arsstatus where  city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit");
+                        var cmd = new SqlCommand("update address set arsstatus = @arsstatus where  city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit", con);
 
                         cmd.Parameters.AddWithValue("@city", city);
                         cmd.Parameters.AddWithValue("@tzip", tzip);
