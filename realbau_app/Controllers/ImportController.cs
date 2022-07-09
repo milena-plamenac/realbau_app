@@ -50,22 +50,22 @@ namespace realbau_app.Controllers
 
                     while (csv.Parser.Read())
                     {
-                        
+
                         //data.Add(csv.Parser.Record);
                         var rec = csv.Parser.Record;
 
                         if (rec[22] != "ACCEPTED")
                             continue;
 
-                        IEnumerable <AddressDB> addressDBs = null;
+                        IEnumerable<AddressDB> addressDBs = null;
                         var exists = 0;
 
                         using (var client = new HttpClient())
                         {
                             client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + rec[11]);
                             //HTTP GET
-                            
-                            
+
+
                             var responseTask = client.GetAsync("");
                             responseTask.Wait();
 
@@ -90,29 +90,29 @@ namespace realbau_app.Controllers
                         }
 
                         if (exists == 0)
-                        newAddresses.Add(new NewAddress()
-                        {
-                            Bestellnummer = rec[0],
-                            SP_Name = rec[1],
-                            Name = rec[2],
-                            Telefon = rec[3],
-                            Handy = rec[4],
-                            Email = rec[5],
-                            Ort = rec[6],
-                            Zipcode = rec[7],
-                            Straße = rec[8], //Encoding.GetEncoding(850).GetString(Encoding.Default.GetBytes(rec[8])),
-                            Nummer = rec[9],
-                            NrZusatz = rec[10],
-                            WeitereSusatz = rec[11],
-                            AnschlussStatus = rec[12],
-                            AccessLocation = rec[13],
-                            IP_ODF = rec[14],
-                            IP_Port = rec[15],
-                            TV_ODF= rec[16],
-                            Projectcode = rec[26],
-                            Kennwort = rec[28],
-                            Subtype = rec[35]
-                        });
+                            newAddresses.Add(new NewAddress()
+                            {
+                                Bestellnummer = rec[0],
+                                SP_Name = rec[1],
+                                Name = rec[2],
+                                Telefon = rec[3],
+                                Handy = rec[4],
+                                Email = rec[5],
+                                Ort = rec[6],
+                                Zipcode = rec[7],
+                                Straße = rec[8], //Encoding.GetEncoding(850).GetString(Encoding.Default.GetBytes(rec[8])),
+                                Nummer = rec[9],
+                                NrZusatz = rec[10],
+                                WeitereSusatz = rec[11],
+                                AnschlussStatus = rec[12],
+                                AccessLocation = rec[13],
+                                IP_ODF = rec[14],
+                                IP_Port = rec[15],
+                                TV_ODF = rec[16],
+                                Projectcode = rec[26],
+                                Kennwort = rec[28],
+                                Subtype = rec[35]
+                            });
 
                         //if(newAddresses.Count() >0)
                         //return View("NewAddresses", newAddresses);
@@ -230,6 +230,111 @@ namespace realbau_app.Controllers
             }
 
         }
+
+        public IActionResult RncUpdate()
+        {
+            ViewBag.message = "Get";
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RncUpdate(IFormFile rncUpdateFile)
+        {
+            ViewBag.message = "Post";
+
+            List<NewAddress> newAddresses = new List<NewAddress>();
+
+            using (var reader = new StreamReader(rncUpdateFile.OpenReadStream(), Encoding.Default))
+            {
+                List<string> badRecord = new List<string>();
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    Delimiter = ";",
+                    Mode = CsvMode.NoEscape,
+                    BadDataFound = context => badRecord.Add(context.RawRecord)
+                };
+
+                List<dynamic> data = new List<dynamic>();
+
+
+                using (var csv = new CsvReader(reader, config))
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+
+                    var header = csv.Context.Reader.HeaderRecord.ToList();
+
+                    while (csv.Parser.Read())
+                    {
+
+                        //data.Add(csv.Parser.Record);
+                        var rec = csv.Parser.Record;
+
+                        //if (rec[22] != "ACCEPTED")
+                        //    continue;
+
+                        IEnumerable<AddressDB> addressDBs = null;
+                        var exists = 0;
+
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[5] + "/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[10] + "/" + rec[13]);
+                            //HTTP GET
+
+
+                            var responseTask = client.GetAsync("");
+                            responseTask.Wait();
+
+                            var result = responseTask.Result;
+                            var readResult = result.Content.ReadFromJsonAsync<int>();
+                            readResult.Wait();
+
+                            exists = readResult.Result;
+
+                        }
+
+                        //if (exists == 0)
+                        //    newAddresses.Add(new NewAddress()
+                        //    {
+                        //        Bestellnummer = rec[0],
+                        //        SP_Name = rec[1],
+                        //        Name = rec[2],
+                        //        Telefon = rec[3],
+                        //        Handy = rec[4],
+                        //        Email = rec[5],
+                        //        Ort = rec[6],
+                        //        Zipcode = rec[7],
+                        //        Straße = rec[8], //Encoding.GetEncoding(850).GetString(Encoding.Default.GetBytes(rec[8])),
+                        //        Nummer = rec[9],
+                        //        NrZusatz = rec[10],
+                        //        WeitereSusatz = rec[11],
+                        //        AnschlussStatus = rec[12],
+                        //        AccessLocation = rec[13],
+                        //        IP_ODF = rec[14],
+                        //        IP_Port = rec[15],
+                        //        TV_ODF = rec[16],
+                        //        Projectcode = rec[26],
+                        //        Kennwort = rec[28],
+                        //        Subtype = rec[35]
+                        //    });
+
+                 
+                    }
+                }
+
+                var p = "test";
+
+                ViewBag.message = "Success";
+                return View();
+
+
+            }
+
+            
+        }
+
     }
-    
+
+
+
 }

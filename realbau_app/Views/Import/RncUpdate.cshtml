@@ -1,0 +1,14 @@
+﻿@page
+@model realbau_app.Views.Import.IndexModel
+@{
+}
+
+<h4 class="text-center">Rnc update</h4>
+<p>Please, select DG csv file for rnc update</p>
+<div class="container">
+    <form method="post" asp-action="RncUpdate" asp-controller="Import" enctype="multipart/form-data">
+        <input type="file" name="rncUpdateFile" />
+        <button type="submit" class="btn btn-primary">Rnc update</button>
+        <p>@ViewBag.message</p>
+    </form>
+</div>

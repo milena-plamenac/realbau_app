@@ -569,8 +569,8 @@ namespace realbau_app.api.Controllers
         }
 
 
-        [HttpPut]
-        public void Update([FromBody] AddressDB address)
+        [HttpGet("{city}/{tzip}/{street}/{housenumber}/{unit}/{newrnc}")]
+        public async Task<ActionResult<int>> CheckRnc(string city, string tzip, string street, int housenumber, int unit, int newrnc)
         {
             try
             {
@@ -579,11 +579,11 @@ namespace realbau_app.api.Controllers
                 {
                     con.Open();
                     var cmd = new SqlCommand("select * from dbo.address where city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit", con);
-                    cmd.Parameters.AddWithValue("@city", address.city);
-                    cmd.Parameters.AddWithValue("@tzip", address.tzip);
-                    cmd.Parameters.AddWithValue("@street", address.street);
-                    cmd.Parameters.AddWithValue("@housenumber", address.housenumber);
-                    cmd.Parameters.AddWithValue("@unit", address.unit);
+                    cmd.Parameters.AddWithValue("@city", city);
+                    cmd.Parameters.AddWithValue("@tzip", tzip);
+                    cmd.Parameters.AddWithValue("@street", street);
+                    cmd.Parameters.AddWithValue("@housenumber", housenumber);
+                    cmd.Parameters.AddWithValue("@unit", unit);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
@@ -600,18 +600,23 @@ namespace realbau_app.api.Controllers
                         con.Open();
                         var cmd = new SqlCommand("update address set arsstatus = @arsstatus where  city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit");
 
-                        cmd.Parameters.AddWithValue("@city", address.city);
-                        cmd.Parameters.AddWithValue("@tzip", address.tzip);
-                        cmd.Parameters.AddWithValue("@street", address.street);
-                        cmd.Parameters.AddWithValue("@housenumber", address.housenumber);
-                        cmd.Parameters.AddWithValue("@unit", address.unit);
+                        cmd.Parameters.AddWithValue("@city", city);
+                        cmd.Parameters.AddWithValue("@tzip", tzip);
+                        cmd.Parameters.AddWithValue("@street", street);
+                        cmd.Parameters.AddWithValue("@housenumber", housenumber);
+                        cmd.Parameters.AddWithValue("@unit", unit);
+                        cmd.Parameters.AddWithValue("@arsstatus", newrnc);
 
                         int result = cmd.ExecuteNonQuery();
+
+                        
                     }
+
+                return 1;
             }
             catch (Exception e)
             {
-
+                return 0;
             }
         }
 
