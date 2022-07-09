@@ -205,12 +205,43 @@
     </div>
 </div>
 
-<h5>Aktivirung</h5>
-<p>Id: @Model.aId</p>
-<p>Date: @Model.adate</p>
-<p>Termin from: @Model.afrom</p>
-<p>Termin to: @Model.ato</p>
-<p>Done: @Model.afinished</p>
+<div class="row">
+
+    <div class="col s12 m12 l12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Aktivirung</span>
+                <div class="row">
+                    <div class="col s6 m6 l6">
+                        <p>Date: <span id="aDate">@Model.adate</span></p>
+                        @*<textarea class="materialize-textarea" id="meterInput">@Model.meter</textarea>
+                        <label for="meterInput">Meter</label>*@
+                        @*<textarea id="meterInput" class="materialize-textarea">@Model.meter</textarea>
+                        <label for="meterInput">Meter</label>
+                        <p>Date: @Model.tdate</p>*@
+                    </div>
+                    <div class="col s6 m6 l6">
+                        <textarea class="materialize-textarea" id="aCommentInput">@Model.acomment</textarea>
+                        <label for="aCommentInput">Aktivirung comment</label>
+
+                    </div>
+                </div>
+                @*<div class="row">
+                <div class="col s12 m12 l12">
+                <p>Date: <span id="tDate">@Model.tdate</span></p>
+                </div>
+                </div>*@
+                @* <p>Date: @Model.tdate</p>
+                <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" disabled="@(Model.afinished == 1)" href="#" id="aFinished"><i class="material-icons left">check</i>Aktivirung finished</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.afinished == 1)" href="#" id="aSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script>
@@ -597,6 +628,83 @@
             $("#mAddImages").click(function() { 
                 var addressId = $("#addressId")[0].innerText;
                 window.location.href = "/StreamFileUpload/?type=montaze&address_id=" + addressId;
+            })
+
+
+
+            $("#aSaveChanges").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                let aCommentInput = $("#aCommentInput")[0];
+                console.log(aCommentInput.value);
+
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var aData = {};
+                aData.acomment = aCommentInput.value;
+
+
+                var addressId = $("#addressId")[0].innerText;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Aktivirung/" + addressId,
+                    data: JSON.stringify(aData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        //hbCommentInput.val(hbData.comment);
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            })
+
+            $("#aFinished").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                //let hbCommentInput = $("#hbComment")[0];
+                //console.log(hbCommentInput.value);
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var aData = {};
+                aData.finished = 1;
+
+                var addressId = $("#addressId")[0].innerText;
+
+                var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                aData.adate = currentTime;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Aktivirung/" + addressId,
+                    data: JSON.stringify(aData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        //$("#hbGetTerm").attr("disabled", "disabled");
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        $("#aFinished").attr("disabled", "disabled");
+                        $("#aSaveChanges").attr("disabled", "disabled");
+                        $("#aDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
             })
             
         })

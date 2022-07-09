@@ -57,17 +57,17 @@
 		public string? fcomment { get; set; }
 
 		public int? mId { get; set; }
-		public DateOnly? mdate { get; set; }
-		public TimeSpan? mfrom { get; set; }
-		public TimeSpan? mto { get; set; }
+		public DateTime? mdate { get; set; }
+		public DateTime? mfrom { get; set; }
+		public DateTime? mto { get; set; }
 		public DateTime? mcalldate { get; set; }
 		public int? mfinished { get; set; }
 		public string? mcomment { get; set; }
 
 		public int? aId { get; set; }
-		public DateOnly? adate { get; set; }
-		public TimeSpan? afrom { get; set; }
-		public TimeSpan? ato { get; set; }
+		public DateTime? adate { get; set; }
+		public DateTime? afrom { get; set; }
+		public DateTime? ato { get; set; }
 		public int? afinished { get; set; }
 		public string? acomment { get; set; }
 

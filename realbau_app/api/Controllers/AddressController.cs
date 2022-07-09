@@ -259,17 +259,17 @@ namespace realbau_app.api.Controllers
                     addressDB.fcomment = Convert.IsDBNull(reader["fcomment"]) ? null : (string?)reader["fcomment"];
 
                     addressDB.mId = Convert.IsDBNull(reader["mId"]) ? null : (int?)reader["mId"];
-                    addressDB.mdate = Convert.IsDBNull(reader["mdate"]) ? null : (DateOnly?)reader["mdate"];
-                    addressDB.mfrom = Convert.IsDBNull(reader["mfrom"]) ? null : (TimeSpan?)reader["mfrom"];
-                    addressDB.mto = Convert.IsDBNull(reader["mto"]) ? null : (TimeSpan?)reader["mto"];
+                    addressDB.mdate = Convert.IsDBNull(reader["mdate"]) ? null : (DateTime?)reader["mdate"];
+                    addressDB.mfrom = Convert.IsDBNull(reader["mfrom"]) ? null : (DateTime?)reader["mfrom"];
+                    addressDB.mto = Convert.IsDBNull(reader["mto"]) ? null : (DateTime?)reader["mto"];
                     addressDB.mcalldate = Convert.IsDBNull(reader["mcalldate"]) ? null : (DateTime?)reader["mcalldate"];
                     addressDB.mfinished = Convert.IsDBNull(reader["mfinished"]) ? null : (int?)reader["mfinished"];
                     addressDB.mcomment = Convert.IsDBNull(reader["mcomment"]) ? null : (string?)reader["mcomment"];
 
                     addressDB.aId = Convert.IsDBNull(reader["aId"]) ? null : (int?)reader["aId"];
-                    addressDB.adate = Convert.IsDBNull(reader["adate"]) ? null : (DateOnly?)reader["adate"];
-                    addressDB.afrom = Convert.IsDBNull(reader["afrom"]) ? null : (TimeSpan?)reader["afrom"];
-                    addressDB.ato = Convert.IsDBNull(reader["ato"]) ? null : (TimeSpan?)reader["ato"];
+                    addressDB.adate = Convert.IsDBNull(reader["adate"]) ? null : (DateTime?)reader["adate"];
+                    addressDB.afrom = Convert.IsDBNull(reader["afrom"]) ? null : (DateTime?)reader["afrom"];
+                    addressDB.ato = Convert.IsDBNull(reader["ato"]) ? null : (DateTime?)reader["ato"];
                     addressDB.afinished = Convert.IsDBNull(reader["afinished"]) ? null : (int?)reader["afinished"];
                     addressDB.acomment = Convert.IsDBNull(reader["acomment"]) ? null : (string?)reader["acomment"];
 
@@ -565,6 +565,53 @@ namespace realbau_app.api.Controllers
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+
+        [HttpPut]
+        public void Update([FromBody] AddressDB address)
+        {
+            try
+            {
+                var exists = 0;
+                using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+                {
+                    con.Open();
+                    var cmd = new SqlCommand("select * from dbo.address where city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit", con);
+                    cmd.Parameters.AddWithValue("@city", address.city);
+                    cmd.Parameters.AddWithValue("@tzip", address.tzip);
+                    cmd.Parameters.AddWithValue("@street", address.street);
+                    cmd.Parameters.AddWithValue("@housenumber", address.housenumber);
+                    cmd.Parameters.AddWithValue("@unit", address.unit);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        exists = 1;
+                    }
+
+                    reader.Close();
+                }
+
+                if (exists == 1)
+                    using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+                    {
+                        con.Open();
+                        var cmd = new SqlCommand("update address set arsstatus = @arsstatus where  city = @city and tzip = @tzip and street = @street and housenumber = @housenumber and unit = @unit");
+
+                        cmd.Parameters.AddWithValue("@city", address.city);
+                        cmd.Parameters.AddWithValue("@tzip", address.tzip);
+                        cmd.Parameters.AddWithValue("@street", address.street);
+                        cmd.Parameters.AddWithValue("@housenumber", address.housenumber);
+                        cmd.Parameters.AddWithValue("@unit", address.unit);
+
+                        int result = cmd.ExecuteNonQuery();
+                    }
+            }
+            catch (Exception e)
+            {
+
             }
         }
 

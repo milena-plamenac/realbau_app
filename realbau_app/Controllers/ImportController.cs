@@ -28,7 +28,7 @@ namespace realbau_app.Controllers
         {
             List<NewAddress> newAddresses = new List<NewAddress>();
 
-            using (var reader = new StreamReader("C:\\Users\\lfili\\Downloads\\TM.csv", Encoding.Default))
+            using (var reader = new StreamReader(addressFile.OpenReadStream(), Encoding.Default))
             {
                 List<string> badRecord = new List<string>();
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -100,8 +100,8 @@ namespace realbau_app.Controllers
                             Email = rec[5],
                             Ort = rec[6],
                             Zipcode = rec[7],
-                            Straße = rec[8],
-                            Nummer= rec[9],
+                            Straße = rec[8], //Encoding.GetEncoding(850).GetString(Encoding.Default.GetBytes(rec[8])),
+                            Nummer = rec[9],
                             NrZusatz = rec[10],
                             WeitereSusatz = rec[11],
                             AnschlussStatus = rec[12],
