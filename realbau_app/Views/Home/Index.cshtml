@@ -35,7 +35,7 @@
 
                         <p>
                             <label>
-                                <input type="checkbox" class="filled-in"  id="tFilter" />
+                                <input type="checkbox" class="filled-in" id="tFilter" />
                                 <span>Tiefbau</span>
                             </label>
                         </p>
@@ -44,7 +44,7 @@
 
                         <p>
                             <label>
-                                <input type="checkbox" class="filled-in"  id="fFilter" />
+                                <input type="checkbox" class="filled-in" id="fFilter" />
                                 <span>Faser</span>
                             </label>
                         </p>
@@ -53,7 +53,7 @@
 
                         <p>
                             <label>
-                                <input type="checkbox" class="filled-in"  id="mFilter" />
+                                <input type="checkbox" class="filled-in" id="mFilter" />
                                 <span>Montaze</span>
                             </label>
                         </p>
@@ -62,7 +62,7 @@
 
                         <p>
                             <label>
-                                <input type="checkbox" class="filled-in"  id="aFilter" />
+                                <input type="checkbox" class="filled-in" id="aFilter" />
                                 <span>Aktivirung</span>
                             </label>
                         </p>
@@ -71,7 +71,7 @@
 
                         <p>
                             <label>
-                                <input type="checkbox" class="filled-in"  id="vFilter" />
+                                <input type="checkbox" class="filled-in" id="vFilter" />
                                 <span>Vermessung</span>
                             </label>
                         </p>
@@ -90,8 +90,9 @@
 
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" id="filter" style="background-color: #4db6ac; color: #424242 !important;">Filter data</a>
-               
+                <a class="waves-effect waves-light btn" id="filter" style="background-color: #4db6ac; color: whitesmoke !important;">Filter data</a>
+                <a class="waves-effect waves-light btn" id="reset" style="background-color: #e57373; color: whitesmoke !important;">Reset filter</a>
+
             </div>
         </div>
     </div>
@@ -183,17 +184,37 @@
                     <i class="material-icons left">check</i>
                 }
             </th>
-            
-            <th> @if (d.tfinished == 1)
-                {<i class="material-icons left">check</i>}</th>
-            <th> @if (d.ffinished == 1)
-                {<i class="material-icons left">check</i>}</th>
-            <th> @if (d.mfinished == 1)
-                {<i class="material-icons left">check</i>}</th>
-            <th> @if (d.afinished == 1)
-                {<i class="material-icons left">check</i>}</th>
-                <th> @if (d.vfinished == 1)
-                {<i class="material-icons left">check</i>}</th>
+
+            <th>
+                @if (d.tfinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
+            <th>
+                @if (d.ffinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
+            <th>
+                @if (d.mfinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
+            <th>
+                @if (d.afinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
+            <th>
+                @if (d.vfinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
             <td style="font-weight: bold;">
                 @Html.ActionLink("Details",
             "AddressDetails",
@@ -261,9 +282,9 @@ $(function() {
                 console.log(params.pop);
                 // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
                 //let pop = params.pop;
-                
+
                 if (params.pop)
-                $("#popFilter")[0].value = params.pop;
+                    $("#popFilter")[0].value = params.pop;
 
                 console.log(params.hbFinished);
                 console.log(params.tFinished);
@@ -271,18 +292,39 @@ $(function() {
                 console.log(params.mFinished);
                 console.log(params.aFinished);
                 console.log(params.vFinished);
-                
-                $("#hbFilter")[0].prop("checked", params.hbFinished);
-                 $("#tFilter")[0].prop("checked", params.tFinished);
-                  $("#fFilter")[0].prop("checked", params.fFinished);
-                   $("#mFilter")[0].prop("checked", params.mFinished);
-                    $("#aFilter")[0].prop("checked", params.aFinished);
-                     $("#vFilter")[0].prop("checked", params.vFinished);
+
+            //    $("#hbFilter")[0].checked = params.hbFinished;
+            //$("#tFilter")[0].checked = params.tFinished;
+            //$("#fFilter")[0].checked = params.fFinished;
+            //$("#mFilter")[0].checked = params.mFinished;
+            //$("#aFilter")[0].checked = params.aFinished;
+            //    $("#vFilter")[0].checked = params.vFinished;
+            //;
+
+                //$("#hbFilter").prop("checked", params.hbFinished);
+                // $("#tFilter").prop("checked", params.tFinished);
+                //  $("#fFilter").prop("checked", params.fFinished);
+                //   $("#mFilter").prop("checked", params.mFinished);
+                //    $("#aFilter").prop("checked", params.aFinished);
+                //     $("#vFilter").prop("checked", params.vFinished);
                 //$("#hbFilter")[0].val(params.hbFinished);
                 //$("#hbFilter")[0].val(params.hbFinished);
             })
 
-        $("#filter").on('click', function(){
+        $("#reset").on("click", function() {
+            $("#popFilter")[0].value = null;
+            $("#hbFilter")[0].checked = false;
+            $("#tFilter")[0].checked = false;
+            $("#fFilter")[0].checked = false;
+            $("#mFilter")[0].checked = false;
+            $("#aFilter")[0].checked = false;
+            $("#vFilter")[0].checked = false;
+
+            window.location.href = "/";
+
+        })
+
+        $("#filter").on('click', function() {
             var pop = $("#popFilter")[0].value;
             var hbFinished = $("#hbFilter")[0].checked;
             var tFinished = $("#tFilter")[0].checked;
