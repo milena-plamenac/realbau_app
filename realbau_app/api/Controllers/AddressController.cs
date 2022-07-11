@@ -167,13 +167,15 @@ namespace realbau_app.api.Controllers
                             t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
                             f.fdate, f.finished as ffinished, f.fcomment,
                             m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
-                            ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment
+                            ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
+                            v.vdate, v.finished as vfinished, v.vcomment
                             from dbo.address a 
                             inner join dbo.hausbegehung h on a.id = h.address_id 
                             inner join dbo.tiefbau t on a.id = t.address_id
                             inner join dbo.faser f on a.id = f.address_id
                             inner join dbo.montaze m on a.id = m.address_id
                             inner join dbo.aktivirung ak on a.id = ak.address_id
+                            inner join dbo.vermessung v on a.id = v.address_id
                             where a.id = @id", con);
                 cmd.Parameters.AddWithValue("@id", id);
                 //cmd.Parameters.AddWithValue("@tzip", tzip);
@@ -272,6 +274,10 @@ namespace realbau_app.api.Controllers
                     addressDB.ato = Convert.IsDBNull(reader["ato"]) ? null : (DateTime?)reader["ato"];
                     addressDB.afinished = Convert.IsDBNull(reader["afinished"]) ? null : (int?)reader["afinished"];
                     addressDB.acomment = Convert.IsDBNull(reader["acomment"]) ? null : (string?)reader["acomment"];
+
+                    addressDB.vdate = Convert.IsDBNull(reader["vdate"]) ? null : (DateTime?)reader["vdate"];
+                    addressDB.vfinished = Convert.IsDBNull(reader["vfinished"]) ? null : (int?)reader["vfinished"];
+                    addressDB.vcomment = Convert.IsDBNull(reader["vcomment"]) ? null : (string?)reader["vcomment"];
 
                     //Korisnik k = new Korisnik();
                     //k.ORDERDATE = Convert.IsDBNull(reader["ORDERDATE"]) ? null : (DateTime?)reader["ORDERDATE"]; ;
@@ -558,6 +564,10 @@ namespace realbau_app.api.Controllers
                     var aCmd = new SqlCommand(@"insert into dbo.aktivirung (address_id) values (@address_id)", con);
                     aCmd.Parameters.AddWithValue("@address_id", addressId);
                     var aCmdRes = aCmd.ExecuteNonQuery();
+
+                    var vCmd = new SqlCommand(@"insert into dbo.vermessung (address_id) values (@address_id)", con);
+                    vCmd.Parameters.AddWithValue("@address_id", addressId);
+                    var vCmdRes = aCmd.ExecuteNonQuery();
                 }
 
                 return address;

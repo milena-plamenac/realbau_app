@@ -243,6 +243,48 @@
     </div>
 </div>
 
+<div class="row">
+
+    <div class="col s12 m12 l12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Vermessung</span>
+                <div class="row">
+                    <div class="col s6 m6 l6">
+                        <p>Date: <span id="vDate">@Model.vdate</span></p>
+                        @*<textarea class="materialize-textarea" id="meterInput">@Model.meter</textarea>
+                        <label for="meterInput">Meter</label>*@
+                        @*<textarea id="meterInput" class="materialize-textarea">@Model.meter</textarea>
+                        <label for="meterInput">Meter</label>
+                        <p>Date: @Model.tdate</p>*@
+                    </div>
+                    <div class="col s6 m6 l6">
+                        <textarea class="materialize-textarea" id="vCommentInput">@Model.vcomment</textarea>
+                        <label for="vCommentInput">Vermessung comment</label>
+
+                    </div>
+                </div>
+                @*<div class="row">
+                <div class="col s12 m12 l12">
+                <p>Date: <span id="tDate">@Model.tdate</span></p>
+                </div>
+                </div>*@
+                @* <p>Date: @Model.tdate</p>
+                <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" disabled="@(Model.vfinished == 1)" href="#" id="vFinished"><i class="material-icons left">check</i>Vermessung finished</a>
+                <a class="waves-effect waves-light btn" disabled="@(Model.vfinished == 1)" href="#" id="vSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <form asp-action="AddressDetails" method="POST" asp-controller="Home">
+                    <button class="waves-effect waves-light btn" id="addressReport" type="submit"><i class="material-icons left">check</i>Address report</button>
+                </form>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
         //  $(document).ready(function(){
@@ -696,6 +738,83 @@
                         $("#aFinished").attr("disabled", "disabled");
                         $("#aSaveChanges").attr("disabled", "disabled");
                         $("#aDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            })
+
+            // Vermessung
+
+            $("#vSaveChanges").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                let vCommentInput = $("#vCommentInput")[0];
+                console.log(vCommentInput.value);
+
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var vData = {};
+                vData.vcomment = vCommentInput.value;
+
+
+                var addressId = $("#addressId")[0].innerText;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Vermessung/" + addressId,
+                    data: JSON.stringify(vData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        //hbCommentInput.val(hbData.comment);
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                    },
+                    error: function(err) {
+                        alert("Error");
+                        console.log(JSON.stringify(err))
+                    }
+                });
+            })
+
+            $("#vFinished").click(function() {
+                //console.log($("#hbComment"));
+                //var addressId = $("#addressId")[0].innerText;
+                //let hbCommentInput = $("#hbComment")[0];
+                //console.log(hbCommentInput.value);
+                //alert(addressId);
+                //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                var vData = {};
+                vData.finished = 1;
+
+                var addressId = $("#addressId")[0].innerText;
+
+                var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+
+                vData.vdate = currentTime;
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/api/Vermessung/" + addressId,
+                    data: JSON.stringify(vData),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function(r) {
+                        alert("Success");
+                        //$("#hbGetTerm").attr("disabled", "disabled");
+                        //$("#hbCustomerCalled").attr("disabled", "disabled");
+                        $("#vFinished").attr("disabled", "disabled");
+                        $("#vSaveChanges").attr("disabled", "disabled");
+                        $("#vDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
 
                         //$("#hbCustomerCalled").attr("disabled", "disabled");
                         //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");

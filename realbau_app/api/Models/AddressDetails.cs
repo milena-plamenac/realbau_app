@@ -72,5 +72,8 @@
 		public string? acomment { get; set; }
 
 
+		public DateTime? vdate { get; set; }
+		public int? vfinished { get; set; }
+		public string? vcomment { get; set; }
 	}
 }
