@@ -4,11 +4,11 @@
     {
         public string pop { get; set; }
 
-        public int hbdone { get; set; }
-        public int tdone { get; set; }
-        public int fdone { get; set; }
-        public int mdone { get; set; }
-        public int adone { get; set; }
-        public int vdone { get; set; }
+        public int hbfinished { get; set; }
+        public int tfinished { get; set; }
+        public int ffinished { get; set; }
+        public int mfinished { get; set; }
+        public int afinished { get; set; }
+        public int vfinished { get; set; }
     }
 }

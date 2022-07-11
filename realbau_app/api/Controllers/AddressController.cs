@@ -20,7 +20,26 @@ namespace realbau_app.api.Controllers
                 using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
                     con.Open();
-                    var cmd = new SqlCommand("select * from dbo.address", con);
+                    var cmd = new SqlCommand(@"select a.*, 
+                            h.finished as hbfinished, 
+                            t.finished as tfinished,
+                            f.finished as ffinished,
+                            m.finished as mfinished,
+                            ak.finished as afinished, 
+                            v.finished as vfinished
+                            from dbo.address a
+                            inner
+                            join dbo.hausbegehung h on a.id = h.address_id
+                            inner
+                            join dbo.tiefbau t on a.id = t.address_id
+                            inner
+                            join dbo.faser f on a.id = f.address_id
+                            inner
+                            join dbo.montaze m on a.id = m.address_id
+                            inner
+                            join dbo.aktivirung ak on a.id = ak.address_id
+                            inner
+                            join dbo.vermessung v on a.id = v.address_id", con);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -77,6 +96,13 @@ namespace realbau_app.api.Controllers
                         addressDB.TV_ODF = Convert.IsDBNull(reader["TV_ODF"]) ? null : (string?)reader["TV_ODF"];
                         addressDB.kennwort = Convert.IsDBNull(reader["kennwort"]) ? null : (string?)reader["kennwort"];
                         addressDB.subtype = Convert.IsDBNull(reader["subtype"]) ? null : (string?)reader["subtype"];
+
+                        addressDB.hbfinished = Convert.IsDBNull(reader["hbfinished"]) ? null : (int?)reader["hbfinished"];
+                        addressDB.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
+                        addressDB.ffinished = Convert.IsDBNull(reader["ffinished"]) ? null : (int?)reader["ffinished"];
+                        addressDB.mfinished = Convert.IsDBNull(reader["mfinished"]) ? null : (int?)reader["mfinished"];
+                        addressDB.afinished = Convert.IsDBNull(reader["afinished"]) ? null : (int?)reader["afinished"];
+                        addressDB.vfinished = Convert.IsDBNull(reader["vfinished"]) ? null : (int?)reader["vfinished"];
 
                         result.Add(addressDB);
 

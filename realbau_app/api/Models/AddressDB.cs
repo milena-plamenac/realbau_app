@@ -36,5 +36,12 @@
 		public string? TV_ODF { get; set; }
 		public string? kennwort { get; set; }
 		public string? subtype { get; set; }
+
+		public int? hbfinished { get; set; }
+		public int? tfinished { get; set; }
+		public int? ffinished { get; set; }
+		public int? mfinished { get; set; }
+		public int? afinished { get; set; }
+		public int? vfinished { get; set; }
 	}
 }

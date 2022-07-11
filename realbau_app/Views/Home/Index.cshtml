@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
 }
-<h4 class="text-center"><b>Active addresses</b><br /></h4>
+<h4 class="center-align">Active addresses<br /></h4>
 @*<form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST">*@
 @* using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
     {*@
@@ -12,14 +12,102 @@
             <div class="col s3 m3 l3 input-field "><input class="form-control validate" id="popFilter" /><label for="popFilter"></label></div>
         </div>*@
 
-<form method="post" asp-route="Filter/|" >
-    <input type="text" name="pop" />
-    <input type="checkbox" name="hbdone" value="0"/> 
-    <input type="checkbox" name="tdone" value="1"/> 
-    <button type="submit" class="btn btn-primary">Filter</button>
-</form>
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Filters</span>
+                <div class="row">
+                    <div class="input field col s6 m6 l6">
+                        <input class="materialize-input" id="popFilter" />
+                        <label for="popFilter">Filter by pop</label>
+                    </div>
+                    <div class="col s1 m1 l1">
 
-<table class="table table-responsive" id="newaddresses" style="overflow:scroll; font-size:0.9rem">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="hbFilter" />
+                                <span>Hausbegehung</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s1 m1 l1">
+
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in"  id="tFilter" />
+                                <span>Tiefbau</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s1 m1 l1">
+
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in"  id="fFilter" />
+                                <span>Faser</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s1 m1 l1">
+
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in"  id="mFilter" />
+                                <span>Montaze</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s1 m1 l1">
+
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in"  id="aFilter" />
+                                <span>Aktivirung</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s1 m1 l1">
+
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in"  id="vFilter" />
+                                <span>Vermessung</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                <div class="col s12 m12 l12">
+                <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+                <input type="file" name="file" />
+                <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                </div>
+                </div>*@
+
+
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" id="filter" style="background-color: #4db6ac; color: #424242 !important;">Filter data</a>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    i {
+        color: darkgreen !important;
+    }
+
+    table {
+        margin: 1rem !important;
+    }
+</style>
+
+<table class="table table-responsive" id="newaddresses">
     @*<tr>
     <td>Filters:</td>
 
@@ -43,10 +131,10 @@
 
     </tr>
     <tr>*@
-    <th></th>
+
     @*<th>orderid</th>*@
-    <th>order date</th>
-    <th>project code</th>
+    @* <th>order date</th>
+    <th>project code</th>*@
     @*<th>projectname</th>*@
     <th>name</th>
     <th>email</th>
@@ -59,6 +147,13 @@
     <th>unit</th>
     @*<th>dp</th>*@
     <th>areapop</th>
+    <th>hausbegehung</th>
+    <th>tiefbau</th>
+    <th>faser</th>
+    <th>montaze</th>
+    <th>aktivirung</th>
+    <th>vermessung</th>
+    <th></th>
 
     </tr>
     @foreach (var d in Model)
@@ -66,18 +161,10 @@
 
 
         <tr>
-            <td>
-                @Html.ActionLink("Details",
-            "AddressDetails",
-            "Home",
-            new { id = @d.id },
-            null
-            )
 
-            </td>
             @*<td>@d.orderid</td>*@
-            <td>@d.orderdate</td>
-            <td>@d.projectcode</td>
+            @* <td>@d.orderdate</td>
+        <td>@d.projectcode</td>*@
             @*<td>@d.projectname</td>*@
             <td>@d.name</td>
             <td>@d.email</td>
@@ -90,8 +177,32 @@
             <td>@d.unit</td>
             @*<td>@d.dp</td>*@
             <td>@d.areapop</td>
+            <th>
+                @if (d.hbfinished == 1)
+                {
+                    <i class="material-icons left">check</i>
+                }
+            </th>
+            
+            <th> @if (d.tfinished == 1)
+                {<i class="material-icons left">check</i>}</th>
+            <th> @if (d.ffinished == 1)
+                {<i class="material-icons left">check</i>}</th>
+            <th> @if (d.mfinished == 1)
+                {<i class="material-icons left">check</i>}</th>
+            <th> @if (d.afinished == 1)
+                {<i class="material-icons left">check</i>}</th>
+                <th> @if (d.vfinished == 1)
+                {<i class="material-icons left">check</i>}</th>
+            <td style="font-weight: bold;">
+                @Html.ActionLink("Details",
+            "AddressDetails",
+            "Home",
+            new { id = @d.id },
+            null
+            )
 
-
+            </td>
 
 
         </tr>
@@ -100,6 +211,8 @@
 
 
 </table>
+
+
 
 
 @*@section Scripts{*@
@@ -140,5 +253,55 @@ $(function() {
 
     <script>
 
+        $(document).ready(
+            function() {
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+                console.log(params.pop);
+                // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                //let pop = params.pop;
+                
+                if (params.pop)
+                $("#popFilter")[0].value = params.pop;
+
+                console.log(params.hbFinished);
+                console.log(params.tFinished);
+                console.log(params.fFinished);
+                console.log(params.mFinished);
+                console.log(params.aFinished);
+                console.log(params.vFinished);
+                
+                $("#hbFilter")[0].prop("checked", params.hbFinished);
+                 $("#tFilter")[0].prop("checked", params.tFinished);
+                  $("#fFilter")[0].prop("checked", params.fFinished);
+                   $("#mFilter")[0].prop("checked", params.mFinished);
+                    $("#aFilter")[0].prop("checked", params.aFinished);
+                     $("#vFilter")[0].prop("checked", params.vFinished);
+                //$("#hbFilter")[0].val(params.hbFinished);
+                //$("#hbFilter")[0].val(params.hbFinished);
+            })
+
+        $("#filter").on('click', function(){
+            var pop = $("#popFilter")[0].value;
+            var hbFinished = $("#hbFilter")[0].checked;
+            var tFinished = $("#tFilter")[0].checked;
+            var fFinished = $("#fFilter")[0].checked;
+            var mFinished = $("#mFilter")[0].checked;
+            var aFinished = $("#aFilter")[0].checked;
+            var vFinished = $("#vFilter")[0].checked;
+            window.location.href = "/Home/Filter/?pop=" + pop + "&hbFinished=" + hbFinished + "&tFinished=" + tFinished + "&fFinished=" + fFinished + "&mFinished=" + mFinished + "&aFinished=" + aFinished + "&vFinished=" + vFinished;
+            //$.ajax({
+            //                     url: "/Home/Filter/?pop=" + pop + "&hbFinished=" + hbFinished  + "&tFinished=" + tFinished + "&fFinished=" + fFinished + "&mFinished=" + mFinished + "&aFinished=" + aFinished + "&vFinished=" + vFinished,
+            //                     method: "GET",
+            //                     success: function(){
+            //                         alert("Success")
+            //                     },
+            //                     error: function(error) {
+            //                         alert(JSON.stringify(error))
+            //                     }
+            //                 })
+
+        })
     </script>
                                  }

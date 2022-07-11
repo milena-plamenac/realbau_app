@@ -179,10 +179,33 @@ namespace realbau_app.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Filter(Filter filter)
+        
+        public IActionResult Filter(string pop, bool hbfinished, bool tfinished, bool ffinished, bool mfinished, bool afinished, bool vfinished)
         {
             IEnumerable<AddressDB> addresses = null;
+
+            //IEnumerable<AddressDB> addresses = null;
+            //AddressDetails addressDetails = new AddressDetails();
+            //var exists = 0;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7003/api/Filter/" + ((pop == null) ? "*" : pop) + "/" + hbfinished + "/" + tfinished + "/" + ffinished + "/" + mfinished + "/" + afinished + "/" + vfinished);
+                //HTTP GET
+
+
+                var responseTask = client.GetAsync("");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                var readResult = result.Content.ReadFromJsonAsync<IEnumerable<AddressDB>>();
+                readResult.Wait();
+
+                addresses = readResult.Result;
+
+            }
+
+
 
             return View("Index", addresses);
         }
