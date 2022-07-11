@@ -179,9 +179,12 @@ namespace realbau_app.Controllers
 
         }
 
-        public IActionResult Filter()
+        [HttpPost]
+        public IActionResult Filter(Filter filter)
         {
-            return View("Index");
+            IEnumerable<AddressDB> addresses = null;
+
+            return View("Index", addresses);
         }
 
 

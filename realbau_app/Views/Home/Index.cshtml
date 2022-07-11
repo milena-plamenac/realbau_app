@@ -7,51 +7,59 @@
 @* using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
     {*@
 
-        <div class="row" >
+@* <div class="row" >
             <div class="col s3 m3 l3 input-field "><input class="form-control validate" id="cityFilter" /><label for="cityFilter"></label></div>
             <div class="col s3 m3 l3 input-field "><input class="form-control validate" id="popFilter" /><label for="popFilter"></label></div>
-        </div>
+        </div>*@
+
+<form method="post" asp-route="Filter/|" >
+    <input type="text" name="pop" />
+    <input type="checkbox" name="hbdone" value="0"/> 
+    <input type="checkbox" name="tdone" value="1"/> 
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
 <table class="table table-responsive" id="newaddresses" style="overflow:scroll; font-size:0.9rem">
     @*<tr>
-        <td>Filters:</td>
-         
-            <td><input class="form-control" id="orderdate" /></td>
-            <td><input class="form-control" id="projectcode" /></td>
-           
-            <td><input class="form-control" id="name" /></td>
-            <td><input class="form-control" id="email" /></td>
-            <td><input class="form-control" id="phone" /></td>
-            <td><input class="form-control" id="phone2" /></td>
-            <td><input class="form-control" id="city" /></td>
-            <td><input class="form-control" id="tzip" /></td>
-            <td><input class="form-control" id="street" /></td>
-            <td><input class="form-control" id="housenumber" /></td>
-            <td><input class="form-control" id="unit" /></td>
-            <td><input class="form-control" id="dp" /></td>
-            <td><input class="form-control" id="areapop" /></td>
-            
+    <td>Filters:</td>
+
+    <td><input class="form-control" id="orderdate" /></td>
+    <td><input class="form-control" id="projectcode" /></td>
+
+    <td><input class="form-control" id="name" /></td>
+    <td><input class="form-control" id="email" /></td>
+    <td><input class="form-control" id="phone" /></td>
+    <td><input class="form-control" id="phone2" /></td>
+    <td><input class="form-control" id="city" /></td>
+    <td><input class="form-control" id="tzip" /></td>
+    <td><input class="form-control" id="street" /></td>
+    <td><input class="form-control" id="housenumber" /></td>
+    <td><input class="form-control" id="unit" /></td>
+    <td><input class="form-control" id="dp" /></td>
+    <td><input class="form-control" id="areapop" /></td>
 
 
 
-        </tr>
+
+    </tr>
     <tr>*@
-         <th></th>
-        @*<th>orderid</th>*@
-        <th>order date</th>
-        <th>project code</th>
-        @*<th>projectname</th>*@
-        <th>name</th>
-        <th>email</th>
-        <th>phone</th>
-        <th>phone2</th>
-        <th>city</th>
-        <th>tzip</th>
-        <th>street</th>
-        <th>house number</th>
-        <th>unit</th>
-        @*<th>dp</th>*@
-        <th>areapop</th>
-       
+    <th></th>
+    @*<th>orderid</th>*@
+    <th>order date</th>
+    <th>project code</th>
+    @*<th>projectname</th>*@
+    <th>name</th>
+    <th>email</th>
+    <th>phone</th>
+    <th>phone2</th>
+    <th>city</th>
+    <th>tzip</th>
+    <th>street</th>
+    <th>house number</th>
+    <th>unit</th>
+    @*<th>dp</th>*@
+    <th>areapop</th>
+
     </tr>
     @foreach (var d in Model)
     {
@@ -59,12 +67,12 @@
 
         <tr>
             <td>
-                @Html.ActionLink("Details", 
-                "AddressDetails",   
-                "Home",  
-                new { id = @d.id }, 
-                null  
-                )
+                @Html.ActionLink("Details",
+            "AddressDetails",
+            "Home",
+            new { id = @d.id },
+            null
+            )
 
             </td>
             @*<td>@d.orderid</td>*@
@@ -82,7 +90,7 @@
             <td>@d.unit</td>
             @*<td>@d.dp</td>*@
             <td>@d.areapop</td>
-            
+
 
 
 
