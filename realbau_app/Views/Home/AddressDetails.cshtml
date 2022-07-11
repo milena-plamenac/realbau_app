@@ -10,11 +10,36 @@
 
 @model realbau_app.api.Models.AddressDetails;
 
-<h4 class="text-center">Address details</h4>
+<style>
+    .save-changes-btn{
+        background-color: #0288d1 ;
+    }
+    .finished-btn{
 
-<h6 class="text-center">@Model.street  @Model.housenumber, @Model.city</h6>
-<h6 class="text-center"> @Model.email   </h6>
-<h6 class="text-center"> @Model.phone, @Model.phone2 </h6>
+    }
+    .term-btn{
+        background-color: #fffde7;
+        color: #37474f;
+        color: grey;
+    }
+    .call-btn{
+        background-color: #fff8e1;
+        color: #37474f;
+        color: grey;
+    }
+    .image-btn{
+        background-color:#fff3e0;
+        color: #37474f;
+        color: grey;
+
+    }
+</style>
+
+<h4 class="center-align">Address details</h4>
+
+<h6 class="center-align">@Model.street  @Model.housenumber, @Model.city</h6>
+<h6 class="center-align"> @Model.email   </h6>
+<h6 class="center-align"> @Model.phone, @Model.phone2 </h6>
 <span id="addressId" hidden>@Model.id</span>
 
 <div class="row">
@@ -36,22 +61,25 @@
                 </div>
 
                 @*<div class="row">
-                    <div class="col s12 m12 l12">
-                    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
-                        <input type="file" name="file" />
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
-                    </div>
+                <div class="col s12 m12 l12">
+                <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+                <input type="file" name="file" />
+                <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                </div>
                 </div>*@
 
 
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbSaveChanges"><i class="material-icons left">check</i>Save changes</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbAddImages"><i class="material-icons left">image</i>Add image</a>
+                
+                <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                
                 <a class="waves-effect waves-light btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
+
+                <a class="waves-effect waves-light btn term-btn" disabled="@(Model.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
+                <a class="waves-effect waves-light btn call-btn" disabled="@(Model.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+                <a class="waves-effect waves-light btn image-btn" disabled="@(Model.hbfinished == 1)" href="#" id="hbAddImages"><i class="material-icons left">image</i>Add image</a>
             </div>
         </div>
     </div>
@@ -85,8 +113,9 @@
                 <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.tfinished == 1)" href="#" id="tFinished"><i class="material-icons left">check</i>Tiefbau finished</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.tfinished == 1)" href="#" id="tSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                 <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.tfinished == 1)" href="#" id="tSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn finished-btn" disabled="@(Model.tfinished == 1)" href="#" id="tFinished"><i class="material-icons left">check</i>Tiefbau finished</a>
+               
 
             </div>
         </div>
@@ -123,8 +152,9 @@
                 <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.ffinished == 1)" href="#" id="fFinished"><i class="material-icons left">check</i>Faser finished</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.ffinished == 1)" href="#" id="fSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                 <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.ffinished == 1)" href="#" id="fSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn finished-btn" disabled="@(Model.ffinished == 1)" href="#" id="fFinished"><i class="material-icons left">check</i>Faser finished</a>
+               
 
             </div>
         </div>
@@ -184,22 +214,25 @@
                 </div>
 
                 @*<div class="row">
-                    <div class="col s12 m12 l12">
-                    <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
-                        <input type="file" name="file" />
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
-                    </div>
+                <div class="col s12 m12 l12">
+                <form asp-route="StreamFileUpload/Index" enctype="multipart/form-data" method="POST">
+                <input type="file" name="file" />
+                <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                </div>
                 </div>*@
 
 
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" id="mGetTerm"><i class="material-icons left">date_range</i>Get montaze term</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.mcalldate != null)" href="#" id="mCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mSaveChanges"><i class="material-icons left">check</i>Save changes</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mAddImages"><i class="material-icons left">image</i>Add image</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.mfinished == 1)" href="#" id="mFinished"><i class="material-icons left">check</i>Montaze finished</a>
+                
+                <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.mfinished == 1)" href="#" id="mSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                
+                <a class="waves-effect waves-light btn finished-btn" disabled="@(Model.mfinished == 1)" href="#" id="mFinished"><i class="material-icons left">check</i>Montaze finished</a>
+
+                <a class="waves-effect waves-light btn term-btn" disabled="@(Model.mfinished == 1)" id="mGetTerm"><i class="material-icons left">date_range</i>Get montaze term</a>
+                <a class="waves-effect waves-light btn call-btn" disabled="@(Model.mcalldate != null)" href="#" id="mCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+                <a class="waves-effect waves-light btn image-btn" disabled="@(Model.mfinished == 1)" href="#" id="mAddImages"><i class="material-icons left">image</i>Add image</a>
             </div>
         </div>
     </div>
@@ -235,8 +268,9 @@
                 <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.afinished == 1)" href="#" id="aFinished"><i class="material-icons left">check</i>Aktivirung finished</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.afinished == 1)" href="#" id="aSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                   <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.afinished == 1)" href="#" id="aSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn finished-btn" disabled="@(Model.afinished == 1)" href="#" id="aFinished"><i class="material-icons left">check</i>Aktivirung finished</a>
+             
 
             </div>
         </div>
@@ -273,17 +307,23 @@
                 <p>Meter: <input class="input-field" value="@Model.meter" id="meterInput" /></p>*@
             </div>
             <div class="card-action">
-                <a class="waves-effect waves-light btn" disabled="@(Model.vfinished == 1)" href="#" id="vFinished"><i class="material-icons left">check</i>Vermessung finished</a>
-                <a class="waves-effect waves-light btn" disabled="@(Model.vfinished == 1)" href="#" id="vSaveChanges"><i class="material-icons left">check</i>Save changes</a>
-                <form asp-action="AddressDetails" method="POST" asp-controller="Home">
-                    <button class="waves-effect waves-light btn" id="addressReport" type="submit"><i class="material-icons left">check</i>Address report</button>
-                </form>
+                <a class="waves-effect waves-light btn save-changes-btn" disabled="@(Model.vfinished == 1)" href="#" id="vSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn finished-btn" disabled="@(Model.vfinished == 1)" href="#" id="vFinished"><i class="material-icons left">check</i>Vermessung finished</a>
                 
+               
+
 
             </div>
         </div>
     </div>
 </div>
+
+<div class="center-align">
+     <form asp-action="AddressDetails" method="POST" asp-controller="Home">
+                    <button class="waves-effect waves-light btn" id="addressReport" type="submit"><i class="material-icons left">check</i>Address report</button>
+                </form>
+</div>
+
 
 @section Scripts{
     <script>
@@ -301,7 +341,7 @@
 
         $(function() {
 
-           
+
 
             $("#hbCustomerCalled").click(function() {
                 console.log($("#addressId"));
@@ -405,7 +445,7 @@
                 window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();
             })
 
-            $("#hbAddImages").click(function() { 
+            $("#hbAddImages").click(function() {
                 var addressId = $("#addressId")[0].innerText;
                 window.location.href = "/StreamFileUpload/?type=hausbegehung&address_id=" + addressId;
             })
@@ -561,11 +601,11 @@
                 });
             })
 
-            
 
 
 
-             $("#mCustomerCalled").click(function() {
+
+            $("#mCustomerCalled").click(function() {
                 console.log($("#addressId"));
                 var addressId = $("#addressId")[0].innerText;
                 console.log($("#addressId")[0]);
@@ -667,7 +707,7 @@
                 window.location.href = "/Montaze/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();
             })
 
-            $("#mAddImages").click(function() { 
+            $("#mAddImages").click(function() {
                 var addressId = $("#addressId")[0].innerText;
                 window.location.href = "/StreamFileUpload/?type=montaze&address_id=" + addressId;
             })
@@ -825,7 +865,7 @@
                     }
                 });
             })
-            
+
         })
     </script>
 }
