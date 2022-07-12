@@ -593,7 +593,7 @@ namespace realbau_app.api.Controllers
 
                     var vCmd = new SqlCommand(@"insert into dbo.vermessung (address_id) values (@address_id)", con);
                     vCmd.Parameters.AddWithValue("@address_id", addressId);
-                    var vCmdRes = aCmd.ExecuteNonQuery();
+                    var vCmdRes = vCmd.ExecuteNonQuery();
                 }
 
                 return address;

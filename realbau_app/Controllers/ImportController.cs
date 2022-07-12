@@ -233,7 +233,7 @@ namespace realbau_app.Controllers
 
         public IActionResult RncUpdate()
         {
-            ViewBag.message = "Get";
+            //ViewBag.message = "Get";
             return View();
         }
 
@@ -324,7 +324,7 @@ namespace realbau_app.Controllers
 
                 var p = "test";
 
-                ViewBag.message = "Success";
+                ViewBag.message = "Successfuly updated rnc codes!";
                 return View();
 
 

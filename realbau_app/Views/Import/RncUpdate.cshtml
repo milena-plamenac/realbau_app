@@ -3,12 +3,32 @@
 @{
 }
 
-<h4 class="text-center">Rnc update</h4>
-<p>Please, select DG csv file for rnc update</p>
-<div class="container">
-    <form method="post" asp-action="RncUpdate" asp-controller="Import" enctype="multipart/form-data">
+<h4 class="center-align">Rnc update</h4>
+<p class="center-align">Please, select DG csv file for rnc update</p>
+<div class="container center-align">
+    <form method="post" asp-action="RncUpdate" asp-controller="Import" enctype="multipart/form-data" onsubmit="showLoader(this)">
         <input type="file" name="rncUpdateFile" />
         <button type="submit" class="btn btn-primary">Rnc update</button>
-        <p>@ViewBag.message</p>
+        <h6>@ViewBag.message</h6>
     </form>
 </div>
+
+@section Scripts{
+<script>
+        var showLoader = function(form){
+            $("<div />").css({
+                'position' : 'fixed',
+                'left' : 0,
+                'right' : 0,
+                'bottom' : 0,
+                'top' : 0,
+                'background' : '#0020ff36',
+                'z-index' : '99',
+                'text-align' : 'center'
+            }).appendTo($("body"))
+              .append(
+                $("<img />").attr("src", "https://mir-s3-cdn-cf.behance.net/project_modules/disp/35771931234507.564a1d2403b3a.gif")
+            );
+        }
+    </script>
+}
