@@ -9,7 +9,7 @@ namespace realbau_app.api.Repositories.Implementations
         public async Task<IEnumerable<AddressDetails>> GetAddresses()
         {
             List<AddressDetails> result = new List<AddressDetails>();
-
+            
             try
             {
                 using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
@@ -210,7 +210,7 @@ namespace realbau_app.api.Repositories.Implementations
             }
         }
 
-        public async Task<AddressDetails> GetAddressByInfo(string city, string tzip, string street, int housenumber, string subnumber, int unit)
+        public async Task<AddressDetails> GetAddressByInfo(string? city, string? tzip, string? street, int? housenumber, string? subnumber, int? unit)
         {
             AddressDetails address = new AddressDetails();
 
@@ -219,14 +219,32 @@ namespace realbau_app.api.Repositories.Implementations
                 using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
                     con.Open();
-                    var cmd = new SqlCommand(@"select * from dbo.address 
-                                                where city = @city and tzip = @tzip and street = @street 
-                                                and housenumber = @housenumber and unit = @unit", con);
-                    cmd.Parameters.AddWithValue("@city", city);
-                    cmd.Parameters.AddWithValue("@tzip", tzip);
-                    cmd.Parameters.AddWithValue("@street", street);
-                    cmd.Parameters.AddWithValue("@housenumber", housenumber);
-                    cmd.Parameters.AddWithValue("@unit", unit);
+                    var cmd = new SqlCommand(@"select a.*, 
+                                                h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
+                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                f.fdate, f.finished as ffinished, f.fcomment,
+                                                m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
+                                                ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
+                                                v.vdate, v.finished as vfinished, v.vcomment
+                                                from dbo.address a 
+                                                inner join dbo.hausbegehung h on a.id = h.address_id 
+                                                inner join dbo.tiefbau t on a.id = t.address_id
+                                                inner join dbo.faser f on a.id = f.address_id
+                                                inner join dbo.montaze m on a.id = m.address_id
+                                                inner join dbo.aktivirung ak on a.id = ak.address_id
+                                                inner join dbo.vermessung v on a.id = v.address_id
+                                                where ((@city is not null and a.city = @city) or @city is null)  
+                                                and ((@tzip is not null and a.tzip = @tzip) or @tzip is null) 
+                                                and ((@street is not null and a.street = @street) or @street is null) 
+                                                and ((@housenumber is not null and a.housenumber = @housenumber) or @housenumber is null) 
+                                                and ((@subnumber is not null and a.subnumber = @subnumber) or @subnumber is null) 
+                                                and ((@unit is not null and a.unit = @unit) or @unit is null)", con);
+                    cmd.Parameters.AddWithValue("@city", (city == null) ? DBNull.Value : city);
+                    cmd.Parameters.AddWithValue("@tzip", (tzip == null) ? DBNull.Value : tzip);
+                    cmd.Parameters.AddWithValue("@street", (street == null) ? DBNull.Value : street);
+                    cmd.Parameters.AddWithValue("@housenumber", (housenumber == null) ? DBNull.Value : housenumber);
+                    cmd.Parameters.AddWithValue("@subnumber", (subnumber == null) ? DBNull.Value : subnumber);
+                    cmd.Parameters.AddWithValue("@unit", (unit == null) ? DBNull.Value : unit);
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
                     if (reader.Read())

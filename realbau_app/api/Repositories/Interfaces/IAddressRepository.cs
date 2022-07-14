@@ -8,7 +8,7 @@ namespace realbau_app.api.Repositories.Interfaces
 
         public Task<AddressDetails> GetAddressById(int id);
 
-        public Task<AddressDetails> GetAddressByInfo(string city, string tzip, string street, int housenumber, string subnumber, int unit);
+        public Task<AddressDetails> GetAddressByInfo(string? city, string? tzip, string? street, int? housenumber, string? subnumber, int? unit);
 
         public Task<AddressDB> Insert(AddressDB address);
 

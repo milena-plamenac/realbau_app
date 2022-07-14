@@ -32,10 +32,10 @@ namespace realbau_app.api.Controllers
         }
 
 
-        [HttpGet("{city}/{tzip}/{street}/{housenumber}/{subnumber}/{unit}")]
-        public async Task<AddressDetails> GetAddress(string city, string tzip, string street, int housenumber, string subnumber, int unit)
+        [HttpPost("getAddressByInfo")]
+        public async Task<AddressDetails> GetAddress([FromBody] AddressInfo addressInfo)
         {
-            return await this.addressRepository.GetAddressByInfo(city, tzip, street, housenumber, subnumber, unit);
+            return await this.addressRepository.GetAddressByInfo(addressInfo.city, addressInfo.tzip, addressInfo.street, addressInfo.housenumber, addressInfo.subnumber, addressInfo.unit);
         }
 
         [HttpPost]

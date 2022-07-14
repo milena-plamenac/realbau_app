@@ -1,9 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
-using realbau_app.api.Models;
 using realbau_app.Models;
 using realbau_app.Models.Import;
+using realbau_app.Services.Interfaces;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 
@@ -12,11 +12,24 @@ namespace realbau_app.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IAddressService _addressService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IAddressService addressService)
         {
             _logger = logger;
+            _addressService = addressService;
         }
+
+
+        public async Task<IActionResult> Index()
+        {
+            IEnumerable<Models.AddressDetails> addresses = await this._addressService.GetAddresses();
+
+            return View(addresses);
+        }
+
+
+
 
         [HttpPost]
         public IActionResult AddressDetails(int id, int test)
@@ -148,41 +161,11 @@ namespace realbau_app.Controllers
             }
         }
 
-        public IActionResult Index()
-        {
-
-
-            IEnumerable<AddressDB> addresses = null;
-            var exists = 0;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:7003/api/Address/");
-                //HTTP GET
-
-
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                var readResult = result.Content.ReadFromJsonAsync<IEnumerable<AddressDB>>();
-                readResult.Wait();
-
-                addresses = readResult.Result;
-
-            }
-
-
-            return View(addresses);
-
-
-
-        }
-
+       
         
         public IActionResult Filter(string pop, bool hbfinished, bool tfinished, bool ffinished, bool mfinished, bool afinished, bool vfinished)
         {
-            IEnumerable<AddressDB> addresses = null;
+            IEnumerable<api.Models.AddressDB> addresses = null;
 
             //IEnumerable<AddressDB> addresses = null;
             //AddressDetails addressDetails = new AddressDetails();
@@ -198,7 +181,7 @@ namespace realbau_app.Controllers
                 responseTask.Wait();
 
                 var result = responseTask.Result;
-                var readResult = result.Content.ReadFromJsonAsync<IEnumerable<AddressDB>>();
+                var readResult = result.Content.ReadFromJsonAsync<IEnumerable<api.Models.AddressDB>>();
                 readResult.Wait();
 
                 addresses = readResult.Result;
@@ -215,7 +198,7 @@ namespace realbau_app.Controllers
         public IActionResult AddressDetails(int id)
         {
             //IEnumerable<AddressDB> addresses = null;
-            AddressDetails addressDetails = new AddressDetails();
+            Models.AddressDetails addressDetails = new AddressDetails();
             //var exists = 0;
 
             using (var client = new HttpClient())

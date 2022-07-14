@@ -58,7 +58,7 @@ namespace realbau_app.Controllers
                             continue;
 
                         IEnumerable<AddressDB> addressDBs = null;
-                        var exists;
+                        //var exists = null;
 
                         using (var client = new HttpClient())
                         {
@@ -73,7 +73,7 @@ namespace realbau_app.Controllers
                             var readResult = result.Content.ReadFromJsonAsync<AddressDetails?>();
                             readResult.Wait();
 
-                            exists = readResult.Result;
+                            var exists = readResult.Result;
                             //if (result.IsSuccessStatusCode)
                             //{
                             //    var readTask = result.Content.ReadFromJsonAsync<IList<HausbegehungDefaultTermDB>>();
@@ -89,7 +89,7 @@ namespace realbau_app.Controllers
                             //}
                         }
 
-                        if (exists == null)
+                        if ((object)null == null)
                             newAddresses.Add(new NewAddress()
                             {
                                 Bestellnummer = rec[0],

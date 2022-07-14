@@ -10,6 +10,8 @@ using realbau_app.Interfaces;
 using realbau_app.Services;
 using realbau_app.api.Repositories.Interfaces;
 using realbau_app.api.Repositories.Implementations;
+using realbau_app.Services.Interfaces;
+using realbau_app.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,8 +36,11 @@ builder.Services.Configure<JsonSerializerOptions>(options =>
 
 builder.Services.AddTransient<IImageRepository, ImageRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
+builder.Services.AddTransient<IAddressService, AddressService>();
+
 builder.Services.AddTransient<IStreamFileUploadService, StreamFileUploadLocalService>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
