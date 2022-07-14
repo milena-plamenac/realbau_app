@@ -13,6 +13,7 @@
 		public string? tzip { get; set; }
 		public string? street { get; set; }
 		public int? housenumber { get; set; }
+		public string? subnumber { get; set; }
 		public int? unit { get; set; }
 		public int? dpfinish { get; set; }
 		public int? popfinish { get; set; }
@@ -51,7 +52,6 @@
 		public int? tfinished { get; set; }
 		public string? tcomment { get; set; }
 
-
 		public DateTime? fdate { get; set; }
 		public int? ffinished { get; set; }
 		public string? fcomment { get; set; }
@@ -70,7 +70,6 @@
 		public DateTime? ato { get; set; }
 		public int? afinished { get; set; }
 		public string? acomment { get; set; }
-
 
 		public DateTime? vdate { get; set; }
 		public int? vfinished { get; set; }

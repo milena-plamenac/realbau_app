@@ -7,25 +7,33 @@ namespace realbau_app.api.Repositories.Implementations
     {
         public async Task<bool> Save(string type, int address_id, string name)
         {
-            using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+            try
             {
-                String query = "insert into dbo.image (image_type, address_id, name) values (@image_type, @address_id, @name)";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
-                    command.Parameters.AddWithValue("@image_type", type);
-                    command.Parameters.AddWithValue("@address_id", address_id);
-                    command.Parameters.AddWithValue("@name", name);
-                    //command.Parameters.AddWithValue("@created_by", null);
-                    //command.Parameters.AddWithValue("@creted_on", null);
+                    String query = "insert into dbo.image (image_type, address_id, name) values (@image_type, @address_id, @name)";
 
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@image_type", type);
+                        command.Parameters.AddWithValue("@address_id", address_id);
+                        command.Parameters.AddWithValue("@name", name);
+                        //command.Parameters.AddWithValue("@created_by", null);
+                        //command.Parameters.AddWithValue("@creted_on", null);
 
-                    return result > 0;
+                        connection.Open();
+                        int result = await command.ExecuteNonQueryAsync();
 
+                        return result > 0;
+
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                return false;
+            }
+
         }
     }
 }

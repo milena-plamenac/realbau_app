@@ -58,11 +58,11 @@ namespace realbau_app.Controllers
                             continue;
 
                         IEnumerable<AddressDB> addressDBs = null;
-                        var exists = 0;
+                        var exists;
 
                         using (var client = new HttpClient())
                         {
-                            client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + rec[11]);
+                            client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + ((!String.IsNullOrEmpty(rec[10])) ? rec[10] : "*") + "/" + rec[11]);
                             //HTTP GET
 
 
@@ -70,7 +70,7 @@ namespace realbau_app.Controllers
                             responseTask.Wait();
 
                             var result = responseTask.Result;
-                            var readResult = result.Content.ReadFromJsonAsync<int>();
+                            var readResult = result.Content.ReadFromJsonAsync<AddressDetails?>();
                             readResult.Wait();
 
                             exists = readResult.Result;
@@ -89,7 +89,7 @@ namespace realbau_app.Controllers
                             //}
                         }
 
-                        if (exists == 0)
+                        if (exists == null)
                             newAddresses.Add(new NewAddress()
                             {
                                 Bestellnummer = rec[0],

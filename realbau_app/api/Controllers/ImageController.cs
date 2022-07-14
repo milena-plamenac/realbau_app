@@ -17,11 +17,11 @@ namespace realbau_app.api.Controllers
         }
 
         [HttpPost]
-        public bool Save([FromBody] ImageDB image)
+        public async Task<bool> Save([FromBody] ImageDB image)
         {
-            var saveResult = this.imageRepository.Save(image.image_type, image.address_id, image.name);
+            var saveResult = await this.imageRepository.Save(image.image_type, image.address_id, image.name);
 
-            return saveResult.Result;
+            return saveResult;
         }
     }
 }
