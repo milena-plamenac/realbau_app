@@ -109,48 +109,82 @@
         margin: 1rem !important;
     }
 
-    span{
+    span {
         display: inline-block;
         margin: 10px;
         overflow: hidden;
     }
 
-    .nameSpan{
+    .nameSpan {
         width: 120px !important;
         /*border: 1px solid red;*/
         /*overflow: hidden;*/
-
     }
 
-    .areapopSpan{
+    .areapopSpan {
         width: 80px !important;
         /*border: 1px solid blue;*/
         /*overflow: hidden;*/
     }
 
-    .addressSpan{
+    .addressSpan {
         width: 360px !important;
         /*border: 1px solid blue;*/
         /*overflow: hidden;*/
     }
 
-    .phoneSpan{
+    .phoneSpan {
         width: 150px !important;
         /*border: 1px solid blue;*/
         /*overflow: hidden;*/
     }
 
-    .emailSpan{
+    .emailSpan {
         width: 180px !important;
         /*border: 1px solid blue;*/
         /*overflow: hidden;*/
     }
 
-    .finishedSpan{
+    .finishedSpan {
         width: 80px !important;
         /*border: 1px solid blue;*/
         /*overflow: hidden;*/
     }
+
+    .save-changes-btn {
+        background-color: #0288d1;
+    }
+
+    .finished-btn {
+        margin: 10px;
+    }
+
+    .term-btn {
+        background-color: #fffde7;
+        color: #37474f;
+        color: grey;
+        margin: 10px;
+    }
+
+    .call-btn {
+        background-color: #fff8e1;
+        color: #37474f;
+        color: grey;
+        margin: 10px;
+    }
+
+    .image-btn {
+        background-color: #fff3e0;
+        color: #37474f;
+        color: grey;
+    }
+
+    #hausbegehungLink, #tiefbauLink, #faserLink, #montazeLink, #aktivirungLink, #vermessungLink {
+        color: grey;
+        font-weight: bold;
+    }
+
+    
 </style>
 
 <ul class="collapsible">
@@ -190,101 +224,233 @@
 
     </tr>*@
 <ul class="collapsible">
-    @foreach (var d in Model)
+    @foreach (var address in Model)
     {
 
         <li>
             <div class="collapsible-header">
                 <div class="row" style="margin: 0">
                     @*<div class="col s1 m1 l1">*@
-                        <span class="areapopSpan">@d.areapop</span>
-                       <span class="nameSpan">@d.name</span> 
-                       <span class="addressSpan">@d.street, @d.housenumber @d.subnumber, @d.unit</span> 
-                       <span class="phoneSpan">@d.phone</span>
-                       <span class="phoneSpan">@d.phone2</span>
-                       <span class="emailSpan">@d.email</span>
+                    <span class="areapopSpan">@address.areapop</span>
+                    <span class="nameSpan">@address.name</span>
+                    <span class="addressSpan">@address.street, @address.housenumber @address.subnumber, @address.unit</span>
+                    <span class="phoneSpan">@address.phone</span>
+                    <span class="phoneSpan">@address.phone2</span>
+                    <span class="emailSpan">@address.email</span>
                     @*</div>*@
-                    @if (d.hbfinished == 1)
+                    @if (address.hbfinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
-                    @if (d.tfinished == 1)
+                    @if (address.tfinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
-                    @if (d.ffinished == 1)
+                    @if (address.ffinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
-                    @if (d.mfinished == 1)
+                    @if (address.mfinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
-                    @if (d.afinished == 1)
+                    @if (address.afinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
-                    @if (d.vfinished == 1)
+                    @if (address.vfinished == 1)
                     {
-                        
-                            <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: green !important">check</i></span>
-                    
+
+                        <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: green !important">check</i></span>
+
                     }
                     else
                     {
-                        
-                            <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: red !important">clear</i></span>
-                      
+
+                        <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: red !important">clear</i></span>
+
                     }
 
                 </div>
             </div>
-            <div class="collapsible-body"><span>@d.phone</span></div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s1"><a href="#hausbegehungBody" class="active">Hausbegehung</a></li>
+                            <li class="tab col s1"><a href="#tiefbauBody">Tiefbau</a></li>
+                            <li class="tab col s1"><a href="#faserBody">Faser</a></li>
+                            <li class="tab col s1"><a href="#montazeBody">Montaze</a></li>
+                            <li class="tab col s1"><a href="#aktivirungBody">Aktivirung</a></li>
+                            <li class="tab col s1"><a href="#vermessungBody">Vermessung</a></li>
+                        </ul>
+                    </div>
+                    <div id="hausbegehungBody" class="col s12">
+                        <div class="row" id="hausbegehungBody">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <p>Date: @address.hbdate?.ToString("dd.MM.yyyy")</p>
+                                        <p>Termin: @address.hbfrom?.ToString("HH:mm") - @address.hbto?.ToString("HH:mm")</p>
+                                        <p>Call date: <span id="hbCallDate">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="hbComment">@address.hbcomment</textarea>
+                                        <label for="hbComment">Hausbegehung comment</label>
+
+                                    </div>
+                                </div>
+
+                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbSaveChanges">Save changes</a>
+                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbFinished">HB finished</a>
+                                <a disabled="@(address.hbfinished == 1)" id="hbGetTerm">Get HB term</a>
+                                <a disabled="@(address.hbcalldate != null)" href="#" id="hbCustomerCalled">Customer called</a>
+                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbAddImages">Add image</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tiefbauBody" class="col s12">
+                        <div class="row" id="tiefbauBody">
+
+                            <div class="col s12 m12 l12">
+
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="meterInput">@address.meter</textarea>
+                                        <label for="meterInput">Meter</label>
+
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="tCommentInput">@address.tcomment</textarea>
+                                        <label for="tCommentInput">Tiefbau comment</label>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m12 l12">
+                                        <p>Date: <span id="tDate">@address.tdate</span></p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.tfinished == 1)" href="#" id="tSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                            <a class="waves-effect waves-light btn finished-btn" disabled="@(address.tfinished == 1)" href="#" id="tFinished"><i class="material-icons left">check</i>Tiefbau finished</a>
+
+                        </div>
+                    </div>
+                    <div id="faserBody" class="col s12">faserBody</div>
+                    <div id="montazeBody" class="col s12">montazeBody</div>
+                    <div id="aktivirungBody" class="col s12">aktivirungBody</div>
+                    <div id="vermessungBody" class="col s12">vermessungBody</div>
+                </div>
+
+                @* <a id="hausbegehungLink">Hausbegehung</a>
+            <a id="tiefbauLink">Tiefbau</a>
+            <a id="faserLink">Faser</a>
+            <a id="montazeLink">Montaze</a>
+            <a id="aktivirungLink">Aktivirung</a>
+            <a id="vermessungLink">Vermessung</a>
+
+            <div class="row" id="hausbegehungBody">
+            <div class="col s12 m12 l12">
+            <div class="row">
+            <div class="col s6 m6 l6">
+            <p>Date: @address.hbdate?.ToString("dd.MM.yyyy")</p>
+            <p>Termin: @address.hbfrom?.ToString("HH:mm") - @address.hbto?.ToString("HH:mm")</p>
+            <p>Call date: <span id="hbCallDate">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+            </div>
+            <div class="col s6 m6 l6">
+            <textarea class="materialize-textarea" id="hbComment">@address.hbcomment</textarea>
+            <label for="hbComment">Hausbegehung comment</label>
+
+            </div>
+            </div>
+
+            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.hbfinished == 1)" href="#" id="hbSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+            <a class="waves-effect waves-light btn" disabled="@(address.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
+            <a class="waves-effect waves-light btn term-btn" disabled="@(address.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
+            <a class="waves-effect waves-light btn call-btn" disabled="@(address.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+            <a class="waves-effect waves-light btn image-btn" disabled="@(address.hbfinished == 1)" href="#" id="hbAddImages"><i class="material-icons left">image</i>Add image</a>
+            </div>
+            </div>
+
+            <div class="row" id="tiefbauBody">
+
+            <div class="col s12 m12 l12">
+
+            <div class="row">
+            <div class="col s6 m6 l6">
+            <textarea class="materialize-textarea" id="meterInput">@address.meter</textarea>
+            <label for="meterInput">Meter</label>
+
+            </div>
+            <div class="col s6 m6 l6">
+            <textarea class="materialize-textarea" id="tCommentInput">@address.tcomment</textarea>
+            <label for="tCommentInput">Tiefbau comment</label>
+
+            </div>
+            </div>
+            <div class="row">
+            <div class="col s12 m12 l12">
+            <p>Date: <span id="tDate">@address.tdate</span></p>
+            </div>
+            </div>
+
+            </div>
+
+            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.tfinished == 1)" href="#" id="tSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+            <a class="waves-effect waves-light btn finished-btn" disabled="@(address.tfinished == 1)" href="#" id="tFinished"><i class="material-icons left">check</i>Tiefbau finished</a>
+
+            </div>*@
+
+            </div>
         </li>
         @*    <li>
     <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
@@ -409,6 +575,10 @@ $(function() {
         $(document).ready(
             function() {
                 $('.collapsible').collapsible();
+                $('.tabs').tabs();
+
+                $('#hausbegehungBody').style.visibility = "visible";
+                $('#tiefbauBody').style.visibility = "hidden";
 
                 const params = new Proxy(new URLSearchParams(window.location.search), {
                     get: (searchParams, prop) => searchParams.get(prop),
