@@ -184,7 +184,14 @@
         font-weight: bold;
     }
 
-    
+    #hbGetTerm, #hbFinished, #hbCustomerCalled, #hbAddImage, #hbSaveChanges,
+    #tGetTerm, #tFinished, #tCustomerCalled, #tAddImage, #tSaveChanges,
+    #mGetTerm, #mFinished, #mCustomerCalled, #mAddImage, #mSaveChanges,
+    #aGetTerm, #aFinished, #aCustomerCalled, #aAddImage, #aSaveChanges,
+    #fGetTerm, #fFinished, #fCustomerCalled, #fAddImage, #fSaveChanges,
+    #fGetTerm, #fFinished, #fCustomerCalled, #fAddImage, #fSaveChanges {
+        margin: 10px;
+    }
 </style>
 
 <ul class="collapsible">
@@ -322,16 +329,16 @@
                 <div class="row">
                     <div class="col s12">
                         <ul class="tabs">
-                            <li class="tab col s1"><a href="#hausbegehungBody" class="active">Hausbegehung</a></li>
-                            <li class="tab col s1"><a href="#tiefbauBody">Tiefbau</a></li>
-                            <li class="tab col s1"><a href="#faserBody">Faser</a></li>
-                            <li class="tab col s1"><a href="#montazeBody">Montaze</a></li>
-                            <li class="tab col s1"><a href="#aktivirungBody">Aktivirung</a></li>
-                            <li class="tab col s1"><a href="#vermessungBody">Vermessung</a></li>
+                            <li class="tab col s1"><a href="#hausbegehung_@address.id" class="active">Hausbegehung</a></li>
+                            <li class="tab col s1"><a href="#tiefbau_@address.id">Tiefbau</a></li>
+                            <li class="tab col s1"><a href="#faser_@address.id">Faser</a></li>
+                            <li class="tab col s1"><a href="#montaze_@address.id">Montaze</a></li>
+                            <li class="tab col s1"><a href="#aktivirung_@address.id">Aktivirung</a></li>
+                            <li class="tab col s1"><a href="#vermessung_@address.id">Vermessung</a></li>
                         </ul>
                     </div>
-                    <div id="hausbegehungBody" class="col s12">
-                        <div class="row" id="hausbegehungBody">
+                    <div id="hausbegehung_@address.id" class="col s12">
+                        <div class="row">
                             <div class="col s12 m12 l12">
                                 <div class="row">
                                     <div class="col s6 m6 l6">
@@ -346,17 +353,22 @@
                                     </div>
                                 </div>
 
-                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbSaveChanges">Save changes</a>
-                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbFinished">HB finished</a>
-                                <a disabled="@(address.hbfinished == 1)" id="hbGetTerm">Get HB term</a>
-                                <a disabled="@(address.hbcalldate != null)" href="#" id="hbCustomerCalled">Customer called</a>
-                                <a disabled="@(address.hbfinished == 1)" href="#" id="hbAddImages">Add image</a>
+                                @* <a disabled="@(address.hbfinished == 1)" href="#" id="hbSaveChanges">Save changes</a>
+                            <a disabled="@(address.hbfinished == 1)" href="#" id="hbFinished">HB finished</a>
+                            <a disabled="@(address.hbfinished == 1)" id="hbGetTerm">Get HB term</a>
+                            <a disabled="@(address.hbcalldate != null)" href="#" id="hbCustomerCalled">Customer called</a>
+                            <a disabled="@(address.hbfinished == 1)" href="#" id="hbAddImages">Add image</a>*@
+                                <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.hbfinished == 1)" href="#" id="hbSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                                <a class="waves-effect waves-light btn" disabled="@(address.hbfinished == 1)" href="#" id="hbFinished"><i class="material-icons left">check</i>HB finished</a>
+                                <a class="waves-effect waves-light btn term-btn" disabled="@(address.hbfinished == 1)" id="hbGetTerm"><i class="material-icons left">date_range</i>Get HB term</a>
+                                <a class="waves-effect waves-light btn call-btn" disabled="@(address.hbcalldate != null)" href="#" id="hbCustomerCalled"><i class="material-icons left">phone</i>Customer called</a>
+                                <a class="waves-effect waves-light btn image-btn" disabled="@(address.hbfinished == 1)" href="#" id="hbAddImages"><i class="material-icons left">image</i>Add image</a>
                             </div>
                         </div>
                     </div>
 
-                    <div id="tiefbauBody" class="col s12">
-                        <div class="row" id="tiefbauBody">
+                    <div id="tiefbau_@address.id" class="col s12">
+                        <div class="row">
 
                             <div class="col s12 m12 l12">
 
@@ -385,11 +397,89 @@
 
                         </div>
                     </div>
-                    <div id="faserBody" class="col s12">faserBody</div>
-                    <div id="montazeBody" class="col s12">montazeBody</div>
-                    <div id="aktivirungBody" class="col s12">aktivirungBody</div>
-                    <div id="vermessungBody" class="col s12">vermessungBody</div>
+                    <div id="faser_@address.id" class="col s12">
+                        <div class="row">
+                            <div class="col s12 m12 l12" id="faserBody">
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <p>Date: <span id="fDate">@address.fdate</span></p>
+
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="fCommentInput">@address.fcomment</textarea>
+                                        <label for="fCommentInput">Faser comment</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.ffinished == 1)" href="#" id="fSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                            <a class="waves-effect waves-light btn finished-btn" disabled="@(address.ffinished == 1)" href="#" id="fFinished"><i class="material-icons left">check</i>Faser finished</a>
+                        </div>
+                    </div>
+                    <div id="montaze_@address.id" class="col s12">
+
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <p>Date: @address.mdate?.ToString("dd.MM.yyyy")</p>
+                                        <p>Termin: @address.mfrom?.ToString("HH:mm") - @address.mto?.ToString("HH:mm")</p>
+                                        <p>Call date: <span id="mCallDate">@address.mcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="mComment">@address.mcomment</textarea>
+                                        <label for="mComment">Montaze comment</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.mfinished == 1)" href="#" id="mSaveChanges">Save changes</a>
+                            <a class="waves-effect waves-light btn finished-btn" disabled="@(address.mfinished == 1)" href="#" id="mFinished">Montaze finished</a>
+                            <a class="waves-effect waves-light btn term-btn" disabled="@(address.mfinished == 1)" id="mGetTerm">Get montaze term</a>
+                            <a class="waves-effect waves-light btn call-btn" disabled="@(address.mcalldate != null)" href="#" id="mCustomerCalled">Customer called</a>
+                            <a class="waves-effect waves-light btn image-btn" disabled="@(address.mfinished == 1)" href="#" id="mAddImages">Add image</a>
+                        </div>
+                    </div>
+                    <div id="aktivirung_@address.id" class="col s12">
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <p>Date: <span id="aDate">@address.adate</span></p>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="aCommentInput">@address.acomment</textarea>
+                                        <label for="aCommentInput">Aktivirung comment</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.afinished == 1)" href="#" id="aSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                            <a class="waves-effect waves-light btn finished-btn" disabled="@(address.afinished == 1)" href="#" id="aFinished"><i class="material-icons left">check</i>Aktivirung finished</a>
+                        </div>
+
+                    </div>
+                    <div id="vermessung_@address.id" class="col s12">
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <p>Date: <span id="vDate">@address.vdate</span></p>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <textarea class="materialize-textarea" id="vCommentInput">@address.vcomment</textarea>
+                                        <label for="vCommentInput">Vermessung comment</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <a class="waves-effect waves-light btn save-changes-btn" disabled="@(address.vfinished == 1)" href="#" id="vSaveChanges"><i class="material-icons left">check</i>Save changes</a>
+                                <a class="waves-effect waves-light btn finished-btn" disabled="@(address.vfinished == 1)" href="#" id="vFinished"><i class="material-icons left">check</i>Vermessung finished</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
 
                 @* <a id="hausbegehungLink">Hausbegehung</a>
             <a id="tiefbauLink">Tiefbau</a>
@@ -577,8 +667,10 @@ $(function() {
                 $('.collapsible').collapsible();
                 $('.tabs').tabs();
 
-                $('#hausbegehungBody').style.visibility = "visible";
-                $('#tiefbauBody').style.visibility = "hidden";
+                console.log($('.tabs'));
+
+                //$('#hausbegehungBody').style.visibility = "visible";
+                //$('#tiefbauBody').style.visibility = "hidden";
 
                 const params = new Proxy(new URLSearchParams(window.location.search), {
                     get: (searchParams, prop) => searchParams.get(prop),
