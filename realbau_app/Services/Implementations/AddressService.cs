@@ -25,9 +25,13 @@ namespace realbau_app.Services.Implementations
             return result;
         }
 
-        public Task<IEnumerable<Models.AddressDetails>> Filter(Models.FilterModel filterModel)
+        public async Task<IEnumerable<Models.AddressDetails>> Filter(Models.FilterModel filterModel)
         {
-            throw new NotImplementedException();
+            List<AddressDetails> addressDetails = await this.addressRepository.Filter(this.mapper.Map<FilterModel>(filterModel)) as List<AddressDetails>;
+
+            List<Models.AddressDetails> result =
+                                    this.mapper.Map<List<AddressDetails>, List<Models.AddressDetails>>(addressDetails);
+            return result;
         }
 
     }

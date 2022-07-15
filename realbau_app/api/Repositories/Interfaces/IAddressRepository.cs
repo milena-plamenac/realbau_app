@@ -14,6 +14,6 @@ namespace realbau_app.api.Repositories.Interfaces
 
         public Task<int> CheckAddressRnc(string city, string tzip, string street, int housenumber, string subnumber, int unit, int newrnc);
 
-        public Task<AddressDetails> Filter(FilterModel filterModel);
+        public Task<IEnumerable<AddressDetails>> Filter(FilterModel filterModel);
     }
 }

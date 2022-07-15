@@ -29,32 +29,12 @@ namespace realbau_app.Controllers
         }
 
         [HttpPost]
-        public IActionResult Filter(FilterModel filterModel)
+        public async Task<IActionResult> Filter(FilterModel filterModel)
         {
-            IEnumerable<api.Models.AddressDB> addresses = null;
-
-            //IEnumerable<AddressDB> addresses = null;
-            //AddressDetails addressDetails = new AddressDetails();
-            //var exists = 0;
-
-            //using (var client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri("https://localhost:7003/api/Filter/" + ((pop == null) ? "*" : pop) + "/" + hbfinished + "/" + tfinished + "/" + ffinished + "/" + mfinished + "/" + afinished + "/" + vfinished);
-            //    //HTTP GET
-
-
-            //    var responseTask = client.GetAsync("");
-            //    responseTask.Wait();
-
-            //    var result = responseTask.Result;
-            //    var readResult = result.Content.ReadFromJsonAsync<IEnumerable<api.Models.AddressDB>>();
-            //    readResult.Wait();
-
-            //    addresses = readResult.Result;
-
-            //}
-
-
+            FilterModel test = new FilterModel();
+            //test.pop = "ewt-001";
+            test.hbfinished = 1;
+            IEnumerable<Models.AddressDetails> addresses = await this._addressService.Filter(test);
 
             return View("Index", addresses);
         }
