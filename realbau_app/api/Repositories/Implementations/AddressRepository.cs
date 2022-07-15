@@ -390,28 +390,34 @@ namespace realbau_app.api.Repositories.Implementations
                     var addressId = (Int32)cmd.ExecuteScalar(); //Convert.ToInt32(cmd.ExecuteScalar());
                     address.id = addressId;
 
-                    var hbCmd = new SqlCommand(@"insert into dbo.hausbegehung (address_id) values (@address_id)", con);
+                    var hbCmd = new SqlCommand(@"insert into dbo.hausbegehung (address_id, finished) values (@address_id, @finished)", con);
                     hbCmd.Parameters.AddWithValue("@address_id", addressId);
+                    hbCmd.Parameters.AddWithValue("@finished", 0);
                     var hbCmdRes = await hbCmd.ExecuteNonQueryAsync();
 
-                    var tCmd = new SqlCommand(@"insert into dbo.tiefbau (address_id) values (@address_id)", con);
+                    var tCmd = new SqlCommand(@"insert into dbo.tiefbau (address_id, finished) values (@address_id, @finished)", con);
                     tCmd.Parameters.AddWithValue("@address_id", addressId);
+                    tCmd.Parameters.AddWithValue("@finished", 0);
                     var tCmdRes = await tCmd.ExecuteNonQueryAsync();
 
-                    var fCmd = new SqlCommand(@"insert into dbo.faser (address_id) values (@address_id)", con);
+                    var fCmd = new SqlCommand(@"insert into dbo.faser (address_id, finished) values (@address_id, @finished)", con);
                     fCmd.Parameters.AddWithValue("@address_id", addressId);
+                    fCmd.Parameters.AddWithValue("@finished", 0);
                     var fCmdRes = await fCmd.ExecuteNonQueryAsync();
 
-                    var mCmd = new SqlCommand(@"insert into dbo.montaze (address_id) values (@address_id)", con);
+                    var mCmd = new SqlCommand(@"insert into dbo.montaze (address_id, finished) values (@address_id, @finished)", con);
                     mCmd.Parameters.AddWithValue("@address_id", addressId);
+                    mCmd.Parameters.AddWithValue("@finished", 0);
                     var mCmdRes = await mCmd.ExecuteNonQueryAsync();
 
-                    var aCmd = new SqlCommand(@"insert into dbo.aktivirung (address_id) values (@address_id)", con);
+                    var aCmd = new SqlCommand(@"insert into dbo.aktivirung (address_id, finished) values (@address_id, @finished)", con);
                     aCmd.Parameters.AddWithValue("@address_id", addressId);
+                    aCmd.Parameters.AddWithValue("@finished", 0);
                     var aCmdRes = await aCmd.ExecuteNonQueryAsync();
 
-                    var vCmd = new SqlCommand(@"insert into dbo.vermessung (address_id) values (@address_id)", con);
+                    var vCmd = new SqlCommand(@"insert into dbo.vermessung (address_id, finished) values (@address_id, @finished)", con);
                     vCmd.Parameters.AddWithValue("@address_id", addressId);
+                    vCmd.Parameters.AddWithValue("@finished", 0);
                     var vCmdRes = await vCmd.ExecuteNonQueryAsync();
                 }
 
@@ -487,12 +493,12 @@ namespace realbau_app.api.Repositories.Implementations
                 {
                     con.Open();
                     var cmd = new SqlCommand(@"select a.*, 
-                            h.finished as hbfinished, 
-                            t.finished as tfinished,
-                            f.finished as ffinished,
-                            m.finished as mfinished,
-                            ak.finished as afinished, 
-                            v.finished as vfinished
+                                                h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
+                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                f.fdate, f.finished as ffinished, f.fcomment,
+                                                m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
+                                                ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
+                                                v.vdate, v.finished as vfinished, v.vcomment
                             from dbo.address a
                             inner
                             join dbo.hausbegehung h on a.id = h.address_id
@@ -507,12 +513,12 @@ namespace realbau_app.api.Repositories.Implementations
                             inner
                             join dbo.vermessung v on a.id = v.address_id
                             where ((@pop is not null and a.areapop = @pop) or (@pop is null)) 
-                                and ((@hbfinished is not null and h.finished = @hbfinished) or (@hbfinished is null)) 
-                                and ((@tfinished is not null and t.finished = @tfinished) or (@tfinished is null)) 
-                                and ((@ffinished is not null and f.finished = @ffinished) or (@ffinished is null)) 
-                                and ((@mfinished is not null and m.finished = @mfinished) or (@mfinished is null)) 
-                                and ((@afinished is not null and ak.finished = @afinished) or (@afinished is null)) 
-                                and ((@vfinished is not null and v.finished = @vfinished) or (@vfinished is null)) ", con);
+                                and h.finished = @hbfinished
+                                and t.finished = @tfinished
+                                and f.finished = @ffinished
+                                and m.finished = @mfinished
+                                and ak.finished = @afinished
+                                and v.finished = @vfinished", con);
 
                     cmd.Parameters.AddWithValue("@pop", (filterModel.pop == null) ? DBNull.Value : filterModel.pop);
                     cmd.Parameters.AddWithValue("@hbfinished", (filterModel.hbfinished == null) ? DBNull.Value : filterModel.hbfinished);

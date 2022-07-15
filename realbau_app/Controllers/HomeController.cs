@@ -28,13 +28,18 @@ namespace realbau_app.Controllers
             return View(addresses);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Filter(FilterModel filterModel)
+        public async Task<IActionResult> Filter(string? pop, bool hbfinished, bool tfinished, bool ffinished, bool mfinished, bool afinished, bool vfinished)
         {
-            FilterModel test = new FilterModel();
-            //test.pop = "ewt-001";
-            test.hbfinished = 1;
-            IEnumerable<Models.AddressDetails> addresses = await this._addressService.Filter(test);
+            FilterModel filterModel = new FilterModel();
+            filterModel.pop = pop;
+            filterModel.hbfinished = hbfinished ? 1 : 0;
+            filterModel.tfinished = tfinished ? 1 : 0;
+            filterModel.ffinished = ffinished ? 1 : 0;
+            filterModel.mfinished = mfinished ? 1 : 0;
+            filterModel.afinished = afinished ? 1 : 0;
+            filterModel.vfinished = vfinished ? 1 : 0;
+
+            IEnumerable<Models.AddressDetails> addresses = await this._addressService.Filter(filterModel);
 
             return View("Index", addresses);
         }
@@ -173,11 +178,11 @@ namespace realbau_app.Controllers
         //    }
         //}
 
-       
-        
-        
 
-            [HttpGet]
+
+
+
+        [HttpGet]
         public IActionResult AddressDetails(int id)
         {
             //IEnumerable<AddressDB> addresses = null;
