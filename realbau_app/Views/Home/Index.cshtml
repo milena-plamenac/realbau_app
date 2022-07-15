@@ -108,6 +108,49 @@
     table {
         margin: 1rem !important;
     }
+
+    span{
+        display: inline-block;
+        margin: 10px;
+        overflow: hidden;
+    }
+
+    .nameSpan{
+        width: 120px !important;
+        /*border: 1px solid red;*/
+        /*overflow: hidden;*/
+
+    }
+
+    .areapopSpan{
+        width: 80px !important;
+        /*border: 1px solid blue;*/
+        /*overflow: hidden;*/
+    }
+
+    .addressSpan{
+        width: 360px !important;
+        /*border: 1px solid blue;*/
+        /*overflow: hidden;*/
+    }
+
+    .phoneSpan{
+        width: 150px !important;
+        /*border: 1px solid blue;*/
+        /*overflow: hidden;*/
+    }
+
+    .emailSpan{
+        width: 180px !important;
+        /*border: 1px solid blue;*/
+        /*overflow: hidden;*/
+    }
+
+    .finishedSpan{
+        width: 80px !important;
+        /*border: 1px solid blue;*/
+        /*overflow: hidden;*/
+    }
 </style>
 
 <ul class="collapsible">
@@ -154,88 +197,88 @@
             <div class="collapsible-header">
                 <div class="row" style="margin: 0">
                     @*<div class="col s1 m1 l1">*@
-                        <span style="width: 20%">@d.areapop</span>
-                       <span style="margin-right: 1rem; width:200px !important">@d.name</span> 
-                       <span style="margin-right: 1rem;">@d.street, @d.housenumber @d.subnumber, @d.unit</span> 
-                       <span>@d.phone</span>
-                       <span>@d.phone2</span>
-                       <span>@d.email</span>
+                        <span class="areapopSpan">@d.areapop</span>
+                       <span class="nameSpan">@d.name</span> 
+                       <span class="addressSpan">@d.street, @d.housenumber @d.subnumber, @d.unit</span> 
+                       <span class="phoneSpan">@d.phone</span>
+                       <span class="phoneSpan">@d.phone2</span>
+                       <span class="emailSpan">@d.email</span>
                     @*</div>*@
                     @if (d.hbfinished == 1)
                     {
                         
-                            <span>HB: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>HB: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>HB:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
                     @if (d.tfinished == 1)
                     {
                         
-                            <span>T: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>T: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>T:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
                     @if (d.ffinished == 1)
                     {
                         
-                            <span>F: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>F: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>F:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
                     @if (d.mfinished == 1)
                     {
                         
-                            <span>M: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>M: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>M:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
                     @if (d.afinished == 1)
                     {
                         
-                            <span>A: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>A: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>A:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
                     @if (d.vfinished == 1)
                     {
                         
-                            <span>V: <i class="material-icons" style="color: green !important">check</i></span>
+                            <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: green !important">check</i></span>
                     
                     }
                     else
                     {
                         
-                            <span>V: <i class="material-icons" style="color: red !important">clear</i></span>
+                            <span class="finishedSpan"><b>V:</b> <i class="material-icons" style="color: red !important">clear</i></span>
                       
                     }
 
