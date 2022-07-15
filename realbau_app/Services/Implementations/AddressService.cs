@@ -24,5 +24,11 @@ namespace realbau_app.Services.Implementations
                                     this.mapper.Map<List<AddressDetails>, List<Models.AddressDetails>>(addressDetails);
             return result;
         }
+
+        public Task<IEnumerable<Models.AddressDetails>> Filter(Models.FilterModel filterModel)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

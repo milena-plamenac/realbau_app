@@ -12,6 +12,8 @@
             <div class="col s3 m3 l3 input-field "><input class="form-control validate" id="popFilter" /><label for="popFilter"></label></div>
         </div>*@
 
+
+
 <div class="row">
     <div class="col s12 m12 l12">
         <div class="card">
@@ -293,13 +295,13 @@ $(function() {
                 console.log(params.aFinished);
                 console.log(params.vFinished);
 
-            //    $("#hbFilter")[0].checked = params.hbFinished;
-            //$("#tFilter")[0].checked = params.tFinished;
-            //$("#fFilter")[0].checked = params.fFinished;
-            //$("#mFilter")[0].checked = params.mFinished;
-            //$("#aFilter")[0].checked = params.aFinished;
-            //    $("#vFilter")[0].checked = params.vFinished;
-            //;
+                //    $("#hbFilter")[0].checked = params.hbFinished;
+                //$("#tFilter")[0].checked = params.tFinished;
+                //$("#fFilter")[0].checked = params.fFinished;
+                //$("#mFilter")[0].checked = params.mFinished;
+                //$("#aFilter")[0].checked = params.aFinished;
+                //    $("#vFilter")[0].checked = params.vFinished;
+                //;
 
                 //$("#hbFilter").prop("checked", params.hbFinished);
                 // $("#tFilter").prop("checked", params.tFinished);
@@ -332,7 +334,42 @@ $(function() {
             var mFinished = $("#mFilter")[0].checked;
             var aFinished = $("#aFilter")[0].checked;
             var vFinished = $("#vFilter")[0].checked;
-            window.location.href = "/Home/Filter/?pop=" + pop + "&hbFinished=" + hbFinished + "&tFinished=" + tFinished + "&fFinished=" + fFinished + "&mFinished=" + mFinished + "&aFinished=" + aFinished + "&vFinished=" + vFinished;
+
+            var filterModel = {};
+            filterModel.pop = pop;
+            filterModel.hbFinished = hbFinished;
+            filterModel.tFinished = tFinished;
+            filterModel.fFinished = fFinished;
+            filterModel.mFinished = mFinished;
+            filterModel.aFinished = aFinished;
+            filterModel.vFinished = vFinished;
+
+            console.log(filterModel);
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Filter/",
+                data: JSON.stringify(filterModel),
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function(r) {
+                    //alert("Success");
+                    ////$("#hbGetTerm").attr("disabled", "disabled");
+                    ////$("#hbCustomerCalled").attr("disabled", "disabled");
+                    //$("#vFinished").attr("disabled", "disabled");
+                    //$("#vSaveChanges").attr("disabled", "disabled");
+                    //$("#vDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+
+                    //$("#hbCustomerCalled").attr("disabled", "disabled");
+                    //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                },
+                error: function(err) {
+                    alert("Error");
+                    console.log(JSON.stringify(err))
+                }
+
+            })
+            //window.location.href = "/Home/Filter/?pop=" + pop + "&hbFinished=" + hbFinished + "&tFinished=" + tFinished + "&fFinished=" + fFinished + "&mFinished=" + mFinished + "&aFinished=" + aFinished + "&vFinished=" + vFinished;
             //$.ajax({
             //                     url: "/Home/Filter/?pop=" + pop + "&hbFinished=" + hbFinished  + "&tFinished=" + tFinished + "&fFinished=" + fFinished + "&mFinished=" + mFinished + "&aFinished=" + aFinished + "&vFinished=" + vFinished,
             //                     method: "GET",

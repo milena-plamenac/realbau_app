@@ -476,5 +476,10 @@ namespace realbau_app.api.Repositories.Implementations
                 return 0;
             }
         }
+
+        public Task<AddressDetails> Filter(FilterModel filterModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
