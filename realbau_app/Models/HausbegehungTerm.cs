@@ -1,6 +1,6 @@
-﻿namespace realbau_app.api.Models
+﻿namespace realbau_app.Models
 {
-    public class HausbegehungTermDB
+    public class HausbegehungTerm
     {
         public int? id { get; set; }
         public string? city { get; set; }

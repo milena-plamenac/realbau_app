@@ -37,6 +37,8 @@ builder.Services.Configure<JsonSerializerOptions>(options =>
 builder.Services.AddTransient<IImageRepository, ImageRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 builder.Services.AddTransient<IAddressService, AddressService>();
+builder.Services.AddTransient<IHausbegehungRepository, HausbegehungRepository>();
+builder.Services.AddTransient<IHausbegehungService, HausbegehungService>();
 
 builder.Services.AddTransient<IStreamFileUploadService, StreamFileUploadLocalService>();
 

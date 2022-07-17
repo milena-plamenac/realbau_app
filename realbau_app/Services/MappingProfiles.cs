@@ -11,6 +11,9 @@ namespace realbau_app.Services
 
             CreateMap<realbau_app.api.Models.FilterModel, realbau_app.Models.FilterModel>();
             CreateMap<realbau_app.Models.FilterModel, realbau_app.api.Models.FilterModel>();
+
+            CreateMap<realbau_app.api.Models.HausbegehungTermDB, realbau_app.Models.HausbegehungTerm>();
+            CreateMap<realbau_app.Models.HausbegehungTerm, realbau_app.api.Models.HausbegehungTermDB>();
         }
     }
 }
