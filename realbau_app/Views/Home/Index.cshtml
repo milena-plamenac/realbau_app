@@ -444,8 +444,8 @@
                             </div>
                             <a class="waves-effect waves-light btn mSaveChanges" disabled="@(address.mfinished == 1)" id="mSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
                             <a class="waves-effect waves-light btn mFinished" disabled="@(address.mfinished == 1)" id="mFinished_@address.id"><i class="material-icons left">check</i>Montaze finished</a>
-                            <a class="waves-effect waves-light btn mGetTerm" disabled="@(address.mfinished == 1) || @(address.mfinished == 1)" id="mGetTerm_@address.id"><i class="material-icons left">date_range</i>Get montaze term</a>
-                            <a class="waves-effect waves-light btn mCustomerCalled" disabled="@(address.mcalldate != null)" id="mCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
+                            <a class="waves-effect waves-light btn mGetTerm" disabled="@(address.mfinished == 1)" id="mGetTerm_@address.id"><i class="material-icons left">date_range</i>Get montaze term</a>
+                            <a class="waves-effect waves-light btn mCustomerCalled" disabled="@(address.mfinished == 1)" id="mCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
                             <a class="waves-effect waves-light btn mAddImage" disabled="@(address.mfinished == 1)" id="mAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
 
 
@@ -456,17 +456,18 @@
                             <div class="col s12 m12 l12">
                                 <div class="row">
                                     <div class="col s6 m6 l6">
-                                        <p>Date: <span id="aDate">@address.adate</span></p>
+                                        <p>Date: <span id="aDate_@address.id">@address.adate</span></p>
                                     </div>
                                     <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="aCommentInput">@address.acomment</textarea>
-                                        <label for="aCommentInput">Aktivirung comment</label>
+                                        <textarea class="materialize-textarea" id="aComment_@address.id">@address.acomment</textarea>
+                                        <label for="aComment_@address.id">Aktivirung comment</label>
 
                                     </div>
                                 </div>
                             </div>
-                            <a class="waves-effect waves-light btn" disabled="@(address.afinished == 1)" href="#" id="aSaveChanges"><i class="material-icons left">check</i>Save changes</a>
-                            <a class="waves-effect waves-light btn" disabled="@(address.afinished == 1)" href="#" id="aFinished"><i class="material-icons left">check</i>Aktivirung finished</a>
+                            <a class="waves-effect waves-light btn aSaveChanged" disabled="@(address.afinished == 1)" id="aSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            <a class="waves-effect waves-light btn aFinished" disabled="@(address.afinished == 1)" id="aFinished_@address.id"><i class="material-icons left">check</i>Aktivirung finished</a>
+                            <a class="waves-effect waves-light btn aAddImage" disabled="@(address.afinished == 1)" id="aAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
                         </div>
 
                     </div>
@@ -475,17 +476,17 @@
                             <div class="col s12 m12 l12">
                                 <div class="row">
                                     <div class="col s6 m6 l6">
-                                        <p>Date: <span id="vDate">@address.vdate</span></p>
+                                        <p>Date: <span id="vDate_@address.id">@address.vdate</span></p>
                                     </div>
                                     <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="vCommentInput">@address.vcomment</textarea>
-                                        <label for="vCommentInput">Vermessung comment</label>
+                                        <textarea class="materialize-textarea" id="vComment_@address.id">@address.vcomment</textarea>
+                                        <label for="vComment_@address.id">Vermessung comment</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-action">
-                                <a class="waves-effect waves-light btn" disabled="@(address.vfinished == 1)" href="#" id="vSaveChanges"><i class="material-icons left">check</i>Save changes</a>
-                                <a class="waves-effect waves-light btn" disabled="@(address.vfinished == 1)" href="#" id="vFinished"><i class="material-icons left">check</i>Vermessung finished</a>
+                                <a class="waves-effect waves-light btn vSaveChanges" disabled="@(address.vfinished == 1)" id="vSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                                <a class="waves-effect waves-light btn vFinished" disabled="@(address.vfinished == 1)" id="vFinished_@address.id"><i class="material-icons left">check</i>Vermessung finished</a>
                             </div>
                         </div>
                     </div>
@@ -1120,6 +1121,7 @@ $(function() {
                     $("#mCustomerCalled_" + addressId).attr("disabled", "disabled");
                     $("#mFinished_" + addressId).attr("disabled", "disabled");
                     $("#mSaveChanges_" + addressId).attr("disabled", "disabled");
+                    $("#mAddImage_" + addressId).attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
@@ -1144,20 +1146,22 @@ $(function() {
 
 
 
-        $("#aSaveChanges").click(function() {
+        $(".aSaveChanges").click(function() {
             //console.log($("#hbComment"));
             //var addressId = $("#addressId")[0].innerText;
-            let aCommentInput = $("#aCommentInput")[0];
-            console.log(aCommentInput.value);
+            var addressId = this.id.split('_')[1];
+
+            let aComment = $("#aComment_" + addressId)[0];
+            //console.log(aCommentInput.value);
 
             //alert(addressId);
             //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
             var aData = {};
-            aData.acomment = aCommentInput.value;
+            aData.acomment = aComment.value;
 
 
-            var addressId = $("#addressId")[0].innerText;
+           // var addressId = $("#addressId")[0].innerText;
 
             $.ajax({
                 type: "PUT",
@@ -1166,7 +1170,7 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Success");
+                    alert("Successfully saved aktivirung data!");
                     //hbCommentInput.val(hbData.comment);
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
@@ -1178,18 +1182,18 @@ $(function() {
             });
         })
 
-        $("#aFinished").click(function() {
+        $(".aFinished").click(function() {
             //console.log($("#hbComment"));
             //var addressId = $("#addressId")[0].innerText;
             //let hbCommentInput = $("#hbComment")[0];
             //console.log(hbCommentInput.value);
             //alert(addressId);
             //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
-
+            var addressId = this.id.split('_')[1];
             var aData = {};
             aData.finished = 1;
 
-            var addressId = $("#addressId")[0].innerText;
+            //var addressId = $("#addressId")[0].innerText;
 
             var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
@@ -1205,9 +1209,10 @@ $(function() {
                     alert("Success");
                     //$("#hbGetTerm").attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
-                    $("#aFinished").attr("disabled", "disabled");
-                    $("#aSaveChanges").attr("disabled", "disabled");
-                    $("#aDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    $("#aFinished_" + addressId).attr("disabled", "disabled");
+                    $("#aSaveChanges_"  + addressId).attr("disabled", "disabled");
+                    $("#aAddImage_"  + addressId).attr("disabled", "disabled");
+                    $("#aDate_"  + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
 
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
@@ -1221,20 +1226,21 @@ $(function() {
 
         // Vermessung
 
-        $("#vSaveChanges").click(function() {
+        $(".vSaveChanges").click(function() {
+             var addressId = this.id.split('_')[1];
             //console.log($("#hbComment"));
             //var addressId = $("#addressId")[0].innerText;
-            let vCommentInput = $("#vCommentInput")[0];
-            console.log(vCommentInput.value);
+            let vComment = $("#vComment_" + addressId)[0];
+            console.log(vComment.value);
 
             //alert(addressId);
             //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
             var vData = {};
-            vData.vcomment = vCommentInput.value;
+            vData.vcomment = vComment.value;
 
 
-            var addressId = $("#addressId")[0].innerText;
+           // var addressId = $("#addressId")[0].innerText;
 
             $.ajax({
                 type: "PUT",
@@ -1255,18 +1261,18 @@ $(function() {
             });
         })
 
-        $("#vFinished").click(function() {
+        $(".vFinished").click(function() {
             //console.log($("#hbComment"));
             //var addressId = $("#addressId")[0].innerText;
             //let hbCommentInput = $("#hbComment")[0];
             //console.log(hbCommentInput.value);
             //alert(addressId);
             //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
-
+             var addressId = this.id.split('_')[1];
             var vData = {};
             vData.finished = 1;
 
-            var addressId = $("#addressId")[0].innerText;
+            //var addressId = $("#addressId")[0].innerText;
 
             var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
@@ -1282,9 +1288,10 @@ $(function() {
                     alert("Success");
                     //$("#hbGetTerm").attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
-                    $("#vFinished").attr("disabled", "disabled");
-                    $("#vSaveChanges").attr("disabled", "disabled");
-                    $("#vDate").html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    $("#vFinished_" + addressId).attr("disabled", "disabled");
+                    $("#vSaveChanges_" + addressId).attr("disabled", "disabled");
+                    $("#vAddImage_" + addressId).attr("disabled", "disabled");
+                    $("#vDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
 
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
