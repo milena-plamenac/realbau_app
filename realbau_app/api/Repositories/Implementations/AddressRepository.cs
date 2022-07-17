@@ -16,12 +16,12 @@ namespace realbau_app.api.Repositories.Implementations
                 {
                     con.Open();
                     var cmd = new SqlCommand(@"select a.*, 
-                            h.finished as hbfinished, 
-                            t.finished as tfinished,
-                            f.finished as ffinished,
-                            m.finished as mfinished,
-                            ak.finished as afinished, 
-                            v.finished as vfinished
+                                                h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
+                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                f.fdate, f.finished as ffinished, f.fcomment,
+                                                m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
+                                                ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
+                                                v.vdate, v.finished as vfinished, v.vcomment
                             from dbo.address a
                             inner
                             join dbo.hausbegehung h on a.id = h.address_id
@@ -77,12 +77,43 @@ namespace realbau_app.api.Repositories.Implementations
                         address.TV_ODF = Convert.IsDBNull(reader["TV_ODF"]) ? null : (string?)reader["TV_ODF"];
                         address.kennwort = Convert.IsDBNull(reader["kennwort"]) ? null : (string?)reader["kennwort"];
                         address.subtype = Convert.IsDBNull(reader["subtype"]) ? null : (string?)reader["subtype"];
+
+                        address.hbId = Convert.IsDBNull(reader["hbId"]) ? null : (int?)reader["hbId"];
+                        address.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateTime?)reader["hbdate"];
+                        address.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (DateTime?)reader["hbfrom"];
+                        address.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
+                        address.hbcalldate = Convert.IsDBNull(reader["hbcalldate"]) ? null : (DateTime?)reader["hbcalldate"];
                         address.hbfinished = Convert.IsDBNull(reader["hbfinished"]) ? null : (int?)reader["hbfinished"];
+                        address.hbcomment = Convert.IsDBNull(reader["hbcomment"]) ? null : (string?)reader["hbcomment"];
+
+                        address.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
+                        address.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
+                        address.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
+
                         address.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
+                        address.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
+                        address.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];
                         address.ffinished = Convert.IsDBNull(reader["ffinished"]) ? null : (int?)reader["ffinished"];
+                        address.fcomment = Convert.IsDBNull(reader["fcomment"]) ? null : (string?)reader["fcomment"];
+
+                        address.mId = Convert.IsDBNull(reader["mId"]) ? null : (int?)reader["mId"];
+                        address.mdate = Convert.IsDBNull(reader["mdate"]) ? null : (DateTime?)reader["mdate"];
+                        address.mfrom = Convert.IsDBNull(reader["mfrom"]) ? null : (DateTime?)reader["mfrom"];
+                        address.mto = Convert.IsDBNull(reader["mto"]) ? null : (DateTime?)reader["mto"];
+                        address.mcalldate = Convert.IsDBNull(reader["mcalldate"]) ? null : (DateTime?)reader["mcalldate"];
                         address.mfinished = Convert.IsDBNull(reader["mfinished"]) ? null : (int?)reader["mfinished"];
+                        address.mcomment = Convert.IsDBNull(reader["mcomment"]) ? null : (string?)reader["mcomment"];
+
+                        address.aId = Convert.IsDBNull(reader["aId"]) ? null : (int?)reader["aId"];
+                        address.adate = Convert.IsDBNull(reader["adate"]) ? null : (DateTime?)reader["adate"];
+                        address.afrom = Convert.IsDBNull(reader["afrom"]) ? null : (DateTime?)reader["afrom"];
+                        address.ato = Convert.IsDBNull(reader["ato"]) ? null : (DateTime?)reader["ato"];
                         address.afinished = Convert.IsDBNull(reader["afinished"]) ? null : (int?)reader["afinished"];
+                        address.acomment = Convert.IsDBNull(reader["acomment"]) ? null : (string?)reader["acomment"];
+
+                        address.vdate = Convert.IsDBNull(reader["vdate"]) ? null : (DateTime?)reader["vdate"];
                         address.vfinished = Convert.IsDBNull(reader["vfinished"]) ? null : (int?)reader["vfinished"];
+                        address.vcomment = Convert.IsDBNull(reader["vcomment"]) ? null : (string?)reader["vcomment"];
 
                         result.Add(address);
                     }
@@ -512,7 +543,9 @@ namespace realbau_app.api.Repositories.Implementations
                             join dbo.aktivirung ak on a.id = ak.address_id
                             inner
                             join dbo.vermessung v on a.id = v.address_id
-                            where ((@pop is not null and a.areapop = @pop) or (@pop is null)) 
+                            where 
+                                ((@city is not null and a.city = @city) or (@city is null)) 
+                                and ((@pop is not null and a.areapop = @pop) or (@pop is null)) 
                                 and h.finished = @hbfinished
                                 and t.finished = @tfinished
                                 and f.finished = @ffinished
@@ -520,6 +553,7 @@ namespace realbau_app.api.Repositories.Implementations
                                 and ak.finished = @afinished
                                 and v.finished = @vfinished", con);
 
+                    cmd.Parameters.AddWithValue("@city", (filterModel.city == null) ? DBNull.Value : filterModel.city);
                     cmd.Parameters.AddWithValue("@pop", (filterModel.pop == null) ? DBNull.Value : filterModel.pop);
                     cmd.Parameters.AddWithValue("@hbfinished", (filterModel.hbfinished == null) ? DBNull.Value : filterModel.hbfinished);
                     cmd.Parameters.AddWithValue("@tfinished", (filterModel.tfinished == null) ? DBNull.Value : filterModel.tfinished);

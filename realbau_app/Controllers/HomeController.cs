@@ -28,9 +28,10 @@ namespace realbau_app.Controllers
             return View(addresses);
         }
 
-        public async Task<IActionResult> Filter(string? pop, bool hbfinished, bool tfinished, bool ffinished, bool mfinished, bool afinished, bool vfinished)
+        public async Task<IActionResult> Filter(string? city, string? pop, bool hbfinished, bool tfinished, bool ffinished, bool mfinished, bool afinished, bool vfinished)
         {
             FilterModel filterModel = new FilterModel();
+            filterModel.city = city;
             filterModel.pop = pop;
             filterModel.hbfinished = hbfinished ? 1 : 0;
             filterModel.tfinished = tfinished ? 1 : 0;
