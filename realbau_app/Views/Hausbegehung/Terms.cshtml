@@ -4,32 +4,46 @@
 @{
 }
 @model IEnumerable<realbau_app.Models.HausbegehungTerm>
-<h4 class="text-center">Hausbegehung terms</h4>
+<h4 class="center-align">Hausbegehung terms</h4>
+<h6 class="center-align" id="currentFilters">Showing result for: city <span id="citySpan"></span>, pop <span id="popSpan"></span> and date <span id="dateSpan"></span></h6>
 <form asp-action="SearchTerms" asp-controller="Hausbegehung" method="get">
-<div class="row">
-    <div class="col s2 m2 l2">
-        <input type="text" name="city" />
-    </div>
-    <div class="col s2 m2 l2">
-        <input type="text" name="pop" />
-    </div>
-    <div class="col s1 m1 l1">
-        <a style="color: #039be5; cursor: pointer;" id="prev">
-            Prev
-        </a>
-        @*<a class="waves-effect waves-light btn" id="prev"><i class="material-icons left">keyboard_arrow_left</i>Prev</a>*@
-    </div>
-    <div class="col s2 m2 l2">
-        <input id="currentdate" type="date" name="dateTime"  />
-    </div>
-    <div class="col s1 m1 l1">
-        <a style="color: #039be5; cursor: pointer;" id="next">
-            Next
-        </a>
-        @*<a class="waves-effect waves-light btn" id="next"><i class="material-icons right">keyboard_arrow_right</i>Next</a>*@
-    </div>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Filters</span>
+            <div class="row">
+                <div class="col s2 m2 l2">
+                    <input class="materialize-input" type="text" name="city" id="cityFilter" />
 
-</div>
+                    <label for="cityFilter">Filter by city</label>
+                </div>
+                <div class="col s2 m2 l2">
+                    <input class="materialize-input" type="text" name="pop" id="popFilter" />
+                    <label for="popFilter">Filter by pop</label>
+                </div>
+                @* <div class="col s1 m1 l1">
+                <a style="color: #039be5; cursor: pointer;" id="prev">
+                Prev
+                </a>
+
+                </div>*@
+                <div class="col s2 m2 l2">
+                    @*<input id="currentdate" type="date" name="dateTime"  />*@
+                    <input id="currentdate" type="text" class="datepicker" name="dateTime">
+                    <label for="currentdate">Date</label>
+                </div>
+                @*<div class="col s1 m1 l1">
+                <a style="color: #039be5; cursor: pointer;" id="next">
+                Next
+                </a>
+
+                </div>*@
+                <div>
+                    <button type="submit" class="btn">Filter</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </form>
 
 @if (Model != null)
@@ -82,11 +96,11 @@
             {
 
                 <tr>
-                    
+
                     <td hidden>@d.id</td>
                     <td>@d.hbfrom</td>
                     <td>@d.hbto</td>
-                 
+
                     <td><input class="btn" disabled="@(d.busy == 1)" type="button" id="btnReserve" value="Reserve" /></td>
                     <td><input class="btn backgroundRed" disabled="@(d.busy == 0)" type="button" id="btnCancel" value="Cancel" /></td>
                     <td><input class="btn backgroundRed" disabled="@(d.busy == 1)" type="button" id="btnRemove" value="Remove" /></td>
@@ -123,326 +137,408 @@
 
     </script>*@
     <script type="text/javascript">
-        //$(document).ready(
-        //    function() {
-        //        const params = new Proxy(new URLSearchParams(window.location.search), {
-        //            get: (searchParams, prop) => searchParams.get(prop),
-        //        });
-        //        console.log(params);
-        //        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //        let year = params.year;
-        //        let month = params.month;
-        //        let date = params.date;
-        //        $("#currentdate").val(date + '.' + (Number(month) + 1) + '.' + year);
+        $(document).ready(
+            function() {
+                $('.datepicker').datepicker();
+
+                checkParams();
+
+            })
+
+        function checkParams() {
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            let city = params.city;
+            let pop = params.pop;
+            let dateTime = params.dateTime;
+
+            $("#cityFilter").val(city);
+            $("#popFilter").val(pop);
+
+            $("#citySpan").text(city);
+            $("#popSpan").text(pop);
+            $("#dateSpan").text(dateTime);
+
+            if (dateTime != null) {
+                var elems = document.querySelector('.datepicker');
+                var instance = M.Datepicker.init(elems, {});
+                //instance.open();
+                instance.setDate(new Date(dateTime));
+
+                console.log(new Date(dateTime));
+            }
+        }
+
+        $("body").on("click", "#btnAdd", function() {
+
+            var row = $(this).closest("tr");
+            console.log(row);
+            var table = $("#tblHbTerms")[0];
+            console.log($('#tblHbTerms tbody'));
+
+            var city = $("#citySpan span").text();
+            var pop = $("#popSpan span").text();
+            var dateTime = $("#dateSpan span").text();
+
+            var newRow = {}
+            newRow.hbfrom = row[0].children[1].children[0].value + ":00";
+            newRow.hbto = row[0].children[2].children[0].value + ":00";
+            newRow.hbdate = dateTime;
+            newRow.city = city;
+            newRow.pop = pop;
+
+            $.ajax({
+                type: "POST",
+                url: "/api/HausbegehungTerm",
+                data: JSON.stringify(newRow),
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function(r) {
+                    alert("Success");
+                    $('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                },
+                error: function(err) {
+                    alert("Error");
+                    console.log(JSON.stringify(err))
+                }
+            });
+        });
 
 
 
-        //        $("body").on("click", "#btnReserve", function() {
-
-        //            const params = new Proxy(new URLSearchParams(window.location.search), {
-        //                get: (searchParams, prop) => searchParams.get(prop),
-        //            });
-        //            console.log(params);
-        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //            let addressId = params.address_id;
-
-
-        //            var row = $(this).closest("tr");
-        //            console.log(new Date( new Date().getFullYear() row[0].children[1].outerText));
-        //            console.log(new Date(row[0].children[2].outerText));
-        //            //var id = row[0].children[0].outerText;
-        //            //var from = row[0].children[1].outerText;
-        //            //var to = row[0].children[2].outerText;
-        //            //var newRow = {};
-                   
-        //            //newRow.hbfrom = from;
-        //            //newRow.hbto = to;
-
-        //            //// TODO: Set busy 
-
-
-        //            //$.ajax({
-        //            //    type: "PUT",
-        //            //    url: "/api/Hausbegehung/" + addressId,
-        //            //    data: JSON.stringify(newRow),
-        //            //    contentType: "application/json; charset=utf-8",
-        //            //    //dataType: "json",
-        //            //    success: function(r) {
-        //            //        alert("Successfully reserved term.");
-        //            //        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
-        //            //    },
-        //            //    error: function(err) {
-        //            //        alert("Error");
-        //            //        //console.log(JSON.stringify(err))
-        //            //    }
-        //            //});
-        //        })
 
 
 
-        //        $("#prev").click(function() {
-        //            //const params = new Proxy(new URLSearchParams(window.location.search), {
-        //            //    get: (searchParams, prop) => searchParams.get(prop),
-        //            //});
-        //            //console.log(params);
-        //            //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //            //let year = params.year;
-        //            //let month = params.month;
-        //            //let date = params.date;
-
-
-        //            const params = new Proxy(new URLSearchParams(window.location.search), {
-        //                get: (searchParams, prop) => searchParams.get(prop),
-        //            });
-        //            console.log(params);
-        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //            let addressId = params.address_id;
-        //            let year = params.year;
-        //            let month = params.month;
-        //            let date = params.date;
-
-        //            let prevDate = new Date(year, month, date);
-        //            prevDate.setDate(prevDate.getDate() - 1);
-
-        //            window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + prevDate.getFullYear() + '&month=' + (prevDate.getMonth().toFixed()) + '&date=' + prevDate.getDate();
-        //            //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
-
-        //            // PART BELOW WAS BEFORE REAL
-
-        //            //let currentDateValues = $("#currentdate").val().split('.');
-        //            //date = currentDateValues[0];
-        //            //month = currentDateValues[1]-1;
-        //            //year = currentDateValues[2];
 
 
 
-        //            //let prevDate = new Date(year, month, date);
-        //            //prevDate.setDate(prevDate.getDate() - 1);
-        //            //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
-        //            //alert(prevDate);
-        //        });
-
-        //        $("#next").click(function() {
-        //            //const params = new Proxy(new URLSearchParams(window.location.search), {
-        //            //    get: (searchParams, prop) => searchParams.get(prop),
-        //            //});
-        //            //console.log(params);
-        //            //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //            //let year = params.year;
-        //            //let month = params.month;
-        //            //let date = params.date;
-
-
-        //            const params = new Proxy(new URLSearchParams(window.location.search), {
-        //                get: (searchParams, prop) => searchParams.get(prop),
-        //            });
-        //            console.log(params);
-        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-        //            let addressId = params.address_id;
-        //            let year = params.year;
-        //            let month = params.month;
-        //            let date = params.date;
-
-        //            let nextDate = new Date(year, month, date);
-        //            nextDate.setDate(nextDate.getDate() + 1);
-
-        //            window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + nextDate.getFullYear() + '&month=' + (nextDate.getMonth().toFixed()) + '&date=' + nextDate.getDate();
-
-        //            // CODE BELOW
-
-        //            //let currentDateValues = $("#currentdate").val().split('.');
-        //            //date = currentDateValues[0];
-        //            //month = currentDateValues[1] - 1;
-        //            //year = currentDateValues[2];
-
-        //            //let nextDate = new Date(year, month, date);
-        //            //nextDate.setDate(nextDate.getDate() + 1);
-        //            //$("#currentdate").val(nextDate.getDate() + '.' + (Number(nextDate.getMonth()) + 1) + '.' + nextDate.getFullYear());
-        //            //alert(nextDate);
-        //        });
-        //        //alert(value);
-        //        // document.getElementById("currentdate").valueAsDate = new Date();
-        //        //// $("#currentDate").val('2022-06-30');
-
-        //        // $("#prev").on("click", function() {
-        //        //     console.log(document.getElementById("currentdate").value);// = document.getElementById("currentdate").valueAsDate.addDays(-1);
-        //        //     console.log(new Date(document.getElementById("currentdate").value));
-        //        //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(-1);
-        //        // });
-
-        //        // $("#next").on("click", function() {
-        //        //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(1);
-        //        //     //document.getElementById("currentdate").valueAsDate = document.getElementById("currentdate").valueAsDate.addDays(1);
-        //        // });
-
-        //    }
-        //);
-        //$("body").on("click", "#btnAdd", function() {
-
-        //    var row = $(this).closest("tr");
-        //    console.log(row);
-        //    if (confirm("Da li ste sigurni da želite da unesete stavku?")) {
-        //        var table = $("#tblHbTerms")[0];
-        //        console.log($('#tblHbTerms tbody'));
-
-        //        var newRow = {}
-        //        newRow.hbfrom = row[0].children[1].children[0].value + ":00";
-        //        newRow.hbto = row[0].children[2].children[0].value + ":00";
-
-        //        console.log(JSON.stringify(newRow));
-
-        //        //$("#tblCustomers TBODY TR").each(function () {
-        //        //                            var row = $(this);
-        //        //                            var customer = {};
-        //        //                            customer.Name = row.find("TD").eq(0).html();
-        //        //                            customer.Country = row.find("TD").eq(1).html();
-        //        //                            customers.push(customer);
-        //        //                        });
-
-        //        //Send the JSON array to Controller using AJAX.
-        //        $.ajax({
-        //            type: "POST",
-        //            url: "/api/HausbegehungDefaultTerm",
-        //            data: JSON.stringify(newRow),
-        //            contentType: "application/json; charset=utf-8",
-        //            //dataType: "json",
-        //            success: function(r) {
-        //                alert("Success");
-        //                $('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
-        //            },
-        //            error: function(err) {
-        //                alert("Error");
-        //                console.log(JSON.stringify(err))
-        //            }
-        //        });
-
-        //        //$('#tblHbTerms tbody').append("<tr><td></td><td>Hello</td><td>world</td><td></td></tr>");
-        //        //var row1 = table.insertRow(-1);
-        //        //var cell1 = row1.insertCell(0);
-        //        //var cell2 = row1.insertCell(1);
-        //        //var cell3 = row1.insertCell(2);
-        //        //var cell4 = row1.insertCell(3);
-        //        //cell1.innerHTML = "NEW CELL1";
-        //        //cell2.innerHTML = "NEW CELL2";
-        //        //cell3.innerHTML = "NEW CELL3";
-        //        //cell4.innerHTML = "NEW CELL4";
-
-        //        //var id = row[0].children[0].children[0].value;
-        //        //console.log(id);
-        //    }
-        //    //var name = $("TD", row).eq(0).html();
-        //    //if (confirm("Do you want to delete: " + name)) {
-        //    //    //Get the reference of the Table.
-        //    //    var table = $("#tblHbTerms")[0];
-
-        //    //    console.log(table);
 
 
 
-        //    //$.ajax({
-        //    //    type: "DELETE",
-        //    //    url: "/api/HausbegehungDefaultTerm/" + id,
-        //    //    success: function(r) {
-        //    //        alert(JSON.stringify(r))
-        //    //        alert("Uspjesno obrisana stavka");
-        //    //        //alert(r + " record(s) deleted.");
-        //    //    },
-        //    //    error: function(err) {
-        //    //        alert(JSON.stringify(err));
-        //    //        alert("Nije uspjesno obrisana stavka");
-        //    //    }
-        //    //});
-        //    //Reference the Name and Country TextBoxes.
-        //    //var txtName = $("#txtName");
-        //    //var txtCountry = $("#txtCountry");
-
-        //    ////Get the reference of the Table's TBODY element.
-        //    //var tBody = $("#tblCustomers > TBODY")[0];
-
-        //    ////Add Row.
-        //    //var row = tBody.insertRow(-1);
-
-        //    ////Add Name cell.
-        //    //var cell = $(row.insertCell(-1));
-        //    //cell.html(txtName.val());
-
-        //    ////Add Country cell.
-        //    //cell = $(row.insertCell(-1));
-        //    //cell.html(txtCountry.val());
-
-        //    ////Add Button cell.
-        //    //cell = $(row.insertCell(-1));
-        //    //var btnRemove = $("<input />");
-        //    //btnRemove.attr("type", "button");
-        //    //btnRemove.attr("onclick", "Remove(this);");
-        //    //btnRemove.val("Remove");
-        //    //cell.append(btnRemove);
-
-        //    ////Clear the TextBoxes.
-        //    //txtName.val("");
-        //    //txtCountry.val("");
-        //});
-
-        //$("body").on("click", "#btnRemove", function Remove() {
-        //    //Determine the reference of the Row using the Button.
-        //    var row = $(this).closest("tr");
-        //    console.log(row);
-        //    if (confirm("Da li ste sigurni da želite da obrišete stavku?")) {
-        //        var table = $("#tblHbTerms")[0];
-        //        table.deleteRow(row[0].rowIndex);
-        //        var id = row[0].children[0].children[0].value;
-        //        console.log(id);
-        //    }
-        //    //var name = $("TD", row).eq(0).html();
-        //    //if (confirm("Do you want to delete: " + name)) {
-        //    //    //Get the reference of the Table.
-        //    //    var table = $("#tblHbTerms")[0];
-
-        //    //    console.log(table);
 
 
 
-        //    $.ajax({
-        //        type: "DELETE",
-        //        url: "/api/HausbegehungDefaultTerm/" + id,
-        //        success: function(r) {
-        //            alert(JSON.stringify(r))
-        //            alert("Uspjesno obrisana stavka");
-        //            //alert(r + " record(s) deleted.");
-        //        },
-        //        error: function(err) {
-        //            alert(JSON.stringify(err));
-        //            alert("Nije uspjesno obrisana stavka");
-        //        }
-        //    });
+                                                                                        //$(document).ready(
+                                                                                        //    function() {
+                                                                                        //        const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //            get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //        });
+                                                                                        //        console.log(params);
+                                                                                        //        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //        let year = params.year;
+                                                                                        //        let month = params.month;
+                                                                                        //        let date = params.date;
+                                                                                        //        $("#currentdate").val(date + '.' + (Number(month) + 1) + '.' + year);
 
-        //    //    //Delete the Table row using it's Index.
-        //    //    table.deleteRow(row[0].rowIndex);
-        //    //}
-        //});
 
-        //                                                                                                                        //$("body").on("click", "#btnSave", function () {
-                                                                                                                                ////    //Loop through the Table rows and build a JSON array.
-                                                                                                                                ////    var customers = new Array();
-                                                                                                                                ////    $("#tblCustomers TBODY TR").each(function () {
-                                                                                                                                ////        var row = $(this);
-                                                                                                                                ////        var customer = {};
-                                                                                                                                ////        customer.Name = row.find("TD").eq(0).html();
-                                                                                                                                ////        customer.Country = row.find("TD").eq(1).html();
-                                                                                                                                ////        customers.push(customer);
-                                                                                                                                ////    });
 
-                                                                                                                                ////    //Send the JSON array to Controller using AJAX.
-                                                                                                                                ////    $.ajax({
-                                                                                                                                ////        type: "POST",
-                                                                                                                                ////        url: "/Home/InsertCustomers",
-                                                                                                                                ////        data: JSON.stringify(customers),
-                                                                                                                                ////        contentType: "application/json; charset=utf-8",
-                                                                                                                                ////        dataType: "json",
-                                                                                                                                ////        success: function (r) {
-                                                                                                                                ////            alert(r + " record(s) inserted.");
-                                                                                                                                ////        }
-                                                                                                                                ////    });
-                                                                                                                                ////});
+                                                                                        //        $("body").on("click", "#btnReserve", function() {
+
+                                                                                        //            const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //                get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //            });
+                                                                                        //            console.log(params);
+                                                                                        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //            let addressId = params.address_id;
+
+
+                                                                                        //            var row = $(this).closest("tr");
+                                                                                        //            console.log(new Date( new Date().getFullYear() row[0].children[1].outerText));
+                                                                                        //            console.log(new Date(row[0].children[2].outerText));
+                                                                                        //            //var id = row[0].children[0].outerText;
+                                                                                        //            //var from = row[0].children[1].outerText;
+                                                                                        //            //var to = row[0].children[2].outerText;
+                                                                                        //            //var newRow = {};
+
+                                                                                        //            //newRow.hbfrom = from;
+                                                                                        //            //newRow.hbto = to;
+
+                                                                                        //            //// TODO: Set busy
+
+
+                                                                                        //            //$.ajax({
+                                                                                        //            //    type: "PUT",
+                                                                                        //            //    url: "/api/Hausbegehung/" + addressId,
+                                                                                        //            //    data: JSON.stringify(newRow),
+                                                                                        //            //    contentType: "application/json; charset=utf-8",
+                                                                                        //            //    //dataType: "json",
+                                                                                        //            //    success: function(r) {
+                                                                                        //            //        alert("Successfully reserved term.");
+                                                                                        //            //        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                                                                                        //            //    },
+                                                                                        //            //    error: function(err) {
+                                                                                        //            //        alert("Error");
+                                                                                        //            //        //console.log(JSON.stringify(err))
+                                                                                        //            //    }
+                                                                                        //            //});
+                                                                                        //        })
+
+
+
+                                                                                        //        $("#prev").click(function() {
+                                                                                        //            //const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //            //    get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //            //});
+                                                                                        //            //console.log(params);
+                                                                                        //            //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //            //let year = params.year;
+                                                                                        //            //let month = params.month;
+                                                                                        //            //let date = params.date;
+
+
+                                                                                        //            const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //                get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //            });
+                                                                                        //            console.log(params);
+                                                                                        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //            let addressId = params.address_id;
+                                                                                        //            let year = params.year;
+                                                                                        //            let month = params.month;
+                                                                                        //            let date = params.date;
+
+                                                                                        //            let prevDate = new Date(year, month, date);
+                                                                                        //            prevDate.setDate(prevDate.getDate() - 1);
+
+                                                                                        //            window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + prevDate.getFullYear() + '&month=' + (prevDate.getMonth().toFixed()) + '&date=' + prevDate.getDate();
+                                                                                        //            //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
+
+                                                                                        //            // PART BELOW WAS BEFORE REAL
+
+                                                                                        //            //let currentDateValues = $("#currentdate").val().split('.');
+                                                                                        //            //date = currentDateValues[0];
+                                                                                        //            //month = currentDateValues[1]-1;
+                                                                                        //            //year = currentDateValues[2];
+
+
+
+                                                                                        //            //let prevDate = new Date(year, month, date);
+                                                                                        //            //prevDate.setDate(prevDate.getDate() - 1);
+                                                                                        //            //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
+                                                                                        //            //alert(prevDate);
+                                                                                        //        });
+
+                                                                                        //        $("#next").click(function() {
+                                                                                        //            //const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //            //    get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //            //});
+                                                                                        //            //console.log(params);
+                                                                                        //            //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //            //let year = params.year;
+                                                                                        //            //let month = params.month;
+                                                                                        //            //let date = params.date;
+
+
+                                                                                        //            const params = new Proxy(new URLSearchParams(window.location.search), {
+                                                                                        //                get: (searchParams, prop) => searchParams.get(prop),
+                                                                                        //            });
+                                                                                        //            console.log(params);
+                                                                                        //            // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+                                                                                        //            let addressId = params.address_id;
+                                                                                        //            let year = params.year;
+                                                                                        //            let month = params.month;
+                                                                                        //            let date = params.date;
+
+                                                                                        //            let nextDate = new Date(year, month, date);
+                                                                                        //            nextDate.setDate(nextDate.getDate() + 1);
+
+                                                                                        //            window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + nextDate.getFullYear() + '&month=' + (nextDate.getMonth().toFixed()) + '&date=' + nextDate.getDate();
+
+                                                                                        //            // CODE BELOW
+
+                                                                                        //            //let currentDateValues = $("#currentdate").val().split('.');
+                                                                                        //            //date = currentDateValues[0];
+                                                                                        //            //month = currentDateValues[1] - 1;
+                                                                                        //            //year = currentDateValues[2];
+
+                                                                                        //            //let nextDate = new Date(year, month, date);
+                                                                                        //            //nextDate.setDate(nextDate.getDate() + 1);
+                                                                                        //            //$("#currentdate").val(nextDate.getDate() + '.' + (Number(nextDate.getMonth()) + 1) + '.' + nextDate.getFullYear());
+                                                                                        //            //alert(nextDate);
+                                                                                        //        });
+                                                                                        //        //alert(value);
+                                                                                        //        // document.getElementById("currentdate").valueAsDate = new Date();
+                                                                                        //        //// $("#currentDate").val('2022-06-30');
+
+                                                                                        //        // $("#prev").on("click", function() {
+                                                                                        //        //     console.log(document.getElementById("currentdate").value);// = document.getElementById("currentdate").valueAsDate.addDays(-1);
+                                                                                        //        //     console.log(new Date(document.getElementById("currentdate").value));
+                                                                                        //        //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(-1);
+                                                                                        //        // });
+
+                                                                                        //        // $("#next").on("click", function() {
+                                                                                        //        //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(1);
+                                                                                        //        //     //document.getElementById("currentdate").valueAsDate = document.getElementById("currentdate").valueAsDate.addDays(1);
+                                                                                        //        // });
+
+                                                                                        //    }
+                                                                                        //);
+                                                                                        //$("body").on("click", "#btnAdd", function() {
+
+                                                                                        //    var row = $(this).closest("tr");
+                                                                                        //    console.log(row);
+                                                                                        //    if (confirm("Da li ste sigurni da želite da unesete stavku?")) {
+                                                                                        //        var table = $("#tblHbTerms")[0];
+                                                                                        //        console.log($('#tblHbTerms tbody'));
+
+                                                                                        //        var newRow = {}
+                                                                                        //        newRow.hbfrom = row[0].children[1].children[0].value + ":00";
+                                                                                        //        newRow.hbto = row[0].children[2].children[0].value + ":00";
+
+                                                                                        //        console.log(JSON.stringify(newRow));
+
+                                                                                        //        //$("#tblCustomers TBODY TR").each(function () {
+                                                                                        //        //                            var row = $(this);
+                                                                                        //        //                            var customer = {};
+                                                                                        //        //                            customer.Name = row.find("TD").eq(0).html();
+                                                                                        //        //                            customer.Country = row.find("TD").eq(1).html();
+                                                                                        //        //                            customers.push(customer);
+                                                                                        //        //                        });
+
+                                                                                        //        //Send the JSON array to Controller using AJAX.
+                                                                                        //        $.ajax({
+                                                                                        //            type: "POST",
+                                                                                        //            url: "/api/HausbegehungDefaultTerm",
+                                                                                        //            data: JSON.stringify(newRow),
+                                                                                        //            contentType: "application/json; charset=utf-8",
+                                                                                        //            //dataType: "json",
+                                                                                        //            success: function(r) {
+                                                                                        //                alert("Success");
+                                                                                        //                $('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                                                                                        //            },
+                                                                                        //            error: function(err) {
+                                                                                        //                alert("Error");
+                                                                                        //                console.log(JSON.stringify(err))
+                                                                                        //            }
+                                                                                        //        });
+
+                                                                                        //        //$('#tblHbTerms tbody').append("<tr><td></td><td>Hello</td><td>world</td><td></td></tr>");
+                                                                                        //        //var row1 = table.insertRow(-1);
+                                                                                        //        //var cell1 = row1.insertCell(0);
+                                                                                        //        //var cell2 = row1.insertCell(1);
+                                                                                        //        //var cell3 = row1.insertCell(2);
+                                                                                        //        //var cell4 = row1.insertCell(3);
+                                                                                        //        //cell1.innerHTML = "NEW CELL1";
+                                                                                        //        //cell2.innerHTML = "NEW CELL2";
+                                                                                        //        //cell3.innerHTML = "NEW CELL3";
+                                                                                        //        //cell4.innerHTML = "NEW CELL4";
+
+                                                                                        //        //var id = row[0].children[0].children[0].value;
+                                                                                        //        //console.log(id);
+                                                                                        //    }
+                                                                                        //    //var name = $("TD", row).eq(0).html();
+                                                                                        //    //if (confirm("Do you want to delete: " + name)) {
+                                                                                        //    //    //Get the reference of the Table.
+                                                                                        //    //    var table = $("#tblHbTerms")[0];
+
+                                                                                        //    //    console.log(table);
+
+
+
+                                                                                        //    //$.ajax({
+                                                                                        //    //    type: "DELETE",
+                                                                                        //    //    url: "/api/HausbegehungDefaultTerm/" + id,
+                                                                                        //    //    success: function(r) {
+                                                                                        //    //        alert(JSON.stringify(r))
+                                                                                        //    //        alert("Uspjesno obrisana stavka");
+                                                                                        //    //        //alert(r + " record(s) deleted.");
+                                                                                        //    //    },
+                                                                                        //    //    error: function(err) {
+                                                                                        //    //        alert(JSON.stringify(err));
+                                                                                        //    //        alert("Nije uspjesno obrisana stavka");
+                                                                                        //    //    }
+                                                                                        //    //});
+                                                                                        //    //Reference the Name and Country TextBoxes.
+                                                                                        //    //var txtName = $("#txtName");
+                                                                                        //    //var txtCountry = $("#txtCountry");
+
+                                                                                        //    ////Get the reference of the Table's TBODY element.
+                                                                                        //    //var tBody = $("#tblCustomers > TBODY")[0];
+
+                                                                                        //    ////Add Row.
+                                                                                        //    //var row = tBody.insertRow(-1);
+
+                                                                                        //    ////Add Name cell.
+                                                                                        //    //var cell = $(row.insertCell(-1));
+                                                                                        //    //cell.html(txtName.val());
+
+                                                                                        //    ////Add Country cell.
+                                                                                        //    //cell = $(row.insertCell(-1));
+                                                                                        //    //cell.html(txtCountry.val());
+
+                                                                                        //    ////Add Button cell.
+                                                                                        //    //cell = $(row.insertCell(-1));
+                                                                                        //    //var btnRemove = $("<input />");
+                                                                                        //    //btnRemove.attr("type", "button");
+                                                                                        //    //btnRemove.attr("onclick", "Remove(this);");
+                                                                                        //    //btnRemove.val("Remove");
+                                                                                        //    //cell.append(btnRemove);
+
+                                                                                        //    ////Clear the TextBoxes.
+                                                                                        //    //txtName.val("");
+                                                                                        //    //txtCountry.val("");
+                                                                                        //});
+
+                                                                                        //$("body").on("click", "#btnRemove", function Remove() {
+                                                                                        //    //Determine the reference of the Row using the Button.
+                                                                                        //    var row = $(this).closest("tr");
+                                                                                        //    console.log(row);
+                                                                                        //    if (confirm("Da li ste sigurni da želite da obrišete stavku?")) {
+                                                                                        //        var table = $("#tblHbTerms")[0];
+                                                                                        //        table.deleteRow(row[0].rowIndex);
+                                                                                        //        var id = row[0].children[0].children[0].value;
+                                                                                        //        console.log(id);
+                                                                                        //    }
+                                                                                        //    //var name = $("TD", row).eq(0).html();
+                                                                                        //    //if (confirm("Do you want to delete: " + name)) {
+                                                                                        //    //    //Get the reference of the Table.
+                                                                                        //    //    var table = $("#tblHbTerms")[0];
+
+                                                                                        //    //    console.log(table);
+
+
+
+                                                                                        //    $.ajax({
+                                                                                        //        type: "DELETE",
+                                                                                        //        url: "/api/HausbegehungDefaultTerm/" + id,
+                                                                                        //        success: function(r) {
+                                                                                        //            alert(JSON.stringify(r))
+                                                                                        //            alert("Uspjesno obrisana stavka");
+                                                                                        //            //alert(r + " record(s) deleted.");
+                                                                                        //        },
+                                                                                        //        error: function(err) {
+                                                                                        //            alert(JSON.stringify(err));
+                                                                                        //            alert("Nije uspjesno obrisana stavka");
+                                                                                        //        }
+                                                                                        //    });
+
+                                                                                        //    //    //Delete the Table row using it's Index.
+                                                                                        //    //    table.deleteRow(row[0].rowIndex);
+                                                                                        //    //}
+                                                                                        //});
+
+                                                                                        //                                                                                                                        //$("body").on("click", "#btnSave", function () {
+                                                                                                                                                                                                                ////    //Loop through the Table rows and build a JSON array.
+                                                                                                                                                                                                                ////    var customers = new Array();
+                                                                                                                                                                                                                ////    $("#tblCustomers TBODY TR").each(function () {
+                                                                                                                                                                                                                ////        var row = $(this);
+                                                                                                                                                                                                                ////        var customer = {};
+                                                                                                                                                                                                                ////        customer.Name = row.find("TD").eq(0).html();
+                                                                                                                                                                                                                ////        customer.Country = row.find("TD").eq(1).html();
+                                                                                                                                                                                                                ////        customers.push(customer);
+                                                                                                                                                                                                                ////    });
+
+                                                                                                                                                                                                                ////    //Send the JSON array to Controller using AJAX.
+                                                                                                                                                                                                                ////    $.ajax({
+                                                                                                                                                                                                                ////        type: "POST",
+                                                                                                                                                                                                                ////        url: "/Home/InsertCustomers",
+                                                                                                                                                                                                                ////        data: JSON.stringify(customers),
+                                                                                                                                                                                                                ////        contentType: "application/json; charset=utf-8",
+                                                                                                                                                                                                                ////        dataType: "json",
+                                                                                                                                                                                                                ////        success: function (r) {
+                                                                                                                                                                                                                ////            alert(r + " record(s) inserted.");
+                                                                                                                                                                                                                ////        }
+                                                                                                                                                                                                                ////    });
+                                                                                                                                                                                                                ////});
     </script>
 }          

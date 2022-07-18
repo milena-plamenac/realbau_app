@@ -91,5 +91,34 @@ namespace realbau_app.api.Repositories.Implementations
                 return null;
             }
         }
+
+        public async Task Insert(HausbegehungTermDB term)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+                {
+                    String query = "insert into dbo.hausbegehung_term (hbdate, hbfrom, hbto, busy) values (@hbdate, @hbfrom, @hbto, @busy)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
+                        command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
+                        command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
+                        command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
+                        //command.Parameters.AddWithValue("@created_by", null);
+                        //command.Parameters.AddWithValue("@creted_on", null);
+
+                        connection.Open();
+                        int result = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
     }
 }
