@@ -25,9 +25,9 @@ namespace realbau_app.api.Repositories.Implementations
                     {
                         HausbegehungTermDB resultItem = new HausbegehungTermDB();
                         resultItem.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
-                        resultItem.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : DateOnly.FromDateTime((DateTime)reader["hbdate"]);
-                        resultItem.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (TimeSpan?)reader["hbfrom"];
-                        resultItem.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (TimeSpan?)reader["hbto"];
+                        resultItem.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateTime?)reader["hbdate"];
+                        resultItem.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (DateTime?)reader["hbfrom"];
+                        resultItem.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
                         resultItem.busy = Convert.IsDBNull(reader["busy"]) ? null : (int?)reader["busy"];
                         resultItem.created_by = Convert.IsDBNull(reader["created_by"]) ? null : (int?)reader["created_by"];
                         resultItem.created_on = Convert.IsDBNull(reader["created_on"]) ? null : (DateTime?)reader["created_on"];
@@ -98,14 +98,16 @@ namespace realbau_app.api.Repositories.Implementations
             {
                 using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
-                    String query = "insert into dbo.hausbegehung_term (hbdate, hbfrom, hbto, busy) values (@hbdate, @hbfrom, @hbto, @busy)";
+                    String query = "insert into dbo.hausbegehung_term (city, pop, hbdate, hbfrom, hbto, busy) values (@city, @pop, @hbdate, @hbfrom, @hbto, @busy)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@city", (term.city == null) ? DBNull.Value : term.city);
+                        command.Parameters.AddWithValue("@pop", (term.pop == null) ? DBNull.Value : term.pop);
                         command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
                         command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
                         command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
-                        command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
+                        command.Parameters.AddWithValue("@busy", (term.busy == null) ? 0 : term.busy);
                         //command.Parameters.AddWithValue("@created_by", null);
                         //command.Parameters.AddWithValue("@creted_on", null);
 
