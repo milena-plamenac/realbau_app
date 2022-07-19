@@ -53,22 +53,28 @@
             <thead>
                 <tr>
                     <th hidden>Id</th>
-                    <th>Od</th>
-                    <th>Do</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Busy</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var d in Model)
+                @foreach (var term in Model)
                 {
 
-                    <tr>
-                        <td hidden><input type="text" value="@d.id" /></td>
-                        <td>@d.hbfrom?.ToString("HH:mm")</td>
-                        <td>@d.hbto?.ToString("HH:mm")</td>
+                    <tr id="tr_@term.id">
+                        <td hidden><input type="text" value="@term.id" /></td>
+                        <td>@term.hbfrom?.ToString("HH:mm")</td>
+                        <td>@term.hbto?.ToString("HH:mm")</td>
+                        <td>@if (term.busy == 1)
+                            {
+                                <i class="material-icons left">check</i>
+                            }
+                        </td>
                         @* <td><input type="time" value="@d.hbfrom" /></td>
                 <td><input type="time" value="@d.hbto" /></td>*@
-                        <td><input class="btn btn-danger" type="button" id="btnRemove_@d.id" value="Remove" /></td>
+                        <td><input class="btn btn-danger btnRemove" type="button" id="btnRemove_@term.id" value="Remove" disabled="@(term.busy == 1)"/></td>
                     </tr>
                 }
             </tbody>
@@ -76,8 +82,9 @@
                 <tr>
                     <td hidden></td>
                     @*<td><input class="form-control" type="time" id="newHbFrom" /></td>*@
-                    <td><input type="text" class="timepicker" id="newHbFrom"></td>
-                    <td><input class="form-control" type="time" id="newHbTo" /></td>
+                    <td><input type="text" class="timepicker" id="newHbFrom" placeholder="Term from"></td>
+                    @*<td><input class="form-control" type="time" id="newHbTo" /></td>*@
+                    <td><input type="text" class="timepicker" id="newHbTo" placeholder="Term to"></td>
                     <td><input class="btn btn-primary" type="button" id="btnAdd" value="Add" /></td>
                 </tr>
             </tfoot>
@@ -143,7 +150,7 @@
         $(document).ready(
             function() {
                 $('.datepicker').datepicker();
-                $('.timepicker').timepicker();
+                $('.timepicker').timepicker({twelveHour: false});
                 checkParams();
 
             })
@@ -195,9 +202,26 @@
             let pop = params.pop;
             let dateTime = params.dateTime;
 
+            //console.log(row[0].children[1].children[0].value);
+            //console.log(row[0].children[2].children[0].value);
+
+            //console.log($("#newHbFrom"));
+            //console.log($("#newHbTo"));
+
+            //console.log($("#newHbFrom")[0].value);
+            //console.log($("#newHbTo")[0].value);
+
+            //return;
+
+            let timeFrom = $("#newHbFrom")[0].value;
+            let timeTo = $("#newHbTo")[0].value;
+
+            console.log(timeFrom);
+            console.log(timeTo);
+
             var newRow = {}
-            newRow.hbfrom = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + row[0].children[1].children[0].value + ":00Z";
-            newRow.hbto = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + row[0].children[2].children[0].value + ":00Z";
+            newRow.hbfrom = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + timeFrom + ":00Z";
+            newRow.hbto = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + timeTo + ":00Z";
             newRow.hbdate = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString();
             newRow.city = city;
             newRow.pop = pop;
@@ -212,7 +236,9 @@
                 //dataType: "json",
                 success: function(r) {
                     alert("Successfully added new hb term!");
-                    $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + row[0].children[1].children[0].value + "</td><td>" + row[0].children[2].children[0].value + "</td><td><input class=\"btn btn-danger\" type=\"button\" id=\"btnRemove\" value=\"Remove\" /></td></tr>");
+                    $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + timeFrom + "</td><td>" + timeTo + "</td><td></td><td><input class=\"btn btn-danger\" type=\"button\" id=\"btnRemove\" value=\"Remove\" /></td></tr>");
+               
+                    //$('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + row[0].children[1].children[0].value + "</td><td>" + row[0].children[2].children[0].value + "</td><td><input class=\"btn btn-danger\" type=\"button\" id=\"btnRemove\" value=\"Remove\" /></td></tr>");
                 },
                 error: function(err) {
                     alert("Error. Please, try again!");
@@ -222,25 +248,50 @@
         });
 
 
-        $("body").on("click", "#btnRemove", function Remove() {
+        $("body").on("click", ".btnRemove", function Confirm() {
             var row = $(this).closest("tr");
+            console.log(row[0].rowIndex);
+            console.log(row[0].id.split("_")[1]);
+            //if (confirm("Are you sure you want to remove the term?")) {
+
+            var toastHTML = '<span>Please, confirm?</span><button class="btn-flat toast-action" id="confirmTermDelete">Confirm</button>';
+             M.toast({html: toastHTML});
+            //    var table = $("#tblHbTerms")[0];
+            //    table.deleteRow(row[0].rowIndex);
+            //    var id = row[0].children[0].children[0].value;
+            //    console.log(id);
+            ////}
+            //$.ajax({
+            //    type: "DELETE",
+            //    url: "/api/HausbegehungTerm/" + id,
+            //    success: function(r) {
+            //        alert("Successfully removed term!");
+            //    },
+            //    error: function(err) {
+            //        alert(JSON.stringify(err));
+            //        alert("Error! Please, try again.");
+            //    }
+            //});
+        });
+
+        $("body").on("click", "#confirmTermDelete", function Remove(index, address_id) {
+            var row = $() //$(this).closest("tr");
             console.log(row);
-            if (confirm("Are you sure you want to remove the term?")) {
+   
                 var table = $("#tblHbTerms")[0];
                 table.deleteRow(row[0].rowIndex);
                 var id = row[0].children[0].children[0].value;
                 console.log(id);
-            }
+  
             $.ajax({
                 type: "DELETE",
-                url: "/api/HausbegehungDefaultTerm/" + id,
+                url: "/api/HausbegehungTerm/" + id,
                 success: function(r) {
-                    alert(JSON.stringify(r))
-                    alert("Uspjesno obrisana stavka");
+                    alert("Successfully removed term!");
                 },
                 error: function(err) {
                     alert(JSON.stringify(err));
-                    alert("Nije uspjesno obrisana stavka");
+                    alert("Error! Please, try again.");
                 }
             });
         });

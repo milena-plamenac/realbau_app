@@ -128,7 +128,7 @@ namespace realbau_app.api.Controllers
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             {
@@ -140,7 +140,7 @@ namespace realbau_app.api.Controllers
                     command.Parameters.AddWithValue("@id", id);
 
                     connection.Open();
-                    int result = command.ExecuteNonQuery();
+                    int result = await command.ExecuteNonQueryAsync();
                 }
             }
         }
