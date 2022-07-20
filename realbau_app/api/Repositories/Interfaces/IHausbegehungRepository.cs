@@ -6,6 +6,6 @@ namespace realbau_app.api.Repositories.Interfaces
     {
         public Task<IEnumerable<HausbegehungTermDB>> HausbegehungTermsForDate(string city, string pop, int year, int month,int date);
 
-        public Task Insert(HausbegehungTermDB term); 
+        public Task<HausbegehungTermDB> Insert(HausbegehungTermDB term); 
     }
 }

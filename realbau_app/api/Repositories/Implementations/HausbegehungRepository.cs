@@ -15,7 +15,7 @@ namespace realbau_app.api.Repositories.Implementations
                 using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
                     con.Open();
-                    var cmd = new SqlCommand("select * from dbo.hausbegehung_term where city = @city and pop = @pop and hbdate = @hbdate", con);
+                    var cmd = new SqlCommand("select * from dbo.hausbegehung_term where city = @city and pop = @pop and hbdate = @hbdate order by Datepart(hour, hbfrom)", con);
                     cmd.Parameters.AddWithValue("@hbdate", year.ToString() + '-' + month.ToString() + '-' + date.ToString());
                     cmd.Parameters.AddWithValue("@city", city);
                     cmd.Parameters.AddWithValue("@pop", pop);
@@ -92,13 +92,13 @@ namespace realbau_app.api.Repositories.Implementations
             }
         }
 
-        public async Task Insert(HausbegehungTermDB term)
+        public async Task<HausbegehungTermDB> Insert(HausbegehungTermDB term)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
-                    String query = "insert into dbo.hausbegehung_term (city, pop, hbdate, hbfrom, hbto, busy) values (@city, @pop, @hbdate, @hbfrom, @hbto, @busy)";
+                    String query = "insert into dbo.hausbegehung_term (city, pop, hbdate, hbfrom, hbto, busy)  OUTPUT INSERTED.[ID] values (@city, @pop, @hbdate, @hbfrom, @hbto, @busy)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -112,14 +112,24 @@ namespace realbau_app.api.Repositories.Implementations
                         //command.Parameters.AddWithValue("@creted_on", null);
 
                         connection.Open();
-                        int result = await command.ExecuteNonQueryAsync();
-
+                        int result = (int)await command.ExecuteScalarAsync();
+                 
+                        return new HausbegehungTermDB()
+                        {
+                            city = term.city,
+                            pop = term.pop,
+                            hbdate = term.hbdate,
+                            hbfrom = term.hbfrom,
+                            hbto = term.hbto,
+                            busy = term.busy,
+                            id = result   
+                        };
                     }
                 }
             }
             catch(Exception e)
             {
-
+                return null;
             }
         }
     }
