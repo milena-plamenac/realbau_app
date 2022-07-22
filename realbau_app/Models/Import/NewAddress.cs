@@ -2,7 +2,7 @@
 {
     public class NewAddress
     {
-
+        public int? Accepted { get; set; }
         public string? Bestellnummer { get; set; }   
         public string? SP_Name { get; set; }
         public string? Name { get; set; }

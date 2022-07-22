@@ -6,7 +6,7 @@
 <h4 class="center-align">Import of addresses</h4>
 <p class="center-align">Please, select DG csv file</p>
 <div class="container center-align">
-    <form method="post" asp-action="NewAddresses" asp-controller="Import" enctype="multipart/form-data" onsubmit="showLoader(this)">
+    <form method="post" asp-action="GetNewAddresses" asp-controller="Import" enctype="multipart/form-data" onsubmit="showLoader(this)">
         <input type="file" name="addressFile" />
         <button type="submit" class="btn btn-primary">Import csv</button>
     </form>

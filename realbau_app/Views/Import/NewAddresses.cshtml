@@ -6,9 +6,27 @@
 @*<form id="addresses" asp-controller="Home" asp-action="Addresses" method="POST">*@
 @* using (Html.BeginForm("Addresses", "Home", FormMethod.Post))
     {*@
+
+<div class="row">
+    <div class="col s6 m4 l2">
+        <button class="btn selectAll" id="selectAll_@Model.Count()">Select all addresses</button>
+    </div>
+    <div class="col s6 m4 l2">
+        <form method="post" asp-action="GetNewAddresses" asp-controller="Import">
+        
+        <button type="submit" class="btn btn-primary">Insert selected addresses</button>
+        </form>
+    </div>
+
+</div>
+
+@{
+    int i = 0;
+}
 <table class="table table-bordered table-responsive" id="newaddresses" style="overflow:scroll; width:500px; ">
     <tr>
-        <th hidden></th>
+        <th>Index</th>
+        <th>Accepted</th>
         <th>Accept</th>
         <th>Bestellnummer </th>
         <th>SP_Name </th>
@@ -35,10 +53,11 @@
     {
 
 
-        <tr id="'tr'+ @address.Ort + '_' + @address.Zipcode + '_' + @address.Straße + '_' + @address.Nummer + '_' + @address.NrZusatz + '_' + @address.WeitereSusatz">
-            <td hidden id="accepted @address.Ort @address.Zipcode @address.Straße @address.Nummer @address.NrZusatz @address.WeitereSusatz">0</td>
+        <tr id="tr_@i">
+            <td><span>@i</span></td>
+            <td id="accepted_@i">@address.Accepted</td>
             <td>
-                <button  class="btn btn-primary acceptBtn" id="acceptBtn @address.Ort @address.Zipcode @address.Straße @address.Nummer @address.NrZusatz @address.WeitereSusatz" ><i class="material-icons left">check</i></button>
+                <button class="btn btn-primary acceptBtn" id="acceptBtn_@i"><i class="material-icons left">check</i></button>
 
             </td>
             <td>@address.Bestellnummer</td>
@@ -65,7 +84,7 @@
 
 
         </tr>
-
+        i++;
     }
 
 
@@ -110,135 +129,146 @@ $(function() {
 
     <script>
         $(".acceptBtn").on("click", function() {
-            var buttonId = this.id;
-            //console.log(buttonId);
-            var data = buttonId.split(' ');
+            //var buttonId = this.id;
+            ////console.log(buttonId);
+            //var data = buttonId.split(' ');
 
-            //console.log(data);
+            ////console.log(data);
 
-            var city = data[1];
-            var tzip = data[2];
-            var street = data[3];
-            var housenumber = data[4];
-            var subnumber = data[5];
-            var unit = data[6];
+            //var city = data[1];
+            //var tzip = data[2];
+            //var street = data[3];
+            //var housenumber = data[4];
+            //var subnumber = data[5];
+            //var unit = data[6];
 
-            console.log(city);
-            console.log(tzip);
-            console.log(street);
-            console.log(housenumber);
-            console.log(subnumber);
-            console.log(unit);
+            //console.log(city);
+            //console.log(tzip);
+            //console.log(street);
+            //console.log(housenumber);
+            //console.log(subnumber);
+            //console.log(unit);
 
-            //toggleAddressColor(city, tzip, street, housenumber, subnumber, unit);
+            var id = this.id;
+            var index = this.id.split('_')[1];
+            console.log($("#accepted_" + index));
+            toggleAddressColor(index);
 
-            var accepted = $("#tr " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit);
-    console.log("#tr " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit);
-    console.log(accepted);
-    //var isAccepted = $("#accepted " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit).innerText;
-    //alert(isAccepted);
 
         })
 
 
 
-function toggleAddressColor(city, tzip, street, housenumber, subnumber, unit){
-    var accepted = $("#accepted " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit);
-    console.log("#accepted " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit);
-    console.log(accepted);
-    var isAccepted = $("#accepted " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit).innerText;
-    alert(isAccepted);
-    //$("tr " + city + " " + tzip + " " + street + " " + housenumber + " " + subnumber + " " + unit);
+        function toggleAddressColor(index) {
+            var tr = $("#tr_" + index);
+            var acceped = $("#accepted_" + index);
+            var isAccepted = acceped[0].innerText;
 
-} 
+            if (isAccepted == 1) {
+                $("#tr_" + index)[0].style.backgroundColor = 'transparent';
+                $("#accepted_" + index)[0].innerText = 0;
+            }
+            else {
+                $("#tr_" + index)[0].style.backgroundColor = '#e0e0e0';
+                $("#accepted_" + index)[0].innerText = 1;
+            }
 
-                //$(".acceptBtn").on("click", function() {
+        }
 
-                //    var row = $(this).closest("tr");
-                //    console.log(row);
-                //    //if (confirm("Da li ste sigurni da želite da unesete stavku?")) {
-                //    var table = $("#newaddresses")[0];
-                //    //console.log($('#tblHbTerms tbody'));
-                //    //var table = $("#tblHbTerms")[0];
+        $(".selectAll").on("click", function() {
+            addressCount = this.id.split('_')[1];
+            for (let i = 0; i < addressCount; i++) {
+                toggleAddressColor(i);
+            }
+        })
 
+                                //$(".acceptBtn").on("click", function() {
 
-
-
-
-
-
-
-                //    var newRow = {}
-                //    newRow.orderid = 0;
-                //    newRow.orderdate = new Date();
-                //    newRow.projectname = "";
-                //    newRow.dp = 0;
-                //    newRow.dpfinish = 0;
-                //    newRow.popfinish = 0;
-                //    newRow.comment = "";
-                //    //newRow.connectiondate = null;
-                //    //newRow.completiondate = null;
-                //    newRow.co_id = 0;
-                //    newRow.firstname = "";
-                //    newRow.status = "";
-                //    newRow.servicepackage = 0;
-
-                //    //alert(row[0].children[1].textContent);
-                //    //return;
+                                //    var row = $(this).closest("tr");
+                                //    console.log(row);
+                                //    //if (confirm("Da li ste sigurni da želite da unesete stavku?")) {
+                                //    var table = $("#newaddresses")[0];
+                                //    //console.log($('#tblHbTerms tbody'));
+                                //    //var table = $("#tblHbTerms")[0];
 
 
-                //    newRow.bestellnummer = row[0].children[1].textContent;
-                //    newRow.provider = row[0].children[2].textContent;
-                //    newRow.name = row[0].children[3].textContent;
-                //    newRow.phone = row[0].children[4].textContent;
-                //    newRow.phone2 = row[0].children[5].textContent;
-                //    newRow.email = row[0].children[6].textContent;
-                //    newRow.city = row[0].children[7].textContent;
-
-                //    newRow.tzip = row[0].children[8].textContent;
-                //    newRow.street = row[0].children[9].textContent;
-                //    newRow.housenumber = row[0].children[10].textContent;
-                //    newRow.zusat = row[0].children[11].textContent;
-                //    newRow.unit = row[0].children[12].textContent;
-                //    newRow.arsstatus = row[0].children[13].textContent;
-
-                //    newRow.areapop = row[0].children[14].textContent;
-                //    newRow.IP_ODF = row[0].children[15].textContent;
-                //    newRow.IP_Port = row[0].children[16].textContent;
-                //    newRow.TV_ODF = row[0].children[17].textContent;
-
-                //    newRow.projectcode = row[0].children[18].textContent;
-                //    newRow.kennwort = row[0].children[19].textContent;
-                //    newRow.subtype = row[0].children[20].textContent;
 
 
-                //    console.log(JSON.stringify(newRow));
 
-                //    //$("#tblCustomers TBODY TR").each(function () {
-                //    //                            var row = $(this);
-                //    //                            var customer = {};
-                //    //                            customer.Name = row.find("TD").eq(0).html();
-                //    //                            customer.Country = row.find("TD").eq(1).html();
-                //    //                            customers.push(customer);
-                //    //                        });
 
-                //    //Send the JSON array to Controller using AJAX.
-                //    $.ajax({
-                //        type: "POST",
-                //        url: "/api/Address",
-                //        data: JSON.stringify(newRow),
-                //        contentType: "application/json; charset=utf-8",
-                //        //dataType: "json",
-                //        success: function(r) {
-                //            //alert("Success");
-                //            table.deleteRow(row[0].rowIndex);
-                //            //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
-                //        },
-                //        error: function(err) {
-                //            alert("Error in address insert! Please, try again.");
-                //            console.log(JSON.stringify(err))
-                //        }
-                //    });
-                //});
+
+
+                                //    var newRow = {}
+                                //    newRow.orderid = 0;
+                                //    newRow.orderdate = new Date();
+                                //    newRow.projectname = "";
+                                //    newRow.dp = 0;
+                                //    newRow.dpfinish = 0;
+                                //    newRow.popfinish = 0;
+                                //    newRow.comment = "";
+                                //    //newRow.connectiondate = null;
+                                //    //newRow.completiondate = null;
+                                //    newRow.co_id = 0;
+                                //    newRow.firstname = "";
+                                //    newRow.status = "";
+                                //    newRow.servicepackage = 0;
+
+                                //    //alert(row[0].children[1].textContent);
+                                //    //return;
+
+
+                                //    newRow.bestellnummer = row[0].children[1].textContent;
+                                //    newRow.provider = row[0].children[2].textContent;
+                                //    newRow.name = row[0].children[3].textContent;
+                                //    newRow.phone = row[0].children[4].textContent;
+                                //    newRow.phone2 = row[0].children[5].textContent;
+                                //    newRow.email = row[0].children[6].textContent;
+                                //    newRow.city = row[0].children[7].textContent;
+
+                                //    newRow.tzip = row[0].children[8].textContent;
+                                //    newRow.street = row[0].children[9].textContent;
+                                //    newRow.housenumber = row[0].children[10].textContent;
+                                //    newRow.zusat = row[0].children[11].textContent;
+                                //    newRow.unit = row[0].children[12].textContent;
+                                //    newRow.arsstatus = row[0].children[13].textContent;
+
+                                //    newRow.areapop = row[0].children[14].textContent;
+                                //    newRow.IP_ODF = row[0].children[15].textContent;
+                                //    newRow.IP_Port = row[0].children[16].textContent;
+                                //    newRow.TV_ODF = row[0].children[17].textContent;
+
+                                //    newRow.projectcode = row[0].children[18].textContent;
+                                //    newRow.kennwort = row[0].children[19].textContent;
+                                //    newRow.subtype = row[0].children[20].textContent;
+
+
+                                //    console.log(JSON.stringify(newRow));
+
+                                //    //$("#tblCustomers TBODY TR").each(function () {
+                                //    //                            var row = $(this);
+                                //    //                            var customer = {};
+                                //    //                            customer.Name = row.find("TD").eq(0).html();
+                                //    //                            customer.Country = row.find("TD").eq(1).html();
+                                //    //                            customers.push(customer);
+                                //    //                        });
+
+                                //    //Send the JSON array to Controller using AJAX.
+                                //    $.ajax({
+                                //        type: "POST",
+                                //        url: "/api/Address",
+                                //        data: JSON.stringify(newRow),
+                                //        contentType: "application/json; charset=utf-8",
+                                //        //dataType: "json",
+                                //        success: function(r) {
+                                //            //alert("Success");
+                                //            table.deleteRow(row[0].rowIndex);
+                                //            //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                                //        },
+                                //        error: function(err) {
+                                //            alert("Error in address insert! Please, try again.");
+                                //            console.log(JSON.stringify(err))
+                                //        }
+                                //    });
+                                //});
     </script>
                                  }

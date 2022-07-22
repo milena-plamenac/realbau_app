@@ -31,7 +31,8 @@ namespace realbau_app.Controllers
         //}
 
         // Import excela 
-        public async Task<IActionResult> NewAddresses(IFormFile addressFile)
+        [HttpPost]
+        public async Task<IActionResult> GetNewAddresses(IFormFile addressFile)
         {
             List<NewAddress> newAddresses = new List<NewAddress>();
 
@@ -258,6 +259,12 @@ namespace realbau_app.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> NewAddresses(IEnumerable<NewAddress> addresses)
+        {
+            return View("NewAddresses", addresses);
+        }
+
         public IActionResult RncUpdate()
         {
             //ViewBag.message = "Get";
@@ -359,6 +366,7 @@ namespace realbau_app.Controllers
 
 
         }
+
 
     }
 
