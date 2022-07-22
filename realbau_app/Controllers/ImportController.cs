@@ -259,11 +259,17 @@ namespace realbau_app.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> NewAddresses(IEnumerable<NewAddress> addresses)
-        {
-            return View("NewAddresses", addresses);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> NewAddresses()
+        //{
+        //    return View("NewAddresses", addresses);
+        //}
+
+        //[HttpPost("NewAddresses")]
+        //public async Task<IActionResult> NewAddresses(IEnumerable<NewAddress> addresses)
+        //{
+        //    return View("NewAddresses", addresses);
+        //}
 
         public IActionResult RncUpdate()
         {
