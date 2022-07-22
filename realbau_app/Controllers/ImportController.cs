@@ -138,10 +138,11 @@ namespace realbau_app.Controllers
                         {
                             // TODO: Changed addresses
                         }
-                            
+
 
                         //if(newAddresses.Count() >0)
                         //return View("NewAddresses", newAddresses);
+                        if (newAddresses.Count >= 10) break;
                     }
                 }
 
