@@ -31,6 +31,8 @@ namespace realbau_app.api.Repositories.Implementations
                         resultItem.busy = Convert.IsDBNull(reader["busy"]) ? null : (int?)reader["busy"];
                         resultItem.created_by = Convert.IsDBNull(reader["created_by"]) ? null : (int?)reader["created_by"];
                         resultItem.created_on = Convert.IsDBNull(reader["created_on"]) ? null : (DateTime?)reader["created_on"];
+                        resultItem.city = Convert.IsDBNull(reader["city"]) ? null : (string?)reader["city"];
+                        resultItem.pop = Convert.IsDBNull(reader["pop"]) ? null : (string?)reader["pop"];
 
                         result.Add(resultItem);
                     }

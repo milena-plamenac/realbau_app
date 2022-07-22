@@ -28,7 +28,11 @@
                         <input class="materialize-input" id="popFilter" />
                         <label for="popFilter">Filter by pop</label>
                     </div>
-                    <div class="col s12 m6 l1">
+                    <div col s12 m6 l6>
+                        <h5>Get data</h5>
+                        <button class="btn">HB not done</button>
+                    </div>
+                   @* <div class="col s12 m6 l1">
 
                         <p>
                             <label>
@@ -81,7 +85,7 @@
                                 <span>Vermessung</span>
                             </label>
                         </p>
-                    </div>
+                    </div>*@
                 </div>
 
                 @*<div class="row">
@@ -106,8 +110,8 @@
 
 <style>
     /*i {
-                            color: darkgreen !important;
-                        }*/
+                                                                    color: darkgreen !important;
+                                                                }*/
 
     table {
         margin: 1rem !important;
@@ -248,8 +252,8 @@
             <div class="collapsible-header" id="header_@address.id">
                 <div class="row" style="margin: 0">
                     @*<div class="col s1 m1 l1">*@
-                    <span class="citySpan">@address.city</span>
-                    <span class="areapopSpan">@address.areapop</span>
+                    <span class="citySpan" id="citySpan_@address.id">@address.city</span>
+                    <span class="areapopSpan" id="areapopSpan_@address.id">@address.areapop</span>
                     <span class="nameSpan">@address.name</span>
                     <span class="addressSpan">@address.street, @address.housenumber @address.subnumber, @address.unit</span>
                     <span class="phoneSpan">@address.phone</span>
@@ -340,12 +344,13 @@
                 <div class="row">
                     <div class="col s12">
                         <ul class="tabs">
-                            <li class="tab col s1"><a href="#hausbegehung_@address.id" class="active">Hausbegehung</a></li>
+                            <li class="tab col s2"><a href="#hausbegehung_@address.id" class="active">Hausbegehung</a></li>
+                            <li class="tab col s1"><a href="#hbterms_@address.id" class="hbTerms" id="@address.city @address.areapop @address.id">HB terms</a></li>
                             <li class="tab col s1"><a href="#tiefbau_@address.id">Tiefbau</a></li>
                             <li class="tab col s1"><a href="#faser_@address.id">Faser</a></li>
                             <li class="tab col s1"><a href="#montaze_@address.id">Montaze</a></li>
                             <li class="tab col s1"><a href="#aktivirung_@address.id">Aktivirung</a></li>
-                            <li class="tab col s1"><a href="#vermessung_@address.id">Vermessung</a></li>
+                            <li class="tab col s2"><a href="#vermessung_@address.id">Vermessung</a></li>
                         </ul>
                     </div>
                     <div id="hausbegehung_@address.id" class="col s12">
@@ -371,6 +376,142 @@
                                 <a class="waves-effect waves-light btn hbGetTerm" disabled="@(address.hbfinished == 1)" id="hbGetTerm_@address.id"><i class="material-icons left">date_range</i>Get HB term</a>
                                 <a class="waves-effect waves-light btn hbCustomerCalled" disabled="@(address.hbfinished == 1)" id="hbCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
                                 <a class="waves-effect waves-light btn hbAddImage" disabled="@(address.hbfinished == 1)" id="hbAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="hbterms_@address.id" class="col s12">
+                        <div class="row">
+                            <div class="center-align col s12 m4 l4">
+                                @*<div>
+                            <a href="#">Prev. date</a>
+                            <input type="text" style="width: auto;" />
+                            <a href="#">Next date</a>
+                            </div>*@
+
+                                @*<div class="card">
+                            <div class="card-content">
+
+                            <div class="row">
+
+
+                            <div class="col s12 m6 l6">
+                            <input id="currentdate" type="text">
+                            <label for="currentdate">Date</label>
+                            <button class="btn datepicker" value="Choose date"></button>
+
+                            <button class="btn">Filter</button>
+                            </div>
+
+
+
+                            </div>
+                            </div>
+                            </div>*@
+                                <div class="input-field">
+                                    <input id="termsDate_@address.id" type="text" class="validate center-align" disabled>                   
+                                </div>
+                                <table class="table table-bordered table-responsive table-hover" id="tblHbTerms">
+                                    <thead>
+                                        <tr>
+                                            <th hidden>Id</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Busy</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="center-align col s12 m4 l4">
+                                @*<div>
+                            <a href="#">Prev. date</a>
+                            <input type="text" style="width: auto;" />
+                            <a href="#">Next date</a>
+                            </div>*@
+
+                                @*<div class="card">
+                            <div class="card-content">
+
+                            <div class="row">
+
+
+                            <div class="col s12 m6 l6">
+                            <input id="currentdate" type="text">
+                            <label for="currentdate">Date</label>
+                            <button class="btn datepicker" value="Choose date"></button>
+
+                            <button class="btn">Filter</button>
+                            </div>
+
+
+
+                            </div>
+                            </div>
+                            </div>*@
+                            <div class="input-field">
+                                    <input id="termsDate_1_@address.id" type="text" class="validate center-align" disabled>                   
+                                </div>
+                                <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_1">
+                                    <thead>
+                                        <tr>
+                                            <th hidden>Id</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Busy</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="center-align col s12 m4 l4">
+                                @*<div>
+                            <a href="#">Prev. date</a>
+                            <input type="text" style="width: auto;" />
+                            <a href="#">Next date</a>
+                            </div>*@
+
+                                @*<div class="card">
+                            <div class="card-content">
+
+                            <div class="row">
+
+
+                            <div class="col s12 m6 l6">
+                            <input id="currentdate" type="text">
+                            <label for="currentdate">Date</label>
+                            <button class="btn datepicker" value="Choose date"></button>
+
+                            <button class="btn">Filter</button>
+                            </div>
+
+
+
+                            </div>
+                            </div>
+                            </div>*@
+                            <div class="input-field">
+                                    <input id="termsDate_2_@address.id" type="text" class="validate center-align" disabled>                   
+                                </div>
+                                <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_2">
+                                    <thead>
+                                        <tr>
+                                            <th hidden>Id</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Busy</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -679,6 +820,8 @@ $(function() {
             function() {
                 $('.collapsible').collapsible();
                 $('.tabs').tabs();
+                $('.datepicker').datepicker();
+                $('.timepicker').timepicker({ twelveHour: false });
 
                 //console.log($('.tabs'));
 
@@ -719,6 +862,273 @@ $(function() {
                 //$("#hbFilter")[0].val(params.hbFinished);
                 //$("#hbFilter")[0].val(params.hbFinished);
             })
+
+        $(".hbTerms").on("click", function() {
+
+            var city = this.id.split(' ')[0];
+
+            var pop = this.id.split(' ')[1];
+
+            var address_id = this.id.split(' ')[2];
+
+
+            var year = new Date().getFullYear();
+            var month = new Date().getMonth() + 1;
+            var date = new Date().getDate();
+
+            //getThreeDaysTerms(address_id, city, pop, year, month, date);
+
+            //var date1 = new Date();
+            //date1.setDate(date1.getDate() + 1);
+
+            //var year1 = date1.getFullYear();
+            //var month1 = date1.getMonth() + 1;
+            //var date1 = date1.getDate();
+
+            //var date2 = new Date();
+            //date2.setDate(date2.getDate() + 2);
+
+            //var year2 = date2.getFullYear();
+            //var month2 = date2.getMonth() + 1;
+            //var date2 = date2.getDate();
+
+            ////console.log(year);
+            ////console.log(month);
+            ////console.log(date);
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year + "/" + month + "/" + date,
+
+            //    contentType: "application/json; charset=utf-8",
+
+            //    success: function(r) {
+            //        console.log(r);
+            //        console.log(address_id);
+            //        $("#tblHbTerms tbody tr").remove();
+            //        //alert("Successfully added new hb term!");
+            //        //var toastHTML = '<span>Successfully added new hb term!</span>';
+            //        //M.toast({ html: toastHTML });
+            //        //console.log(r);
+            //        //$('#tblHbTerms tbody').append("<tr id=\"tr_" + r.id + "\"><td hidden><input type=\"text\" value=\"" + r.id + "\" /></td><td>" + timeFrom + "</td><td>" + timeTo + "</td><td></td><td><a class=\"btn btn-danger btnRemove\" id=\"btnRemove_" + r.id + "\" ><i class=\"material-icons left\">close</i>Remove</a></td></tr>");
+            //        for (i = 0; i < r.length; i++) {
+            //            console.log("Disabled");
+            //            console.log(r[i].busy == 1);
+
+            //            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+            //            if (r[i].busy == 1) {
+            //                console.log($('#btnReserve_' + address_id + '_' + r[i].id));
+            //                $('#btnReserve_' + address_id + '_' + r[i].id).attr('disabled', 'disabled');
+            //            }
+
+
+            //        }
+
+
+            //    },
+            //    error: function(err) {
+            //        //alert("Error. Please, try again!");
+            //        //console.log(JSON.stringify(err))
+            //        //var toastHTML = '<span>Error. Please, try again!</span>';
+            //        //M.toast({ html: toastHTML });
+            //    }
+            //});
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year1 + "/" + month1 + "/" + date1,
+
+            //    contentType: "application/json; charset=utf-8",
+
+            //    success: function(r1) {
+            //        console.log(r1);
+            //        console.log(address_id);
+            //        $("#tblHbTerms_1 tbody tr").remove();
+            //        //alert("Successfully added new hb term!");
+            //        //var toastHTML = '<span>Successfully added new hb term!</span>';
+            //        //M.toast({ html: toastHTML });
+            //        //console.log(r);
+            //        //$('#tblHbTerms tbody').append("<tr id=\"tr_" + r.id + "\"><td hidden><input type=\"text\" value=\"" + r.id + "\" /></td><td>" + timeFrom + "</td><td>" + timeTo + "</td><td></td><td><a class=\"btn btn-danger btnRemove\" id=\"btnRemove_" + r.id + "\" ><i class=\"material-icons left\">close</i>Remove</a></td></tr>");
+            //        for (i = 0; i < r1.length; i++) {
+            //            console.log("Disabled");
+            //            console.log(r1[i].busy == 1);
+
+            //            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+            //            if (r1[i].busy == 1) {
+            //                console.log($('#btnReserve_' + address_id + '_' + r1[i].id));
+            //                $('#btnReserve_' + address_id + '_' + r1[i].id).attr('disabled', 'disabled');
+            //            }
+
+
+            //        }
+
+
+            //    },
+            //    error: function(err) {
+            //        //alert("Error. Please, try again!");
+            //        //console.log(JSON.stringify(err))
+            //        //var toastHTML = '<span>Error. Please, try again!</span>';
+            //        //M.toast({ html: toastHTML });
+            //    }
+            //});
+
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year2 + "/" + month2 + "/" + date2,
+
+            //    contentType: "application/json; charset=utf-8",
+
+            //    success: function(r2) {
+            //        console.log(r2);
+            //        console.log(address_id);
+            //        $("#tblHbTerms_2 tbody tr").remove();
+            //        //alert("Successfully added new hb term!");
+            //        //var toastHTML = '<span>Successfully added new hb term!</span>';
+            //        //M.toast({ html: toastHTML });
+            //        //console.log(r);
+            //        //$('#tblHbTerms tbody').append("<tr id=\"tr_" + r.id + "\"><td hidden><input type=\"text\" value=\"" + r.id + "\" /></td><td>" + timeFrom + "</td><td>" + timeTo + "</td><td></td><td><a class=\"btn btn-danger btnRemove\" id=\"btnRemove_" + r.id + "\" ><i class=\"material-icons left\">close</i>Remove</a></td></tr>");
+            //        for (i = 0; i < r2.length; i++) {
+            //            //console.log("Disabled");
+            //            console.log(r2[i].busy == 1);
+
+            //            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+            //            if (r2[i].busy == 1) {
+            //                console.log($('#btnReserve_' + address_id + '_' + r2[i].id));
+            //                $('#btnReserve_' + address_id + '_' + r2[i].id).attr('disabled', 'disabled');
+            //            }
+
+
+            //        }
+
+
+            //    },
+            //    error: function(err) {
+            //        //alert("Error. Please, try again!");
+            //        //console.log(JSON.stringify(err))
+            //        //var toastHTML = '<span>Error. Please, try again!</span>';
+            //        //M.toast({ html: toastHTML });
+            //    }
+            //});
+        })
+
+        function getThreeDaysTerms(address_id, city, pop, year, month, date) {
+            //alert("Getting terms");
+            var currentDate = new Date(year, month, date);
+
+            $("#termsDate_" + address_id).val(date + "." + month + "." + year);
+
+            var firstDate = new Date(year, month, date);
+            firstDate.setDate(firstDate.getDate() + 1);
+
+            var year1 = firstDate.getFullYear();
+            var month1 = firstDate.getMonth();
+            var date1 = firstDate.getDate();
+
+            $("#termsDate_1_" + address_id).val(date1 + "." + month1 + "." + year1);
+
+            var secondDate = new Date(year, month, date);
+            secondDate.setDate(secondDate.getDate() + 2);
+
+            var year2 = secondDate.getFullYear();
+            var month2 = secondDate.getMonth();
+            var date2 = secondDate.getDate();
+
+            $("#termsDate_2_" + address_id).val(date2 + "." + month2 + "." + year2);
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year + "/" + month + "/" + date,
+
+                contentType: "application/json; charset=utf-8",
+
+                success: function(r) {
+                    //console.log("R: "); console.log(r);
+                    $("#tblHbTerms tbody tr").remove(); for (i = 0; i < r.length; i++) {
+                        if (r[i].busy == 1) {
+                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        // if (r[i].busy == 1) {
+                        //    console.log("Busy for address " + address_id + " and term " + r[i].id);
+                        //    console.log($('#btnReserve_' + address_id + '_' + r[i].id));
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r[i].id).css('visibility', 'hidden'); //.prop( "disabled", true ); //attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year1 + "/" + month1 + "/" + date1,
+                contentType: "application/json; charset=utf-8",
+                success: function(r1) {
+                    //console.log("R1"); console.log(r1);
+                    $("#tblHbTerms_1 tbody tr").remove(); for (i = 0; i < r1.length; i++) {
+                        if (r1[i].busy == 1) {
+                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        //$('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        //if (r1[i].busy == 1) {
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r1[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r1[i].id).attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year2 + "/" + month2 + "/" + date2,
+                contentType: "application/json; charset=utf-8",
+                success: function(r2) {
+                    //console.log("R2"); console.log(r2);
+                    $("#tblHbTerms_2 tbody tr").remove();
+                    for (i = 0; i < r2.length; i++) {
+                        if (r2[i].busy == 1) {
+                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        //$('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        //if (r2[i].busy == 1) {
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r2[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r2[i].id).attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        }
+
+
+
+
+        $(".btnReserve").on("click", function() {
+            alert("Button clicked");
+            console.log(this.id);
+            let address_id = this.id.split('_')[1];
+            let hb_id = this.id.split('_')[2];
+            console.log(address_id);
+            console.log(hb_id);
+
+        });
 
         $("#reset").on("click", function() {
             $("#popFilter")[0].value = null;
@@ -796,7 +1206,18 @@ $(function() {
 
         })
 
-        $(document).on("click", "ul.collapsible li", function() {
+        $(document).on("click", "ul.collapsible li.header_li .collapsible-header", function() {
+
+            //alert("Collapsible clicked!");
+
+            var address_id = this.id.split('_')[1];
+            var city = $("#citySpan_" + address_id)[0].innerText;
+            var pop = $("#areapopSpan_" + address_id)[0].innerText;
+            var year = new Date().getFullYear();
+            var month = new Date().getMonth() + 1;
+            var date = new Date().getDate();
+
+            getThreeDaysTerms(address_id, city, pop, year, month, date);
 
             var elem = document.querySelectorAll("ul.collapsible li.header_li");
             var index = "none"
@@ -805,7 +1226,7 @@ $(function() {
 
 
             for (var i = 0; i < elem.length; i++) {
-                console.log(elem[i].className);
+                //console.log(elem[i].className);
                 if (elem[i].className.indexOf("active") != -1) {
                     //index = i;
                     //console.log(elem[i].children[0]);
@@ -817,6 +1238,9 @@ $(function() {
                 }
                 //document.getElementById("show").innerHTML = index;
             }
+
+
+
 
         })
 
@@ -1077,11 +1501,11 @@ $(function() {
         $(".mSaveChanges").click(function() {
             var addressId = this.id.split('_')[1];
             let mComment = $("#mComment_" + addressId)[0];
-           
+
             var mData = {};
             mData.mcomment = mComment.value;
 
-            
+
             $.ajax({
                 type: "PUT",
                 url: "/api/Montaze/" + addressId,
@@ -1102,7 +1526,7 @@ $(function() {
         })
 
         $(".mFinished").click(function() {
-           
+
 
             var mData = {};
             mData.finished = 1;
@@ -1161,7 +1585,7 @@ $(function() {
             aData.acomment = aComment.value;
 
 
-           // var addressId = $("#addressId")[0].innerText;
+            // var addressId = $("#addressId")[0].innerText;
 
             $.ajax({
                 type: "PUT",
@@ -1210,9 +1634,9 @@ $(function() {
                     //$("#hbGetTerm").attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     $("#aFinished_" + addressId).attr("disabled", "disabled");
-                    $("#aSaveChanges_"  + addressId).attr("disabled", "disabled");
-                    $("#aAddImage_"  + addressId).attr("disabled", "disabled");
-                    $("#aDate_"  + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    $("#aSaveChanges_" + addressId).attr("disabled", "disabled");
+                    $("#aAddImage_" + addressId).attr("disabled", "disabled");
+                    $("#aDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
 
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
@@ -1227,7 +1651,7 @@ $(function() {
         // Vermessung
 
         $(".vSaveChanges").click(function() {
-             var addressId = this.id.split('_')[1];
+            var addressId = this.id.split('_')[1];
             //console.log($("#hbComment"));
             //var addressId = $("#addressId")[0].innerText;
             let vComment = $("#vComment_" + addressId)[0];
@@ -1240,7 +1664,7 @@ $(function() {
             vData.vcomment = vComment.value;
 
 
-           // var addressId = $("#addressId")[0].innerText;
+            // var addressId = $("#addressId")[0].innerText;
 
             $.ajax({
                 type: "PUT",
@@ -1268,7 +1692,7 @@ $(function() {
             //console.log(hbCommentInput.value);
             //alert(addressId);
             //var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
-             var addressId = this.id.split('_')[1];
+            var addressId = this.id.split('_')[1];
             var vData = {};
             vData.finished = 1;
 

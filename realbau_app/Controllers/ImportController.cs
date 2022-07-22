@@ -1,10 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using realbau_app.api.Models;
 using realbau_app.Models.Import;
+using realbau_app.Services.Interfaces;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -13,6 +12,14 @@ namespace realbau_app.Controllers
 {
     public class ImportController : Controller
     {
+
+        private IAddressService addressService;
+
+        public ImportController(IAddressService addressService)
+        {
+            this.addressService = addressService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -24,7 +31,7 @@ namespace realbau_app.Controllers
         //}
 
         // Import excela 
-        public IActionResult NewAddresses(IFormFile addressFile)
+        public async Task<IActionResult> NewAddresses(IFormFile addressFile)
         {
             List<NewAddress> newAddresses = new List<NewAddress>();
 
@@ -60,36 +67,49 @@ namespace realbau_app.Controllers
                         IEnumerable<AddressDB> addressDBs = null;
                         //var exists = null;
 
-                        using (var client = new HttpClient())
+                        //using (var client = new HttpClient())
+                        //{
+                        //    client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + ((!String.IsNullOrEmpty(rec[10])) ? rec[10] : "*") + "/" + rec[11]);
+                        //    //HTTP GET
+
+
+                        //    var responseTask = client.GetAsync("");
+                        //    responseTask.Wait();
+
+                        //    var result = responseTask.Result;
+                        //    var readResult = result.Content.ReadFromJsonAsync<AddressDetails?>();
+                        //    readResult.Wait();
+
+                        //    var exists = readResult.Result;
+                        //    //if (result.IsSuccessStatusCode)
+                        //    //{
+                        //    //    var readTask = result.Content.ReadFromJsonAsync<IList<HausbegehungDefaultTermDB>>();
+                        //    //    readTask.Wait();
+
+                        //    //    terms = readTask.Result;
+                        //    //}
+                        //    //else //web api sent error response 
+                        //    //{
+                        //    //    log response status here..terms = Enumerable.Empty<HausbegehungDefaultTermDB>();
+
+                        //    //    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                        //    //}
+                        //}
+
+
+                        var addressDetails = await this.addressService.GetAddressByInfo(new Models.AddressInfo()
                         {
-                            client.BaseAddress = new Uri("https://localhost:7003/api/Address/" + rec[6] + "/" + rec[7] + "/" + rec[8] + "/" + rec[9] + "/" + ((!String.IsNullOrEmpty(rec[10])) ? rec[10] : "*") + "/" + rec[11]);
-                            //HTTP GET
+                            city = rec[6],
+                            tzip = rec[7],
+                            street = rec[8],
+                            housenumber = int.Parse(rec[9]),
+                            subnumber = rec[10],
+                            unit = int.Parse(rec[11])
+                        });
 
 
-                            var responseTask = client.GetAsync("");
-                            responseTask.Wait();
-
-                            var result = responseTask.Result;
-                            var readResult = result.Content.ReadFromJsonAsync<AddressDetails?>();
-                            readResult.Wait();
-
-                            var exists = readResult.Result;
-                            //if (result.IsSuccessStatusCode)
-                            //{
-                            //    var readTask = result.Content.ReadFromJsonAsync<IList<HausbegehungDefaultTermDB>>();
-                            //    readTask.Wait();
-
-                            //    terms = readTask.Result;
-                            //}
-                            //else //web api sent error response 
-                            //{
-                            //    log response status here..terms = Enumerable.Empty<HausbegehungDefaultTermDB>();
-
-                            //    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-                            //}
-                        }
-
-                        if ((object)null == null)
+                        if (addressDetails.id == null)
+                        {
                             newAddresses.Add(new NewAddress()
                             {
                                 Bestellnummer = rec[0],
@@ -113,6 +133,12 @@ namespace realbau_app.Controllers
                                 Kennwort = rec[28],
                                 Subtype = rec[35]
                             });
+                        }
+                        else
+                        {
+                            // TODO: Changed addresses
+                        }
+                            
 
                         //if(newAddresses.Count() >0)
                         //return View("NewAddresses", newAddresses);
@@ -318,7 +344,7 @@ namespace realbau_app.Controllers
                         //        Subtype = rec[35]
                         //    });
 
-                 
+
                     }
                 }
 
@@ -330,7 +356,7 @@ namespace realbau_app.Controllers
 
             }
 
-            
+
         }
 
     }

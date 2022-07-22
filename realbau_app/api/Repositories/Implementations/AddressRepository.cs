@@ -270,11 +270,11 @@ namespace realbau_app.api.Repositories.Implementations
                                                 and ((@housenumber is not null and a.housenumber = @housenumber) or @housenumber is null) 
                                                 and ((@subnumber is not null and a.subnumber = @subnumber) or @subnumber is null) 
                                                 and ((@unit is not null and a.unit = @unit) or @unit is null)", con);
-                    cmd.Parameters.AddWithValue("@city", (city == null) ? DBNull.Value : city);
-                    cmd.Parameters.AddWithValue("@tzip", (tzip == null) ? DBNull.Value : tzip);
-                    cmd.Parameters.AddWithValue("@street", (street == null) ? DBNull.Value : street);
+                    cmd.Parameters.AddWithValue("@city", (String.IsNullOrEmpty(city)) ? DBNull.Value : city);
+                    cmd.Parameters.AddWithValue("@tzip", (String.IsNullOrEmpty(tzip)) ? DBNull.Value : tzip);
+                    cmd.Parameters.AddWithValue("@street", (String.IsNullOrEmpty(street)) ? DBNull.Value : street);
                     cmd.Parameters.AddWithValue("@housenumber", (housenumber == null) ? DBNull.Value : housenumber);
-                    cmd.Parameters.AddWithValue("@subnumber", (subnumber == null) ? DBNull.Value : subnumber);
+                    cmd.Parameters.AddWithValue("@subnumber", (String.IsNullOrEmpty(subnumber)) ? DBNull.Value : subnumber);
                     cmd.Parameters.AddWithValue("@unit", (unit == null) ? DBNull.Value : unit);
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
 

@@ -79,9 +79,9 @@ namespace realbau_app.api.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task Post([FromBody] HausbegehungTermDB term)
+        public async Task<HausbegehungTermDB> Post([FromBody] HausbegehungTermDB term)
         {
-            await this.hausbegehungRepository.Insert(term);
+            return await this.hausbegehungRepository.Insert(term);
             //using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             //{
             //    String query = "insert into dbo.hausbegehung_term (hbdate, hbfrom, hbto, busy) values (@hbdate, @hbfrom, @hbto, @busy)";
