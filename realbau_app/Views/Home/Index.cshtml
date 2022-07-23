@@ -32,59 +32,59 @@
                         <h5>Get data</h5>
                         <button class="btn">HB not done</button>
                     </div>
-                   @* <div class="col s12 m6 l1">
+                    @* <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="hbFilter" />
-                                <span>Hausbegehung</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="hbFilter" />
+                    <span>Hausbegehung</span>
+                    </label>
+                    </p>
                     </div>
                     <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="tFilter" />
-                                <span>Tiefbau</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="tFilter" />
+                    <span>Tiefbau</span>
+                    </label>
+                    </p>
                     </div>
                     <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="fFilter" />
-                                <span>Faser</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="fFilter" />
+                    <span>Faser</span>
+                    </label>
+                    </p>
                     </div>
                     <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="mFilter" />
-                                <span>Montaze</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="mFilter" />
+                    <span>Montaze</span>
+                    </label>
+                    </p>
                     </div>
                     <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="aFilter" />
-                                <span>Aktivirung</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="aFilter" />
+                    <span>Aktivirung</span>
+                    </label>
+                    </p>
                     </div>
                     <div class="col s12 m6 l1">
 
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" id="vFilter" />
-                                <span>Vermessung</span>
-                            </label>
-                        </p>
+                    <p>
+                    <label>
+                    <input type="checkbox" class="filled-in" id="vFilter" />
+                    <span>Vermessung</span>
+                    </label>
+                    </p>
                     </div>*@
                 </div>
 
@@ -110,8 +110,8 @@
 
 <style>
     /*i {
-                                                                    color: darkgreen !important;
-                                                                }*/
+                                                                                        color: darkgreen !important;
+                                                                                    }*/
 
     table {
         margin: 1rem !important;
@@ -409,7 +409,7 @@
                             </div>
                             </div>*@
                                 <div class="input-field">
-                                    <input id="termsDate_@address.id" type="text" class="validate center-align" disabled>                   
+                                    <input id="termsDate_@address.id" type="text" class="validate center-align" disabled>
                                 </div>
                                 <table class="table table-bordered table-responsive table-hover" id="tblHbTerms">
                                     <thead>
@@ -452,8 +452,8 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="input-field">
-                                    <input id="termsDate_1_@address.id" type="text" class="validate center-align" disabled>                   
+                                <div class="input-field">
+                                    <input id="termsDate_1_@address.id" type="text" class="validate center-align" disabled>
                                 </div>
                                 <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_1">
                                     <thead>
@@ -496,8 +496,8 @@
                             </div>
                             </div>
                             </div>*@
-                            <div class="input-field">
-                                    <input id="termsDate_2_@address.id" type="text" class="validate center-align" disabled>                   
+                                <div class="input-field">
+                                    <input id="termsDate_2_@address.id" type="text" class="validate center-align" disabled>
                                 </div>
                                 <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_2">
                                     <thead>
@@ -1051,6 +1051,8 @@ $(function() {
                         else {
                             $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
+
+
                         // if (r[i].busy == 1) {
                         //    console.log("Busy for address " + address_id + " and term " + r[i].id);
                         //    console.log($('#btnReserve_' + address_id + '_' + r[i].id));
@@ -1058,6 +1060,14 @@ $(function() {
                         //    $('#btnReserve_' + address_id + '_' + r[i].id).css('visibility', 'hidden'); //.prop( "disabled", true ); //attr('disabled', 'disabled');
                         //}
                     }
+                    //$(".btnReserve").on("click", function() {
+                    //    console.log("Button clicked");
+                    //    console.log(this.id);
+                    //    let address_id = this.id.split('_')[1];
+                    //    let hb_id = this.id.split('_')[2];
+                    //    console.log(address_id);
+                    //    console.log(hb_id);
+                    //});
                 },
                 error: function(err) {
                     console.log(err);
@@ -1077,12 +1087,22 @@ $(function() {
                         else {
                             $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
+
+
                         //$('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         //if (r1[i].busy == 1) {
                         //    //console.log($('#btnReserve_' + address_id + '_' + r1[i].id));
                         //    $('#btnReserve_' + address_id + '_' + r1[i].id).attr('disabled', 'disabled');
                         //}
                     }
+                    //$(".btnReserve").on("click", function() {
+                    //    console.log("Button clicked");
+                    //    console.log(this.id);
+                    //    let address_id = this.id.split('_')[1];
+                    //    let hb_id = this.id.split('_')[2];
+                    //    console.log(address_id);
+                    //    console.log(hb_id);
+                    //});
                 },
                 error: function(err) {
                     console.log(err);
@@ -1104,31 +1124,80 @@ $(function() {
                         else {
                             $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
+
+
                         //$('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         //if (r2[i].busy == 1) {
                         //    //console.log($('#btnReserve_' + address_id + '_' + r2[i].id));
                         //    $('#btnReserve_' + address_id + '_' + r2[i].id).attr('disabled', 'disabled');
                         //}
                     }
+                    //$(".btnReserve").on("click", function() {
+                    //    console.log("Button clicked");
+                    //    console.log(this.id);
+                    //    let address_id = this.id.split('_')[1];
+                    //    let hb_id = this.id.split('_')[2];
+                    //    console.log(address_id);
+                    //    console.log(hb_id);
+                    //});
                 },
                 error: function(err) {
                     console.log(err);
                 }
             });
+
+            // TODO: HACK
+            setTimeout(() => {
+                $(".btnReserve").on("click", function() {
+                    console.log("Button clicked");
+                    console.log(this.id);
+                    let address_id = this.id.split('_')[1];
+                    let hbterm_id = this.id.split('_')[2];
+                    console.log(address_id);
+                    console.log(hbterm_id);
+
+                    hbReservation = {};
+                    hbReservation.address_id = address_id;
+                    hbReservation.hbterm_id = hbterm_id;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/Reservation/HausbegehungTerm",
+                        data: JSON.stringify(hbReservation),
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "json",
+                        success: function(r) {
+                            console.log(r);
+                            var toastHTML = '<span>Successfully updated hausbegehung.</span>';
+                            M.toast({ html: toastHTML });
+                            //alert("Successfully updated hausbegehung.");
+                            //hbCommentInput.val(hbData.hbcomment);
+                            //$("#hbCustomerCalled").attr("disabled", "disabled");
+                            //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                        },
+                        error: function(err) {
+                            var toastHTML = '<span>Error! Please try again</span>';
+                            M.toast({ html: toastHTML });
+                            console.log(JSON.stringify(err))
+                        }
+                    });
+
+                });
+            }, 2000);
         }
 
 
 
 
-        $(".btnReserve").on("click", function() {
-            alert("Button clicked");
-            console.log(this.id);
-            let address_id = this.id.split('_')[1];
-            let hb_id = this.id.split('_')[2];
-            console.log(address_id);
-            console.log(hb_id);
+        //$(".btnReserve").on("click", function() {
+        //    alert("Button clicked");
+        //    console.log(this.id);
+        //    let address_id = this.id.split('_')[1];
+        //    let hb_id = this.id.split('_')[2];
+        //    console.log(address_id);
+        //    console.log(hb_id);
 
-        });
+        //});
 
         $("#reset").on("click", function() {
             $("#popFilter")[0].value = null;

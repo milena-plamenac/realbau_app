@@ -40,6 +40,8 @@ builder.Services.AddTransient<IAddressService, AddressService>();
 builder.Services.AddTransient<IHausbegehungTermRepository, HausbegehungTermRepository>();
 builder.Services.AddTransient<IHausbegehungRepository, HausbegehungRepository>();
 builder.Services.AddTransient<IHausbegehungService, HausbegehungService>();
+builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
+builder.Services.AddTransient<IReservationService, ReservationService>();
 
 builder.Services.AddTransient<IStreamFileUploadService, StreamFileUploadLocalService>();
 
