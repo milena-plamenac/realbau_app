@@ -264,10 +264,14 @@ $(function() {
                     contentType: "application/json; charset=utf-8",
                     //dataType: "json",
                     success: function(r) {
+                        var toastHTML = '<span>Successfully imported data! Please, import another file!</span>';
+                        M.toast({ html: toastHTML });
+                        setTimeout(() => {window.location.href = "/Import"; }, 1000);
+                        
                         //alert("Success");
-                        console.log(table);
-                        console.log(index);
-                        table.deleteRow(parseInt(index)+1);
+                        //console.log(table);
+                        //console.log(index);
+                        //table.deleteRow(row.rowIndex);
                         //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                     },
                     error: function(err) {
