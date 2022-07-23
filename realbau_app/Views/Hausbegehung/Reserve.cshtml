@@ -190,6 +190,45 @@
                     console.log(err);
                 }
             });
+
+            // TODO: HACK
+            setTimeout(() => {
+                $(".btnReserve").on("click", function() {
+                    console.log("Button clicked");
+                    console.log(this.id);
+                    let address_id = this.id.split('_')[1];
+                    let hbterm_id = this.id.split('_')[2];
+                    console.log(address_id);
+                    console.log(hbterm_id);
+
+                    hbReservation = {};
+                    hbReservation.address_id = address_id;
+                    hbReservation.hbterm_id = hbterm_id;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/Reservation/HausbegehungTerm",
+                        data: JSON.stringify(hbReservation),
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "json",
+                        success: function(r) {
+                            console.log(r);
+                            var toastHTML = '<span>Successfully updated hausbegehung.</span>';
+                            M.toast({ html: toastHTML });
+                            //alert("Successfully updated hausbegehung.");
+                            //hbCommentInput.val(hbData.hbcomment);
+                            //$("#hbCustomerCalled").attr("disabled", "disabled");
+                            //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
+                        },
+                        error: function(err) {
+                            var toastHTML = '<span>Error! Please try again</span>';
+                            M.toast({ html: toastHTML });
+                            console.log(JSON.stringify(err))
+                        }
+                    });
+
+                });
+            }, 2000);
         }
     </script>
             }

@@ -110,8 +110,8 @@
 
 <style>
     /*i {
-                                                                                        color: darkgreen !important;
-                                                                                    }*/
+                                                                                                            color: darkgreen !important;
+                                                                                                        }*/
 
     table {
         margin: 1rem !important;
@@ -353,30 +353,79 @@
                             <li class="tab col s2"><a href="#vermessung_@address.id">Vermessung</a></li>
                         </ul>
                     </div>
+                    @*First suggestion*@
+                    @*<div id="hausbegehung_@address.id" class="col s12">
+                <div class="row">
+                <div class="col s12 m12 l12">
+                <div class="row">
+                <div class="col s6 m6 l6">
+                <p>Date: @address.hbdate?.ToString("dd.MM.yyyy")</p>
+                <p>Termin: @address.hbfrom?.ToString("HH:mm") - @address.hbto?.ToString("HH:mm")</p>
+                <p>Call date: <span id="hbCallDate_@address.id">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
+                </div>
+                <div class="col s6 m6 l6">
+                <textarea class="materialize-textarea" id="hbComment_@address.id">@address.hbcomment</textarea>
+                <label for="hbComment_@address.id">Hausbegehung comment</label>
+
+                </div>
+                </div>
+
+
+
+                <a class="waves-effect waves-light btn hbSaveChanges" disabled="@(address.hbfinished == 1)" id="hbSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                <a class="waves-effect waves-light btn hbFinished" disabled="@(address.hbfinished == 1)" id="hbFinished_@address.id"><i class="material-icons left">check</i>HB finished</a>
+                <a class="waves-effect waves-light btn hbGetTerm" disabled="@(address.hbfinished == 1)" id="hbGetTerm_@address.id"><i class="material-icons left">date_range</i>Get HB term</a>
+                <a class="waves-effect waves-light btn hbCustomerCalled" disabled="@(address.hbfinished == 1)" id="hbCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
+                <a class="waves-effect waves-light btn hbAddImage" disabled="@(address.hbfinished == 1)" id="hbAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                </div>
+                </div>
+                </div>*@
+
                     <div id="hausbegehung_@address.id" class="col s12">
                         <div class="row">
-                            <div class="col s12 m12 l12">
-                                <div class="row">
-                                    <div class="col s6 m6 l6">
-                                        <p>Date: @address.hbdate?.ToString("dd.MM.yyyy")</p>
-                                        <p>Termin: @address.hbfrom?.ToString("HH:mm") - @address.hbto?.ToString("HH:mm")</p>
-                                        <p>Call date: <span id="hbCallDate_@address.id">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
-                                    </div>
-                                    <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="hbComment_@address.id">@address.hbcomment</textarea>
-                                        <label for="hbComment_@address.id">Hausbegehung comment</label>
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0;">
+                                @*<div class="card">
+                            <div class="card-content">*@
+                                <h6><b>HB information</b></h6>
 
-                                    </div>
-                                </div>
-
-
-
-                                <a class="waves-effect waves-light btn hbSaveChanges" disabled="@(address.hbfinished == 1)" id="hbSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
-                                <a class="waves-effect waves-light btn hbFinished" disabled="@(address.hbfinished == 1)" id="hbFinished_@address.id"><i class="material-icons left">check</i>HB finished</a>
-                                <a class="waves-effect waves-light btn hbGetTerm" disabled="@(address.hbfinished == 1)" id="hbGetTerm_@address.id"><i class="material-icons left">date_range</i>Get HB term</a>
-                                <a class="waves-effect waves-light btn hbCustomerCalled" disabled="@(address.hbfinished == 1)" id="hbCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
+                                <p>Date: @address.hbdate?.ToString("dd.MM.yyyy")</p>
+                                <p>Termin: @address.hbfrom?.ToString("HH:mm") - @address.hbto?.ToString("HH:mm")</p>
+                                @*<p>Call date: <span id="hbCallDate_@address.id">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>*@
+                                <a title="Please, check that hausbegehung is finished" class="waves-effect waves-light btn hbFinished" disabled="@(address.hbfinished == 1)" id="hbFinished_@address.id"><i class="material-icons left">check</i>HB is finished</a>
+                                <a title="Go to link that customer will get on email" class="waves-effect waves-light btn hbGetTerm" disabled="@(address.hbfinished == 1)" id="hbGetTerm_@address.id"><i class="material-icons left">date_range</i>HB term link</a>
                                 <a class="waves-effect waves-light btn hbAddImage" disabled="@(address.hbfinished == 1)" id="hbAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                                @* </div>
+                            </div>*@
                             </div>
+
+
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0;">
+                                @*<div class="card">
+                            <div class="card-content">*@
+                                <h6><b>HB customer contact</b></h6>
+
+                                Call date: <span id="hbCallDate_@address.id" style="margin: 0;">@address.hbcalldate?.ToString("dd.MM.yyyy HH:mm")</span>
+                                <br>
+                                <a style="margin-top: 20px;" title="Please, click when customer is called!" class="waves-effect waves-light btn hbCustomerCalled" disabled="@(address.hbfinished == 1)" id="hbCustomerCalled_@address.id">
+                                    <i class="material-icons left">phone</i>Customer called
+                                </a>
+                                @*</div>
+                            </div>*@
+                            </div>
+
+                            <div class="col s12 m4 l4">
+                                @*<div class="card">
+                            <div class="card-content">*@
+                                <h6><b>HB comment</b></h6>
+                                <h6></h6>
+                                <textarea class="materialize-textarea" id="hbComment_@address.id">@address.hbcomment</textarea>
+                                <label for="hbComment_@address.id">Hausbegehung comment</label>
+                                <br>
+                                <a style="margin-top: 20px;" class="waves-effect waves-light btn hbSaveChanges" disabled="@(address.hbfinished == 1)" id="hbSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                                @* </div>
+                            </div>*@
+                            </div>
+
                         </div>
                     </div>
 
@@ -1329,13 +1378,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully checked customer called!");
+                    //alert("Successfully checked customer called!");
+                    var toastHTML = '<span>Successfully checked customer called!</span>';
+                    M.toast({ html: toastHTML });
                     $("#hbCustomerCalled_" + addressId).attr("disabled", "disabled");
                     $("#hbCallDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1360,13 +1413,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully updated hausbegehung.");
+                    //alert("Successfully updated hausbegehung.");
+                    var toastHTML = '<span>Successfully updated hausbegehung!</span>';
+                    M.toast({ html: toastHTML });
                     //hbCommentInput.val(hbData.hbcomment);
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please try again.");
+                    //alert("Error! Please try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1385,7 +1442,9 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
 
                 success: function(r) {
-                    alert("Successfully checked hb finished!");
+                    //alert("Successfully checked hb finished!");
+                    var toastHTML = '<span>Successfully checked hb finished!</span>';
+                    M.toast({ html: toastHTML });
                     $("#hbGetTerm_" + addressId).attr("disabled", "disabled");
                     $("#hbCustomerCalled_" + addressId).attr("disabled", "disabled");
                     $("#hbFinished_" + addressId).attr("disabled", "disabled");
@@ -1393,15 +1452,21 @@ $(function() {
                     $("#hbAddImage_" + addressId).attr("disabled", "disabled");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
         })
 
         $(".hbGetTerm").click(function() {
+            // CHANGED THIS - this button will be removed
             //var addressId = $("#addressId")[0].innerText;
             var addressId = this.id.split('_')[1];
+            window.location.href = "/Hausbegehung/Terms/" + addressId;
+            return;
+
             var currentTime = new Date();
             let date = currentTime.getFullYear() + '-' + (currentTime.getMonth().toFixed() - 1) + '-' + currentTime.getDate();
             window.location.href = "/Hausbegehung/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();
@@ -1431,10 +1496,14 @@ $(function() {
                 data: JSON.stringify(tData),
                 contentType: "application/json; charset=utf-8",
                 success: function(r) {
-                    alert("Successfully saved tiefbau data!");
+                    //alert("Successfully saved tiefbau data!");
+                    var toastHTML = '<span>Successfully saved tiefbau data!</span>';
+                    M.toast({ html: toastHTML });
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1458,14 +1527,18 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully checked tiefbau finished!");
+                    //alert("Successfully checked tiefbau finished!");
+                    var toastHTML = '<span>Successfully checked tiefbau finished!</span>';
+                    M.toast({ html: toastHTML });
                     $("#tFinished_" + addressId).attr("disabled", "disabled");
                     $("#tSaveChanges_" + addressId).attr("disabled", "disabled");
                     $("#tAddImage_" + addressId).attr("disabled", "disabled");
                     $("#tDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1491,10 +1564,14 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully saved faser data!");
+                    //alert("Successfully saved faser data!");
+                    var toastHTML = '<span>Successfully saved faser data!</span>';
+                    M.toast({ html: toastHTML });
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1517,7 +1594,9 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully checked faser finished!");
+                    //alert("Successfully checked faser finished!");
+                    var toastHTML = '<span>Successfully checked faser finished!</span>';
+                    M.toast({ html: toastHTML });
                     $("#fFinished_" + addressId).attr("disabled", "disabled");
                     $("#fSaveChanges_" + addressId).attr("disabled", "disabled");
                     $("#fAddImage_" + addressId).attr("disabled", "disabled");
@@ -1527,7 +1606,9 @@ $(function() {
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1555,13 +1636,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully checked customer called!");
+                    //alert("Successfully checked customer called!");
+                    var toastHTML = '<span>Successfully checked customer called!</span>';
+                    M.toast({ html: toastHTML });
                     $("#mCustomerCalled_" + addressId).attr("disabled", "disabled");
                     $("#mCallDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1582,13 +1667,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully saved montaze data!");
+                    //alert("Successfully saved montaze data!");
+                    var toastHTML = '<span>Successfully saved montaze data!</span>';
+                    M.toast({ html: toastHTML });
                     //mCommentInput.val(mData.mcomment);
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1609,7 +1698,9 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully checked montaze finished!");
+                    //alert("Successfully checked montaze finished!");
+                    var toastHTML = '<span>Successfully checked montaze finished!</span>';
+                    M.toast({ html: toastHTML });
                     $("#mGetTerm_" + addressId).attr("disabled", "disabled");
                     $("#mCustomerCalled_" + addressId).attr("disabled", "disabled");
                     $("#mFinished_" + addressId).attr("disabled", "disabled");
@@ -1619,7 +1710,9 @@ $(function() {
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error! Please, try again.");
+                    //alert("Error! Please, try again.");
+                    var toastHTML = '<span>Error! Please, try again.</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1663,13 +1756,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Successfully saved aktivirung data!");
+                    //alert("Successfully saved aktivirung data!");
+                    var toastHTML = '<span>Successfully saved aktivirung data!</span>';
+                    M.toast({ html: toastHTML });
                     //hbCommentInput.val(hbData.comment);
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error");
+                    //alert("Error");
+                    var toastHTML = '<span>Error!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1699,7 +1796,9 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Success");
+                    //alert("Success");
+                    var toastHTML = '<span>Successfully checked aktivirung done!</span>';
+                    M.toast({ html: toastHTML });
                     //$("#hbGetTerm").attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     $("#aFinished_" + addressId).attr("disabled", "disabled");
@@ -1711,7 +1810,9 @@ $(function() {
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error");
+                    //alert("Error");
+                    var toastHTML = '<span>Error</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1742,13 +1843,17 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Success");
+                    //alert("Success");
+                    var toastHTML = '<span>Successfully saved vermessung data!</span>';
+                    M.toast({ html: toastHTML });
                     //hbCommentInput.val(hbData.comment);
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error");
+                    //alert("Error");
+                    var toastHTML = '<span>Error!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
@@ -1778,7 +1883,9 @@ $(function() {
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function(r) {
-                    alert("Success");
+                    //alert("Success");
+                    var toastHTML = '<span>Success!</span>';
+                    M.toast({ html: toastHTML });
                     //$("#hbGetTerm").attr("disabled", "disabled");
                     //$("#hbCustomerCalled").attr("disabled", "disabled");
                     $("#vFinished_" + addressId).attr("disabled", "disabled");
@@ -1790,7 +1897,9 @@ $(function() {
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
-                    alert("Error");
+                    //alert("Error");
+                    var toastHTML = '<span>Error!</span>';
+                    M.toast({ html: toastHTML });
                     console.log(JSON.stringify(err))
                 }
             });
