@@ -49,6 +49,7 @@
         public int? tId { get; set; }
         public DateTime? tdate { get; set; }
         public int? meter { get; set; }
+        public int? tready { get; set; }
         public int? tfinished { get; set; }
         public string? tcomment { get; set; }
 

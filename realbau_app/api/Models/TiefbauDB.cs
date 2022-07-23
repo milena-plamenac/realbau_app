@@ -12,6 +12,7 @@ namespace realbau_app.api.Models
 
         public DateTime? tdate { get; set; }
         public int? meter { get; set; }
+        public int? ready { get; set; }
         public int? finished { get; set; }
         public string? tcomment { get; set; }
         public int? created_by { get; set; }

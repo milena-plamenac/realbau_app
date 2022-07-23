@@ -17,7 +17,7 @@ namespace realbau_app.api.Repositories.Implementations
                     con.Open();
                     var cmd = new SqlCommand(@"select a.*, 
                                                 h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
-                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                t.id as tId, t.tdate, t.meter, t.ready as tready, t.finished as tfinished, t.tcomment,
                                                 f.fdate, f.finished as ffinished, f.fcomment,
                                                 m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
                                                 ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
@@ -89,7 +89,7 @@ namespace realbau_app.api.Repositories.Implementations
                         address.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
                         address.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
                         address.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
-
+                        address.tready = Convert.IsDBNull(reader["tready"]) ? null : (int?)reader["tready"];
                         address.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
                         address.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
                         address.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];
@@ -139,7 +139,7 @@ namespace realbau_app.api.Repositories.Implementations
                     var cmd = new SqlCommand(@"
                             select a.*, 
                             h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
-                            t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                            t.id as tId, t.tdate, t.meter, t.ready as tready, t.finished as tfinished, t.tcomment,
                             f.fdate, f.finished as ffinished, f.fcomment,
                             m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
                             ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
@@ -205,7 +205,7 @@ namespace realbau_app.api.Repositories.Implementations
                         address.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
                         address.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
                         address.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
-
+                        address.tready = Convert.IsDBNull(reader["tready"]) ? null : (int?)reader["tready"];
                         address.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
                         address.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
                         address.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];
@@ -252,7 +252,7 @@ namespace realbau_app.api.Repositories.Implementations
                     con.Open();
                     var cmd = new SqlCommand(@"select a.*, 
                                                 h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
-                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                t.id as tId, t.tdate, t.meter, t.ready as tready, t.finished as tfinished, t.tcomment,
                                                 f.fdate, f.finished as ffinished, f.fcomment,
                                                 m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
                                                 ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
@@ -327,7 +327,7 @@ namespace realbau_app.api.Repositories.Implementations
                         address.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
                         address.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
                         address.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
-
+                        address.tready = Convert.IsDBNull(reader["tready"]) ? null : (int?)reader["tready"];
                         address.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
                         address.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
                         address.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];
@@ -426,8 +426,9 @@ namespace realbau_app.api.Repositories.Implementations
                     hbCmd.Parameters.AddWithValue("@finished", 0);
                     var hbCmdRes = await hbCmd.ExecuteNonQueryAsync();
 
-                    var tCmd = new SqlCommand(@"insert into dbo.tiefbau (address_id, finished) values (@address_id, @finished)", con);
+                    var tCmd = new SqlCommand(@"insert into dbo.tiefbau (address_id, ready, finished) values (@address_id, @ready, @finished)", con);
                     tCmd.Parameters.AddWithValue("@address_id", addressId);
+                    tCmd.Parameters.AddWithValue("@ready", 0);
                     tCmd.Parameters.AddWithValue("@finished", 0);
                     var tCmdRes = await tCmd.ExecuteNonQueryAsync();
 
@@ -525,7 +526,7 @@ namespace realbau_app.api.Repositories.Implementations
                     con.Open();
                     var cmd = new SqlCommand(@"select a.*, 
                                                 h.id as hbId,  h.hbdate, h.hbfrom, h.hbto, h.calldate as hbcalldate, h.finished as hbfinished, h.hbcomment,
-                                                t.id as tId, t.tdate, t.meter, t.finished as tfinished, t.tcomment,
+                                                t.id as tId, t.tdate, t.meter, t.ready as tready, t.finished as tfinished, t.tcomment,
                                                 f.fdate, f.finished as ffinished, f.fcomment,
                                                 m.id as mId,  m.mdate, m.mfrom, m.mto, m.calldate as mcalldate, m.finished as mfinished, m.mcomment,
                                                 ak.id as aId,  ak.adate, ak.afrom, ak.ato, ak.finished as afinished, ak.acomment,
@@ -615,7 +616,7 @@ namespace realbau_app.api.Repositories.Implementations
                         address.tId = Convert.IsDBNull(reader["tId"]) ? null : (int?)reader["tId"];
                         address.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime?)reader["tdate"];
                         address.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
-
+                        address.tready = Convert.IsDBNull(reader["tready"]) ? null : (int?)reader["tready"];
                         address.tfinished = Convert.IsDBNull(reader["tfinished"]) ? null : (int?)reader["tfinished"];
                         address.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
                         address.fdate = Convert.IsDBNull(reader["fdate"]) ? null : (DateTime?)reader["fdate"];

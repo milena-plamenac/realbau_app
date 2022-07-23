@@ -28,6 +28,7 @@ namespace realbau_app.api.Controllers
                     result.address_id = Convert.IsDBNull(reader["address_id"]) ? null : (int?)reader["address_id"];
                     result.tdate = Convert.IsDBNull(reader["tdate"]) ? null : (DateTime)reader["tdate"];
                     result.meter = Convert.IsDBNull(reader["meter"]) ? null : (int?)reader["meter"];
+                    result.ready = Convert.IsDBNull(reader["ready"]) ? null : (int?)reader["ready"];
                     result.finished = Convert.IsDBNull(reader["finished"]) ? null : (int?)reader["finished"];
                     result.tcomment = Convert.IsDBNull(reader["tcomment"]) ? null : (string?)reader["tcomment"];
                     result.created_by = Convert.IsDBNull(reader["created_by"]) ? null : (int?)reader["created_by"];
@@ -54,13 +55,14 @@ namespace realbau_app.api.Controllers
             //HausbegehungDB hausbegehungDB = this.Get(address_id);
             using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             {
-                String query = "insert into dbo.tiefbau (address_id, tdate, meter, finished, tcomment) values (@address_id, @tdate, @meter, @finished, @tcomment)";
+                String query = "insert into dbo.tiefbau (address_id, tdate, meter, ready, finished, tcomment) values (@address_id, @tdate, @meter, @ready, @finished, @tcomment)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@address_id", address_id);
                     command.Parameters.AddWithValue("@tdate", (tiefbau.tdate == null) ? DBNull.Value : tiefbau.tdate);
                     command.Parameters.AddWithValue("@meter", (tiefbau.meter == null) ? DBNull.Value : tiefbau.meter);
+                    command.Parameters.AddWithValue("@ready", (tiefbau.ready == null) ? DBNull.Value : tiefbau.ready);
                     command.Parameters.AddWithValue("@finished", (tiefbau.finished == null) ? DBNull.Value : tiefbau.finished);
                     command.Parameters.AddWithValue("@tcomment", (tiefbau.tcomment == null) ? DBNull.Value : tiefbau.tcomment);
                     //command.Parameters.AddWithValue("@created_by", null);
@@ -80,12 +82,13 @@ namespace realbau_app.api.Controllers
             TiefbauDB tiefbauDB = this.Get(address_id);
             using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             {
-                String query = "update dbo.tiefbau set tdate = @tdate, meter = @meter,  finished = @finished, tcomment = @tcomment where address_id = @address_id";
+                String query = "update dbo.tiefbau set tdate = @tdate, meter = @meter, ready = @ready, finished = @finished, tcomment = @tcomment where address_id = @address_id";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@tdate", (tiefbau.tdate == null) ? (tiefbauDB.tdate == null ? DBNull.Value : tiefbauDB.tdate) : tiefbau.tdate);
                     command.Parameters.AddWithValue("@meter", (tiefbau.meter == null) ? (tiefbauDB.meter == null ? DBNull.Value : tiefbauDB.meter) : tiefbau.meter);
+                    command.Parameters.AddWithValue("@ready", (tiefbau.ready == null) ? (tiefbauDB.ready == null ? DBNull.Value : tiefbauDB.ready) : tiefbau.ready);
                     command.Parameters.AddWithValue("@finished", (tiefbau.finished == null) ? (tiefbauDB.finished == null ? DBNull.Value : tiefbauDB.finished) : tiefbau.finished);
                     command.Parameters.AddWithValue("@tcomment", (tiefbau.tcomment == null) ? (tiefbauDB.tcomment == null ? DBNull.Value : tiefbauDB.tcomment) : tiefbau.tcomment);
                     //command.Parameters.AddWithValue("@created_by", term.created_by);

@@ -77,6 +77,7 @@ namespace realbau_app.api.Repositories.Implementations
 
         public async Task<int> Update(int address_id, HausbegehungDB hausbegehung)
         {
+            // TODO: Not forget to updated busy glag to old terms if reserved
             try
             {
                 HausbegehungDB hausbegehungDB = await this.Get(address_id);
