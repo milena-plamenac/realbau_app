@@ -41,7 +41,7 @@ namespace realbau_app.api.Repositories.Implementations
                     {
                         AddressDetails address = new AddressDetails();
 
-                        address.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
+                        address.id = Convert.IsDBNull(reader["id"]) ? 0 : (int)reader["id"];
 
                         address.orderdate = Convert.IsDBNull(reader["orderdate"]) ? null : (DateTime?)reader["orderdate"];
                         address.orderid = Convert.IsDBNull(reader["orderid"]) ? null : (int?)reader["orderid"];
@@ -158,7 +158,7 @@ namespace realbau_app.api.Repositories.Implementations
 
                     if (reader.Read())
                     {
-                        address.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
+                        address.id = Convert.IsDBNull(reader["id"]) ? 0 : (int)reader["id"];
                         address.orderdate = Convert.IsDBNull(reader["orderdate"]) ? null : (DateTime?)reader["orderdate"];
                         address.orderid = Convert.IsDBNull(reader["orderid"]) ? null : (int?)reader["orderid"];
                         address.projectcode = Convert.IsDBNull(reader["projectcode"]) ? null : Convert.ToSingle(reader["projectcode"]);
@@ -280,7 +280,7 @@ namespace realbau_app.api.Repositories.Implementations
 
                     if (reader.Read())
                     {
-                        address.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
+                        address.id = Convert.IsDBNull(reader["id"]) ? 0 : (int)reader["id"];
                         address.orderdate = Convert.IsDBNull(reader["orderdate"]) ? null : (DateTime?)reader["orderdate"];
                         address.orderid = Convert.IsDBNull(reader["orderid"]) ? null : (int?)reader["orderid"];
                         address.projectcode = Convert.IsDBNull(reader["projectcode"]) ? null : Convert.ToSingle(reader["projectcode"]);
@@ -568,7 +568,7 @@ namespace realbau_app.api.Repositories.Implementations
                     {
                         AddressDetails address = new AddressDetails();
 
-                        address.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
+                        address.id = Convert.IsDBNull(reader["id"]) ? 0 : (int)reader["id"];
                         address.orderdate = Convert.IsDBNull(reader["orderdate"]) ? null : (DateTime?)reader["orderdate"];
                         address.orderid = Convert.IsDBNull(reader["orderid"]) ? null : (int?)reader["orderid"];
                         address.projectcode = Convert.IsDBNull(reader["projectcode"]) ? null : Convert.ToSingle(reader["projectcode"]);

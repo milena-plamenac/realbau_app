@@ -4,8 +4,12 @@ namespace realbau_app.api.Repositories.Interfaces
 {
     public interface IHausbegehungRepository
     {
-        public Task<IEnumerable<HausbegehungTermDB>> HausbegehungTermsForDate(string city, string pop, int year, int month,int date);
+        public Task<HausbegehungDB> Get(int address_id);
 
-        public Task<HausbegehungTermDB> Insert(HausbegehungTermDB term); 
+        public Task<int> Insert(int address_id, HausbegehungDB hausbegehung);
+
+        public Task<int> Update(int address_id, HausbegehungDB hausbegehung);
+
+        public Task<int> Delete(int address_id);
     }
 }

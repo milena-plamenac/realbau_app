@@ -11,16 +11,16 @@ namespace realbau_app.api.Controllers
     [ApiController]
     public class HausbegehungTermController : ControllerBase
     {
-        private IHausbegehungRepository hausbegehungRepository;
-        public HausbegehungTermController(IHausbegehungRepository hausbegehungRepository)
+        private IHausbegehungTermRepository hausbegehungTermRepository;
+        public HausbegehungTermController(IHausbegehungTermRepository hausbegehungTermRepository)
         {
-            this.hausbegehungRepository = hausbegehungRepository;
+            this.hausbegehungTermRepository = hausbegehungTermRepository;
         }
-        // GET: api/<ValuesController>
+
         [HttpGet("{city}/{pop}/{year}/{month}/{date}")]
         public async Task<IEnumerable<HausbegehungTermDB>> Get(string city, string pop, int year, int month, int date)
         {
-            return await this.hausbegehungRepository.HausbegehungTermsForDate(city, pop, year, month, date);  
+            return await this.hausbegehungTermRepository.HausbegehungTermsForDate(city, pop, year, month, date);  
             //List<HausbegehungTermDB> result = new List<HausbegehungTermDB>();
             //using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
             //{
@@ -70,79 +70,24 @@ namespace realbau_app.api.Controllers
             //return result;
         }
 
-        // GET api/<ValuesController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
 
-        // POST api/<ValuesController>
         [HttpPost]
         public async Task<HausbegehungTermDB> Post([FromBody] HausbegehungTermDB term)
         {
-            return await this.hausbegehungRepository.Insert(term);
-            //using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
-            //{
-            //    String query = "insert into dbo.hausbegehung_term (hbdate, hbfrom, hbto, busy) values (@hbdate, @hbfrom, @hbto, @busy)";
-
-            //    using (SqlCommand command = new SqlCommand(query, connection))
-            //    {
-            //        command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
-            //        command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
-            //        command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
-            //        command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
-            //        //command.Parameters.AddWithValue("@created_by", null);
-            //        //command.Parameters.AddWithValue("@creted_on", null);
-
-            //        connection.Open();
-            //        int result = command.ExecuteNonQuery();
-
-            //    }
-            //}
+            return await this.hausbegehungTermRepository.Insert(term);
         }
 
-        // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] HausbegehungTermDB term)
+        public async Task<int> Put(int id, [FromBody] HausbegehungTermDB term)
         {
-            using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
-            {
-                String query = "update dbo.hausbegehung_term set hbdate = @hbdate, hbfrom = @hbfrom, hbto = @hbto, busy = @busy where id = @id";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
-                    command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
-                    command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
-                    command.Parameters.AddWithValue("@busy", (term.busy == null) ? DBNull.Value : term.busy);
-                    //command.Parameters.AddWithValue("@created_by", term.created_by);
-                    //command.Parameters.AddWithValue("@creted_on", term.created_on);
-                    command.Parameters.AddWithValue("@id", term.id);
-
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
-                }
-            }
+            return await this.hausbegehungTermRepository.Update(id, term);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
-            {
-                String query = "delete from dbo.hausbegehung_term where id = @id";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    
-                    command.Parameters.AddWithValue("@id", id);
-
-                    connection.Open();
-                    int result = await command.ExecuteNonQueryAsync();
-                }
-            }
+            return await this.hausbegehungTermRepository.Delete(id);
         }
     }
 }

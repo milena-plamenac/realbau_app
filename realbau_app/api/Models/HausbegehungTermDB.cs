@@ -2,7 +2,7 @@
 {
     public class HausbegehungTermDB
     {
-        public int? id { get; set; }
+        public int id { get; set; }
         public string? city { get; set; }
         public string? pop { get; set; }
         public DateTime? hbdate { get; set; }

@@ -6,133 +6,134 @@ namespace realbau_app.api.Repositories.Implementations
 {
     public class HausbegehungRepository : IHausbegehungRepository
     {
-        public async Task<IEnumerable<HausbegehungTermDB>> HausbegehungTermsForDate(string city, string pop, int year, int month, int date)
+        public async Task<HausbegehungDB> Get(int address_id)
         {
             try
             {
-                List<HausbegehungTermDB> result = new List<HausbegehungTermDB>();
-                // bool doInsert = false;
+                HausbegehungDB result = new HausbegehungDB();
                 using (var con = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
                     con.Open();
-                    var cmd = new SqlCommand("select * from dbo.hausbegehung_term where city = @city and pop = @pop and hbdate = @hbdate order by Datepart(hour, hbfrom)", con);
-                    cmd.Parameters.AddWithValue("@hbdate", year.ToString() + '-' + month.ToString() + '-' + date.ToString());
-                    cmd.Parameters.AddWithValue("@city", city);
-                    cmd.Parameters.AddWithValue("@pop", pop);
+                    var cmd = new SqlCommand("select * from dbo.hausbegehung where address_id = @address_id", con);
+                    cmd.Parameters.AddWithValue("@address_id", address_id);
                     SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
                     while (reader.Read())
                     {
-                        HausbegehungTermDB resultItem = new HausbegehungTermDB();
-                        resultItem.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
-                        resultItem.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateTime?)reader["hbdate"];
-                        resultItem.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (DateTime?)reader["hbfrom"];
-                        resultItem.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
-                        resultItem.busy = Convert.IsDBNull(reader["busy"]) ? null : (int?)reader["busy"];
-                        resultItem.created_by = Convert.IsDBNull(reader["created_by"]) ? null : (int?)reader["created_by"];
-                        resultItem.created_on = Convert.IsDBNull(reader["created_on"]) ? null : (DateTime?)reader["created_on"];
-                        resultItem.city = Convert.IsDBNull(reader["city"]) ? null : (string?)reader["city"];
-                        resultItem.pop = Convert.IsDBNull(reader["pop"]) ? null : (string?)reader["pop"];
-
-                        result.Add(resultItem);
+                        result.id = Convert.IsDBNull(reader["id"]) ? null : (int?)reader["id"];
+                        result.address_id = Convert.IsDBNull(reader["address_id"]) ? null : (int?)reader["address_id"];
+                        result.hbdate = Convert.IsDBNull(reader["hbdate"]) ? null : (DateTime)reader["hbdate"];
+                        result.hbfrom = Convert.IsDBNull(reader["hbfrom"]) ? null : (DateTime?)reader["hbfrom"];
+                        result.hbto = Convert.IsDBNull(reader["hbto"]) ? null : (DateTime?)reader["hbto"];
+                        result.calldate = Convert.IsDBNull(reader["calldate"]) ? null : (DateTime?)reader["calldate"];
+                        result.finished = Convert.IsDBNull(reader["finished"]) ? null : (int?)reader["finished"];
+                        result.hbcomment = Convert.IsDBNull(reader["hbcomment"]) ? null : (string?)reader["hbcomment"];
+                        result.created_by = Convert.IsDBNull(reader["created_by"]) ? null : (int?)reader["created_by"];
+                        result.created_on = Convert.IsDBNull(reader["created_on"]) ? null : (DateTime?)reader["created_on"];
                     }
-
-                    //if (result.Count() == 0)
-                    //{
-                    //    reader.Close();
-                    //    var cmd1 = new SqlCommand("select * from dbo.hausbegehung_default_term", con);
-                    //    SqlDataReader reader1 = cmd1.ExecuteReader();
-
-                    //    while (reader1.Read())
-                    //    {
-                    //        HausbegehungTermDB resultItem = new HausbegehungTermDB();
-                    //        resultItem.id = Convert.IsDBNull(reader1["id"]) ? null : (int?)reader1["id"];
-                    //        resultItem.hbdate = null; // Convert.IsDBNull(reader["hbdate"]) ? null : DateOnly.FromDateTime((DateTime)reader["hbdate"]);
-                    //        resultItem.hbfrom = Convert.IsDBNull(reader1["hbfrom"]) ? null : (TimeSpan?)reader1["hbfrom"];
-                    //        resultItem.hbto = Convert.IsDBNull(reader1["hbto"]) ? null : (TimeSpan?)reader1["hbto"];
-                    //        resultItem.busy = 0; // Convert.IsDBNull(reader["busy"]) ? null : (int?)reader["busy"];
-                    //        resultItem.created_by = Convert.IsDBNull(reader1["created_by"]) ? null : (int?)reader1["created_by"];
-                    //        resultItem.created_on = Convert.IsDBNull(reader1["created_on"]) ? null : (DateTime?)reader1["created_on"];
-
-                    //        result.Add(resultItem);
-
-
-                    //    }
-
-                    //    doInsert = true;
-                    //    reader1.Close();
-                    //}
-
-
-                    //if (doInsert)
-                    //    for (int i = 0; i < result.Count(); i++)
-                    //    {
-                    //        HausbegehungTermDB resultItem = result[i];
-
-                    //        String query = "insert into dbo.hausbegehung_term (hbdate, hbfrom, hbto, busy) values (@hbdate, @hbfrom, @hbto, @busy)";
-
-                    //        using (SqlCommand command = new SqlCommand(query, con))
-                    //        {
-                    //            command.Parameters.AddWithValue("@hbdate", (resultItem.hbdate == null) ? (year + '-' + (Int32.Parse(month) + 1) + '-' + date) : resultItem.hbdate);
-                    //            command.Parameters.AddWithValue("@hbfrom", (resultItem.hbfrom == null) ? DBNull.Value : resultItem.hbfrom);
-                    //            command.Parameters.AddWithValue("@hbto", (resultItem.hbto == null) ? DBNull.Value : resultItem.hbto);
-                    //            command.Parameters.AddWithValue("@busy", (resultItem.busy == null) ? DBNull.Value : resultItem.busy);
-                    //            //command.Parameters.AddWithValue("@created_by", null);
-                    //            //command.Parameters.AddWithValue("@creted_on", null);
-
-
-                    //            command.ExecuteNonQuery();
-
-                    //        }
-                    //    }
                 }
+
                 return result;
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
         }
 
-        public async Task<HausbegehungTermDB> Insert(HausbegehungTermDB term)
+        public async Task<int> Insert(int address_id, HausbegehungDB hausbegehung)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
                 {
-                    String query = "insert into dbo.hausbegehung_term (city, pop, hbdate, hbfrom, hbto, busy)  OUTPUT INSERTED.[ID] values (@city, @pop, @hbdate, @hbfrom, @hbto, @busy)";
+                    String query = "insert into dbo.hausbegehung (address_id, hbdate, hbfrom, hbto, calldate, finished, hbcomment) values (@address_id, @hbdate, @hbfrom, @hbto, @calldate, @finished, @hbcomment)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@city", (term.city == null) ? DBNull.Value : term.city);
-                        command.Parameters.AddWithValue("@pop", (term.pop == null) ? DBNull.Value : term.pop);
-                        command.Parameters.AddWithValue("@hbdate", (term.hbdate == null) ? DBNull.Value : term.hbdate);
-                        command.Parameters.AddWithValue("@hbfrom", (term.hbfrom == null) ? DBNull.Value : term.hbfrom);
-                        command.Parameters.AddWithValue("@hbto", (term.hbto == null) ? DBNull.Value : term.hbto);
-                        command.Parameters.AddWithValue("@busy", (term.busy == null) ? 0 : term.busy);
+                        command.Parameters.AddWithValue("@address_id", address_id);
+                        command.Parameters.AddWithValue("@hbdate", (hausbegehung.hbdate == null) ? DBNull.Value : hausbegehung.hbdate);
+                        command.Parameters.AddWithValue("@hbfrom", (hausbegehung.hbfrom == null) ? DBNull.Value : hausbegehung.hbfrom);
+                        command.Parameters.AddWithValue("@hbto", (hausbegehung.hbto == null) ? DBNull.Value : hausbegehung.hbto);
+                        command.Parameters.AddWithValue("@calldate", (hausbegehung.calldate == null) ? DBNull.Value : hausbegehung.calldate);
+                        command.Parameters.AddWithValue("@finished", (hausbegehung.finished == null) ? DBNull.Value : hausbegehung.finished);
+                        command.Parameters.AddWithValue("@hbcomment", (hausbegehung.hbcomment == null) ? DBNull.Value : hausbegehung.hbcomment);
                         //command.Parameters.AddWithValue("@created_by", null);
                         //command.Parameters.AddWithValue("@creted_on", null);
 
                         connection.Open();
-                        int result = (int)await command.ExecuteScalarAsync();
-                 
-                        return new HausbegehungTermDB()
-                        {
-                            city = term.city,
-                            pop = term.pop,
-                            hbdate = term.hbdate,
-                            hbfrom = term.hbfrom,
-                            hbto = term.hbto,
-                            busy = term.busy,
-                            id = result   
-                        };
+                        int result = await command.ExecuteNonQueryAsync();
+
+                        return result;
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return null;
+                return -1;
             }
         }
+
+        public async Task<int> Update(int address_id, HausbegehungDB hausbegehung)
+        {
+            try
+            {
+                HausbegehungDB hausbegehungDB = await this.Get(address_id);
+                using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+                {
+                    String query = "update dbo.hausbegehung set hbdate = @hbdate, hbfrom = @hbfrom, hbto = @hbto, calldate = @calldate, finished = @finished, hbcomment = @hbcomment where address_id = @address_id";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@hbdate", (hausbegehung.hbdate == null) ? (hausbegehungDB.hbdate == null ? DBNull.Value : hausbegehungDB.hbdate) : hausbegehung.hbdate);
+                        command.Parameters.AddWithValue("@hbfrom", (hausbegehung.hbfrom == null) ? (hausbegehungDB.hbfrom == null ? DBNull.Value : hausbegehungDB.hbfrom) : hausbegehung.hbfrom);
+                        command.Parameters.AddWithValue("@hbto", (hausbegehung.hbto == null) ? (hausbegehungDB.hbto == null ? DBNull.Value : hausbegehungDB.hbto) : hausbegehung.hbto);
+                        command.Parameters.AddWithValue("@calldate", (hausbegehung.calldate == null) ? (hausbegehungDB.calldate == null ? DBNull.Value : hausbegehungDB.calldate) : hausbegehung.calldate);
+                        command.Parameters.AddWithValue("@finished", (hausbegehung.finished == null) ? (hausbegehungDB.finished == null ? DBNull.Value : hausbegehungDB.finished) : hausbegehung.finished);
+                        command.Parameters.AddWithValue("@hbcomment", (hausbegehung.hbcomment == null) ? (hausbegehungDB.hbcomment == null ? DBNull.Value : hausbegehungDB.hbcomment) : hausbegehung.hbcomment);
+                        //command.Parameters.AddWithValue("@created_by", term.created_by);
+                        //command.Parameters.AddWithValue("@creted_on", term.created_on);
+                        command.Parameters.AddWithValue("@address_id", address_id);
+
+                        connection.Open();
+                        int result = await command.ExecuteNonQueryAsync();
+
+                        return result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+
+        public async Task<int> Delete(int address_id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection("Server=173.249.2.130,1433\\SQLEXPRESS;Database=realbau_db;User Id=realbau;Password=p4x/yRNf;TrustServerCertificate=True"))
+                {
+                    String query = "delete from dbo.hausbegehung where address_id = @address_id";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@address_id", address_id);
+
+                        connection.Open();
+                        int result = await command.ExecuteNonQueryAsync();
+
+                        return result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
     }
 }

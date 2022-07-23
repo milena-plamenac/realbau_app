@@ -10,6 +10,12 @@
 
 <h6 class="center-align">Your address: <b>@Model.street @Model.housenumber @Model.subnumber, @Model.city </b></h6>
 
+<p hidden id="modelId">@Model.id</p>
+<p hidden id="modelCity">@Model.city</p>
+<p hidden id="modelPop">@Model.areapop</p>
+
+
+
 <div class="row">
     <div class="center-align col s12 m4 l4">
 
@@ -72,9 +78,118 @@
 
 @section Scripts{
     <script>
-    $(document).ready(
+        $(document).ready(
             function() {
-                alert("Hello from terms reservation!")
+                var address_id = $("#modelId")[0].innerText;
+                var city = $("#modelCity")[0].innerText;
+                var pop = $("#modelPop")[0].innerText;
+
+                getThreeDaysTerms(address_id, city, pop, new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
             })
-            </script>
+
+        function getThreeDaysTerms(address_id, city, pop, year, month, date) {
+            //alert("Getting terms");
+            var currentDate = new Date(year, month, date);
+
+            $("#termsDate_" + address_id).val(date + "." + month + "." + year);
+
+            var firstDate = new Date(year, month, date);
+            firstDate.setDate(firstDate.getDate() + 1);
+
+            var year1 = firstDate.getFullYear();
+            var month1 = firstDate.getMonth();
+            var date1 = firstDate.getDate();
+
+            $("#termsDate_1_" + address_id).val(date1 + "." + month1 + "." + year1);
+
+            var secondDate = new Date(year, month, date);
+            secondDate.setDate(secondDate.getDate() + 2);
+
+            var year2 = secondDate.getFullYear();
+            var month2 = secondDate.getMonth();
+            var date2 = secondDate.getDate();
+
+            $("#termsDate_2_" + address_id).val(date2 + "." + month2 + "." + year2);
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year + "/" + month + "/" + date,
+
+                contentType: "application/json; charset=utf-8",
+
+                success: function(r) {
+                    //console.log("R: "); console.log(r);
+                    $("#tblHbTerms tbody tr").remove(); for (i = 0; i < r.length; i++) {
+                        if (r[i].busy == 1) {
+                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        // if (r[i].busy == 1) {
+                        //    console.log("Busy for address " + address_id + " and term " + r[i].id);
+                        //    console.log($('#btnReserve_' + address_id + '_' + r[i].id));
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r[i].id).css('visibility', 'hidden'); //.prop( "disabled", true ); //attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year1 + "/" + month1 + "/" + date1,
+                contentType: "application/json; charset=utf-8",
+                success: function(r1) {
+                    //console.log("R1"); console.log(r1);
+                    $("#tblHbTerms_1 tbody tr").remove(); for (i = 0; i < r1.length; i++) {
+                        if (r1[i].busy == 1) {
+                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        //$('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        //if (r1[i].busy == 1) {
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r1[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r1[i].id).attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+
+
+            $.ajax({
+                type: "GET",
+                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year2 + "/" + month2 + "/" + date2,
+                contentType: "application/json; charset=utf-8",
+                success: function(r2) {
+                    //console.log("R2"); console.log(r2);
+                    $("#tblHbTerms_2 tbody tr").remove();
+                    for (i = 0; i < r2.length; i++) {
+                        if (r2[i].busy == 1) {
+                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                        }
+                        else {
+                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        }
+                        //$('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                        //if (r2[i].busy == 1) {
+                        //    //console.log($('#btnReserve_' + address_id + '_' + r2[i].id));
+                        //    $('#btnReserve_' + address_id + '_' + r2[i].id).attr('disabled', 'disabled');
+                        //}
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
             }

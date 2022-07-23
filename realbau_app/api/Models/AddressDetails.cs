@@ -2,7 +2,7 @@
 {
 	public class AddressDetails
 	{
-		public int? id { get; set; }
+		public int id { get; set; }
 		public DateTime? orderdate { get; set; }
 		public int? orderid { get; set; }
 		public float? projectcode { get; set; }
