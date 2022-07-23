@@ -1,0 +1,80 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model realbau_app.Models.AddressDetails;
+
+<h4 class="center-align">Reserve your HB term</h4>
+
+<h6 class="center-align">Your address: <b>@Model.street @Model.housenumber @Model.subnumber, @Model.city </b></h6>
+
+<div class="row">
+    <div class="center-align col s12 m4 l4">
+
+        <div class="input-field">
+            <input id="termsDate_@Model.id" type="text" class="validate center-align" disabled>
+        </div>
+        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms">
+            <thead>
+                <tr>
+                    <th hidden>Id</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Busy</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="center-align col s12 m4 l4">
+        <div class="input-field">
+            <input id="termsDate_1_@Model.id" type="text" class="validate center-align" disabled>
+        </div>
+        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_1">
+            <thead>
+                <tr>
+                    <th hidden>Id</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Busy</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="center-align col s12 m4 l4">
+        <div class="input-field">
+            <input id="termsDate_2_@Model.id" type="text" class="validate center-align" disabled>
+        </div>
+        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_2">
+            <thead>
+                <tr>
+                    <th hidden>Id</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Busy</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+    $(document).ready(
+            function() {
+                alert("Hello from terms reservation!")
+            })
+            </script>
+            }

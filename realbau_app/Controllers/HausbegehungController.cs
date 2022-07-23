@@ -9,10 +9,12 @@ namespace realbau_app.Controllers
     public class HausbegehungController : Controller
     {
         private IHausbegehungService hausbegehungService;
+        private IAddressService addressService;
 
-        public HausbegehungController(IHausbegehungService hausbegehungService)
+        public HausbegehungController(IHausbegehungService hausbegehungService, IAddressService addressService)
         {
             this.hausbegehungService = hausbegehungService;
+            this.addressService = addressService;
         }
 
         public async Task<IActionResult> Index()
@@ -83,7 +85,7 @@ namespace realbau_app.Controllers
 
         public async Task<IActionResult> Terms()
         {
-            
+
 
             return View();
         }
@@ -92,6 +94,13 @@ namespace realbau_app.Controllers
         {
             IEnumerable<HausbegehungTerm> terms = await this.hausbegehungService.HausbegehungTermsForDate(city, pop, dateTime.Year, dateTime.Month, dateTime.Day);
             return View("Terms", terms);
+        }
+
+
+        public async Task<IActionResult> Reserve(int id) // there is going to be guid
+        {
+            Models.AddressDetails addressDetails = await this.addressService.GetAddressById(id);
+            return View(addressDetails);
         }
 
     }

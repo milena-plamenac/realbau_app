@@ -35,6 +35,16 @@ namespace realbau_app.Services.Implementations
             return result;
         }
 
+        public async Task<realbau_app.Models.AddressDetails> GetAddressById(int id)
+        {
+            AddressDetails addressDetails = await this.addressRepository
+                .GetAddressById(id);
+
+            Models.AddressDetails result =
+                                    this.mapper.Map<AddressDetails, Models.AddressDetails>(addressDetails);
+            return result;
+        }
+
         public async Task<IEnumerable<Models.AddressDetails>> Filter(Models.FilterModel filterModel)
         {
             List<AddressDetails> addressDetails = await this.addressRepository.Filter(this.mapper.Map<FilterModel>(filterModel)) as List<AddressDetails>;

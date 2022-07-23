@@ -8,6 +8,8 @@ namespace realbau_app.Services.Interfaces
 
         public Task<AddressDetails> GetAddressByInfo(AddressInfo addressInfo);
 
+        public Task<AddressDetails> GetAddressById(int id);
+
         public Task<IEnumerable<AddressDetails>> Filter(FilterModel filterModel);
     }
 }
