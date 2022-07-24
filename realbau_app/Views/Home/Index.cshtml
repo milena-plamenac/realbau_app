@@ -110,8 +110,8 @@
 
 <style>
     /*i {
-                                                                                                                                    color: darkgreen !important;
-                                                                                                                                }*/
+                                                                                                                                                        color: darkgreen !important;
+                                                                                                                                                    }*/
 
     table {
         margin: 1rem !important;
@@ -664,88 +664,182 @@
                     </div>
 
                     <div id="faser_@address.id" class="col s12">
-                        <div class="row">
-                            <div class="col s12 m12 l12" id="faserBody">
-                                <div class="row">
-                                    <div class="col s6 m6 l6">
-                                        <p>Date: <span id="fDate_@address.id">@address.fdate</span></p>
+                        @*<div class="row">
+                    <div class="col s12 m12 l12" id="faserBody">
+                    <div class="row">
+                    <div class="col s6 m6 l6">
+                    <p>Date: <span id="fDate_@address.id">@address.fdate</span></p>
 
-                                    </div>
-                                    <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="fComment_@address.id">@address.fcomment</textarea>
-                                        <label for="fComment_@address.id">Faser comment</label>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="waves-effect waves-light btn fSaveChanges" disabled="@(address.ffinished == 1)" id="fSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
-                            <a class="waves-effect waves-light btn fFinished" disabled="@(address.ffinished == 1)" id="fFinished_@address.id"><i class="material-icons left">check</i>Faser finished</a>
-                            <a class="waves-effect waves-light btn fAddImage" disabled="@(address.ffinished == 1)" id="fAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
-                        </div>
                     </div>
+                    <div class="col s6 m6 l6">
+                    <textarea class="materialize-textarea" id="fComment_@address.id">@address.fcomment</textarea>
+                    <label for="fComment_@address.id">Faser comment</label>
+
+                    </div>
+                    </div>
+                    </div>
+                    <a class="waves-effect waves-light btn fSaveChanges" disabled="@(address.ffinished == 1)" id="fSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                    <a class="waves-effect waves-light btn fFinished" disabled="@(address.ffinished == 1)" id="fFinished_@address.id"><i class="material-icons left">check</i>Faser finished</a>
+                    <a class="waves-effect waves-light btn fAddImage" disabled="@(address.ffinished == 1)" id="fAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                    </div>*@
+
+
+
+                        <div class="row">
+                            <div class="col s12 m6 l6" style="border-right: 1px solid #e0e0e0">
+                                <h6><b>Faser information</b></h6>
+                                <span>Faser finish date: </span><span id="fDate_@address.id">@address.fdate</span>
+                                <br>
+                                <a class="waves-effect waves-light btn fFinished" disabled="@(address.ffinished == 1)" id="fFinished_@address.id"><i class="material-icons left">check</i>Faser finished</a>
+                                <a class="waves-effect waves-light btn fAddImage" disabled="@(address.ffinished == 1)" id="fAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <h6><b>Faser comment</b></h6>
+                                <textarea class="materialize-textarea" id="fComment_@address.id">@address.fcomment</textarea>
+                                @*<label for="fComment_@address.id">Faser comment</label>*@
+                                <a class="waves-effect waves-light btn fSaveChanges" disabled="@(address.ffinished == 1)" id="fSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
                     <div id="montaze_@address.id" class="col s12">
 
-                        <div class="row">
-                            <div class="col s12 m12 l12">
-                                <div class="row">
-                                    <div class="col s6 m6 l6">
-                                        <p>Date: @address.mdate?.ToString("dd.MM.yyyy")</p>
-                                        <p>Termin: @address.mfrom?.ToString("HH:mm") - @address.mto?.ToString("HH:mm")</p>
-                                        <p>Call date: <span id="mCallDate_@address.id">@address.mcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
-                                    </div>
-                                    <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="mComment_@address.id">@address.mcomment</textarea>
-                                        <label for="mComment_@address.id">Montaze comment</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="waves-effect waves-light btn mSaveChanges" disabled="@(address.mfinished == 1)" id="mSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
-                            <a class="waves-effect waves-light btn mFinished" disabled="@(address.mfinished == 1)" id="mFinished_@address.id"><i class="material-icons left">check</i>Montaze finished</a>
-                            <a class="waves-effect waves-light btn mGetTerm" disabled="@(address.mfinished == 1)" id="mGetTerm_@address.id"><i class="material-icons left">date_range</i>Get montaze term</a>
-                            <a class="waves-effect waves-light btn mCustomerCalled" disabled="@(address.mfinished == 1)" id="mCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
-                            <a class="waves-effect waves-light btn mAddImage" disabled="@(address.mfinished == 1)" id="mAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
-
-
-                        </div>
+                        @*<div class="row">
+                    <div class="col s12 m12 l12">
+                    <div class="row">
+                    <div class="col s6 m6 l6">
+                    <p>Date: @address.mdate?.ToString("dd.MM.yyyy")</p>
+                    <p>Termin: @address.mfrom?.ToString("HH:mm") - @address.mto?.ToString("HH:mm")</p>
+                    <p>Call date: <span id="mCallDate_@address.id">@address.mcalldate?.ToString("dd.MM.yyyy HH:mm")</span></p>
                     </div>
+                    <div class="col s6 m6 l6">
+                    <textarea class="materialize-textarea" id="mComment_@address.id">@address.mcomment</textarea>
+                    <label for="mComment_@address.id">Montaze comment</label>
+                    </div>
+                    </div>
+                    </div>
+                    <a class="waves-effect waves-light btn mSaveChanges" disabled="@(address.mfinished == 1)" id="mSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                    <a class="waves-effect waves-light btn mFinished" disabled="@(address.mfinished == 1)" id="mFinished_@address.id"><i class="material-icons left">check</i>Montaze finished</a>
+                    <a class="waves-effect waves-light btn mGetTerm" disabled="@(address.mfinished == 1)" id="mGetTerm_@address.id"><i class="material-icons left">date_range</i>Get montaze term</a>
+                    <a class="waves-effect waves-light btn mCustomerCalled" disabled="@(address.mfinished == 1)" id="mCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
+                    <a class="waves-effect waves-light btn mAddImage" disabled="@(address.mfinished == 1)" id="mAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                    </div>*@
+
+
+                        <div class="row">
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0;">
+                                <h6><b>Montaze information</b></h6>
+                                <p>Date: @address.mdate?.ToString("dd.MM.yyyy")</p>
+                                <p>Termin: @address.mfrom?.ToString("HH:mm") - @address.mto?.ToString("HH:mm")</p>
+                                <a title="Please, check when montaze is finished" class="waves-effect waves-light btn mFinished" disabled="@(address.mfinished == 1)" id="mFinished_@address.id"><i class="material-icons left">check</i>Montaze finished</a>
+                                <a title="Go to page that user will get in email" class="waves-effect waves-light btn mGetTerm" disabled="@(address.mfinished == 1)" id="mGetTerm_@address.id"><i class="material-icons left">date_range</i>Montaze term link</a>
+                                <a class="waves-effect waves-light btn mAddImage" disabled="@(address.mfinished == 1)" id="mAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                            </div>
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0;">
+                                <h6><b>Montaze contact</b></h6>
+                                <span>Call date:</span><span id="mCallDate_@address.id">@address.mcalldate?.ToString("dd.MM.yyyy HH:mm")</span>
+                                <br>
+                                <a class="waves-effect waves-light btn mCustomerCalled" disabled="@(address.mfinished == 1)" id="mCustomerCalled_@address.id"><i class="material-icons left">phone</i>Customer called</a>
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <h6><b>Montaze comment</b></h6>
+                                <textarea class="materialize-textarea" id="mComment_@address.id">@address.mcomment</textarea>
+                                @*<label for="mComment_@address.id">Montaze comment</label>*@
+                                <a class="waves-effect waves-light btn mSaveChanges" disabled="@(address.mfinished == 1)" id="mSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
                     <div id="aktivirung_@address.id" class="col s12">
-                        <div class="row">
-                            <div class="col s12 m12 l12">
-                                <div class="row">
-                                    <div class="col s6 m6 l6">
-                                        <p>Date: <span id="aDate_@address.id">@address.adate</span></p>
-                                    </div>
-                                    <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="aComment_@address.id">@address.acomment</textarea>
-                                        <label for="aComment_@address.id">Aktivirung comment</label>
 
-                                    </div>
-                                </div>
+                        @*<div class="row">
+                    <div class="col s12 m12 l12">
+                    <div class="row">
+                    <div class="col s6 m6 l6">
+                    <p>Date: <span id="aDate_@address.id">@address.adate</span></p>
+                    </div>
+                    <div class="col s6 m6 l6">
+                    <textarea class="materialize-textarea" id="aComment_@address.id">@address.acomment</textarea>
+                    <label for="aComment_@address.id">Aktivirung comment</label>
+
+                    </div>
+                    </div>
+                    </div>
+                    <a class="waves-effect waves-light btn aSaveChanged" disabled="@(address.afinished == 1)" id="aSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                    <a class="waves-effect waves-light btn aFinished" disabled="@(address.afinished == 1)" id="aFinished_@address.id"><i class="material-icons left">check</i>Aktivirung finished</a>
+                    <a class="waves-effect waves-light btn aAddImage" disabled="@(address.afinished == 1)" id="aAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                    </div>*@
+
+                        <div class="row">
+                            <div class="col s12 m6 l6" style="border-right: 1px solid #e0e0e0">
+                                <h6><b>Aktivirung information</b></h6>
+                                <span>Aktivirung finish date: </span><span id="aDate_@address.id">@address.adate</span>
+                                <br>
+                                <a class="waves-effect waves-light btn aFinished" disabled="@(address.afinished == 1)" id="aFinished_@address.id"><i class="material-icons left">check</i>Aktivirung finished</a>
+                                <a class="waves-effect waves-light btn aAddImage" disabled="@(address.afinished == 1)" id="aAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+
                             </div>
-                            <a class="waves-effect waves-light btn aSaveChanged" disabled="@(address.afinished == 1)" id="aSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
-                            <a class="waves-effect waves-light btn aFinished" disabled="@(address.afinished == 1)" id="aFinished_@address.id"><i class="material-icons left">check</i>Aktivirung finished</a>
-                            <a class="waves-effect waves-light btn aAddImage" disabled="@(address.afinished == 1)" id="aAddImage_@address.id"><i class="material-icons left">image</i>Add image</a>
+                            <div class="col s12 m6 l6">
+                                <h6><b>Aktivirung comment</b></h6>
+                                <textarea class="materialize-textarea" id="aComment_@address.id">@address.acomment</textarea>
+                                @*<label for="fComment_@address.id">Aktivirung comment</label>*@
+                                <a class="waves-effect waves-light btn aSaveChanges" disabled="@(address.afinished == 1)" id="aSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            </div>
                         </div>
 
                     </div>
+
                     <div id="vermessung_@address.id" class="col s12">
+
+                        @*<div class="row">
+                    <div class="col s12 m12 l12">
+                    <div class="row">
+                    <div class="col s6 m6 l6">
+                    <p>Date: <span id="vDate_@address.id">@address.vdate</span></p>
+                    </div>
+                    <div class="col s6 m6 l6">
+                    <textarea class="materialize-textarea" id="vComment_@address.id">@address.vcomment</textarea>
+                    <label for="vComment_@address.id">Vermessung comment</label>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="card-action">
+                    <a class="waves-effect waves-light btn vSaveChanges" disabled="@(address.vfinished == 1)" id="vSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                    <a class="waves-effect waves-light btn vFinished" disabled="@(address.vfinished == 1)" id="vFinished_@address.id"><i class="material-icons left">check</i>Vermessung finished</a>
+                    </div>
+                    </div>*@
+
                         <div class="row">
-                            <div class="col s12 m12 l12">
-                                <div class="row">
-                                    <div class="col s6 m6 l6">
-                                        <p>Date: <span id="vDate_@address.id">@address.vdate</span></p>
-                                    </div>
-                                    <div class="col s6 m6 l6">
-                                        <textarea class="materialize-textarea" id="vComment_@address.id">@address.vcomment</textarea>
-                                        <label for="vComment_@address.id">Vermessung comment</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-action">
-                                <a class="waves-effect waves-light btn vSaveChanges" disabled="@(address.vfinished == 1)" id="vSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0">
+                                <h6><b>Vermessung information</b></h6>
+                                <span>Vermessung finish date: </span><span id="vDate_@address.id">@address.vdate</span>
+                                <br>
                                 <a class="waves-effect waves-light btn vFinished" disabled="@(address.vfinished == 1)" id="vFinished_@address.id"><i class="material-icons left">check</i>Vermessung finished</a>
+
+                            </div>
+                            <div class="col s12 m4 l4" style="border-right: 1px solid #e0e0e0">
+                                <h6><b>Vermessung comment</b></h6>
+                                <textarea class="materialize-textarea" id="vComment_@address.id">@address.vcomment</textarea>
+
+                                <a class="waves-effect waves-light btn vSaveChanges" disabled="@(address.vfinished == 1)" id="vSaveChanges_@address.id"><i class="material-icons left">check</i>Save changes</a>
+                            </div>
+                            <div class="col s12 m4 l4">
+                                <h6><b>Vermessung final report</b></h6>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
 
@@ -1533,7 +1627,8 @@ $(function() {
             // CHANGED THIS - this button will be removed
             //var addressId = $("#addressId")[0].innerText;
             var addressId = this.id.split('_')[1];
-            window.location.href = "/Hausbegehung/Reserve/?id=" + addressId;
+            //window.location.href = "/Hausbegehung/Reserve/?id=" + addressId;
+            window.open("/Hausbegehung/Reserve/?id=" + addressId, "_blank");
             return;
 
             var currentTime = new Date();
@@ -1585,7 +1680,7 @@ $(function() {
 
             var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
 
-            tData.tdate = currentTime;
+            //tData.tdate = currentTime;
 
             var addressId = this.id.split('_')[1];
 
@@ -1604,7 +1699,7 @@ $(function() {
                     $("#tSaveChanges_" + addressId).attr("disabled", "disabled");
                     $("#tSaveChanges1_" + addressId).attr("disabled", "disabled");
                     $("#tAddImage_" + addressId).attr("disabled", "disabled");
-                    $("#tDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    //$("#tDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
                 },
                 error: function(err) {
                     //alert("Error! Please, try again.");
@@ -1728,9 +1823,11 @@ $(function() {
 
 
         $(".mCustomerCalled").click(function() {
+
             var addressId = this.id.split('_')[1];
             //alert(addressId);
             var currentTime = new Date(); //new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" }));
+            currentTime.setHours(currentTime.getHours() + 2);
             var mData = {};
             mData.calldate = currentTime;
 
@@ -1744,8 +1841,10 @@ $(function() {
                     //alert("Successfully checked customer called!");
                     var toastHTML = '<span>Successfully checked customer called!</span>';
                     M.toast({ html: toastHTML });
-                    $("#mCustomerCalled_" + addressId).attr("disabled", "disabled");
-                    $("#mCallDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    //$("#mCustomerCalled_" + addressId).attr("disabled", "disabled");
+                    //$("#mCallDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + currentTime.getHours() + ':' + currentTime.getMinutes());
+                    $("#mCallDate_" + addressId).html(currentTime.getDate() + '.' + (currentTime.getMonth().toFixed() - 1) + '.' + currentTime.getFullYear() + ' ' + (currentTime.getHours() - 2) + ':' + currentTime.getMinutes());
+
                     //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
                 },
                 error: function(err) {
@@ -1825,6 +1924,11 @@ $(function() {
 
         $(".mGetTerm").click(function() {
             var addressId = this.id.split('_')[1];
+
+            //window.location.href = "/Hausbegehung/Reserve/?id=" + addressId;
+            window.open("/Montaze/Reserve/?id=" + addressId, "_blank");
+            return;
+
             var currentTime = new Date();
             let date = currentTime.getFullYear() + '-' + (currentTime.getMonth().toFixed() - 1) + '-' + currentTime.getDate();
             window.location.href = "/Montaze/Terms/?address_id=" + addressId + '&year=' + currentTime.getFullYear() + '&month=' + (currentTime.getMonth().toFixed()) + '&date=' + currentTime.getDate();

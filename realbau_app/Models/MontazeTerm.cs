@@ -1,8 +1,8 @@
-﻿namespace realbau_app.api.Models
+﻿namespace realbau_app.Models
 {
-    public class MontazeTermDB
+    public class MontazeTerm
     {
-        public int id { get; set; }
+        public int? id { get; set; }
         public string? city { get; set; }
         public string? pop { get; set; }
         public DateTime? mdate { get; set; }
@@ -13,3 +13,4 @@
         public DateTime? created_on { get; set; }
     }
 }
+

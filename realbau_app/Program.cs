@@ -42,6 +42,9 @@ builder.Services.AddTransient<IHausbegehungRepository, HausbegehungRepository>()
 builder.Services.AddTransient<IHausbegehungService, HausbegehungService>();
 builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 builder.Services.AddTransient<IReservationService, ReservationService>();
+builder.Services.AddTransient<IMontazeTermRepository, MontazeTermRepository>();
+builder.Services.AddTransient<IMontazeRepository, MontazeRepository>();
+builder.Services.AddTransient<IMontazeService, MontazeService>();
 
 builder.Services.AddTransient<IStreamFileUploadService, StreamFileUploadLocalService>();
 

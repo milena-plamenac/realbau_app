@@ -6,6 +6,6 @@ namespace realbau_app.Services.Interfaces
     {
         public Task<int> HausbegehungTerm(HausbegehungReservation hausbegehungReservation);
 
-        //public Task<int> MontazeTerm();
+        public Task<int> MontazeTerm(MontazeReservation montazeReservation);
     }
 }

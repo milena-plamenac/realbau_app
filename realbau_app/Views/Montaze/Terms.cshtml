@@ -1,369 +1,254 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+<style>
+    .btnRemove {
+        background-color: #e57373;
+    }
+
+        .btnRemove:hover {
+            background-color: #ef9a9a;
+        }
+</style>
+
 @{
 }
-@model IEnumerable<realbau_app.api.Models.MontazeTermDB>
-<h4 class="text-center">Montaze terms</h4>
-<div class="row">
-    <div class="col-4"></div>
-    <div class="col-1">
-        <a style="color: #039be5; cursor: pointer;" id="prev">
-        Prev
-        </a>
-        @*<a class="waves-effect waves-light btn" id="prev"><i class="material-icons left">keyboard_arrow_left</i>Prev</a>*@
-    </div>
-    <div class="col-2">
-        <input id="currentdate" type="text" disabled />
-    </div>
-    <div class="col-1">
-        <a style="color: #039be5; cursor: pointer;" id="next">
-        Next
-        </a>
-        @*<a class="waves-effect waves-light btn" id="next"><i class="material-icons right">keyboard_arrow_right</i>Next</a>*@
-    </div>
+@model IEnumerable<realbau_app.Models.MontazeTerm>
+<h4 class="center-align">Montaze terms</h4>
+<h6 class="center-align" id="currentFilters">Showing result for: city <span id="citySpan"></span>, pop <span id="popSpan"></span> and date <span id="dateSpan"></span></h6>
+@*<div class="container">*@
+<form asp-action="SearchTerms" asp-controller="Montaze" method="get">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Filters</span>
+            <div class="row">
+                <div class="col s2 m2 l2">
+                    <input class="materialize-input" type="text" name="city" id="cityFilter" />
 
+                    <label for="cityFilter">Filter by city</label>
+                </div>
+                <div class="col s2 m2 l2">
+                    <input class="materialize-input" type="text" name="pop" id="popFilter" />
+                    <label for="popFilter">Filter by pop</label>
+                </div>
+                @* <div class="col s1 m1 l1">
+                <a style="color: #039be5; cursor: pointer;" id="prev">
+                Prev
+                </a>
+
+                </div>*@
+                <div class="col s2 m2 l2">
+                    @*<input id="currentdate" type="date" name="dateTime"  />*@
+                    <input id="currentdate" type="text" class="datepicker" name="dateTime">
+                    <label for="currentdate">Date</label>
+                </div>
+                @*<div class="col s1 m1 l1">
+                <a style="color: #039be5; cursor: pointer;" id="next">
+                Next
+                </a>
+
+                </div>*@
+                <div>
+                    <button type="submit" class="btn">Filter</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+@*</div>*@
+
+<div class="container">
+    @if (Model != null)
+    {
+        <table class="table table-bordered table-responsive table-hover" id="tblMTerms">
+            <thead>
+                <tr>
+                    <th hidden>Id</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Busy</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var term in Model)
+                {
+
+                    <tr id="tr_@term.id">
+                        <td hidden><input type="text" value="@term.id" /></td>
+                        <td>@term.mfrom?.ToString("HH:mm")</td>
+                        <td>@term.mto?.ToString("HH:mm")</td>
+                        <td>
+                            @if (term.busy == 1)
+                            {
+                                <i class="material-icons left">check</i>
+                            }
+                        </td>
+                        <td><a class="btn btn-danger btnRemove" id="btnRemove_@term.id" disabled="@(term.busy == 1)"><i class="material-icons left">close</i>Remove</a></td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td hidden></td>
+                    <td><input type="text" class="timepicker" id="newMFrom" placeholder="Term from"></td>
+                    <td><input type="text" class="timepicker" id="newMTo" placeholder="Term to"></td>
+                    <td><a class="btn btn-primary" id="btnAdd"><i class="material-icons left">add</i>Add</a></td>
+                </tr>
+            </tfoot>
+        </table>
+    }
 </div>
 
 
-<table class="table table-bordered table-responsive table-hover" id="tblMTerms">
-    <thead>
-        <tr>
-            <th hidden>Id</th>
-            <th>From</th>
-            <th>To</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var d in Model)
-        {
 
-            <tr>
-                <td hidden><input type="text" value="@d.id" /></td>
-                <td>@d.mfrom</td>
-                <td>@d.mto</td>
-                @* <td><input type="time" value="@d.hbfrom" /></td>
-            <td><input type="time" value="@d.hbto" /></td>*@
-                <td><input class="btn" disabled="@(d.busy == 1)" type="button" id="btnReserve" value="Reserve"/></td>
-                <td><input class="btn backgroundRed" disabled="@(d.busy == 0)" type="button" id="btnCancel" value="Cancel" /></td>
-                <td><input class="btn backgroundRed" disabled="@(d.busy == 1)" type="button" id="btnRemove" value="Remove" /></td>
-            </tr>
-        }
-    </tbody>
-    @*<tfoot>
-        <tr>
-            <td hidden></td>
-            <td><input class="form-control" type="time" id="newHbFrom" /></td>
-            <td><input class="form-control" type="time" id="newHbTo" /></td>
-            <td><input class="btn btn-primary" type="button" id="btnAdd" value="Add" /></td>
-        </tr>
-    </tfoot>*@
-</table>
-
-@*<input type="button" id="btnSave" value="Save All" />*@
 
 @section Scripts{
-    @*<script>
-        $(document).ready(
-            function() {
-                $.ajax({
-                    type: "POST",
-                    url: "/api/HausbegehungTerm",
-                    data: '2022-06-30',
-                    contentType: "application/json; charset=utf-8",
-                    //dataType: "json",
-                    success: function(r) {
-                        alert(JSON.stringify(r));
-                        alert("Success");
-                        //$('#tblHbTerms tbody').append("<tr><td></td><td>" + newRow.hbfrom + "</td><td>" + newRow.hbto + "</td><td></td></tr>");
-                    },
-                    error: function(err) {
-                        alert("Error");
-                        console.log(JSON.stringify(err))
-                    }
-                });
-            }
-        )
-
-    </script>*@
     <script type="text/javascript">
         $(document).ready(
             function() {
-                const params = new Proxy(new URLSearchParams(window.location.search), {
-                    get: (searchParams, prop) => searchParams.get(prop),
-                });
-                console.log(params);
-                // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-                let year = params.year;
-                let month = params.month;
-                let date = params.date;
-                $("#currentdate").val(date + '.' + (Number(month) + 1) + '.' + year);
+                $('.datepicker').datepicker();
+                $('.timepicker').timepicker({ twelveHour: false });
+                checkParams();
 
+            })
 
-                $("#prev").click(function() {
-                    //const params = new Proxy(new URLSearchParams(window.location.search), {
-                    //    get: (searchParams, prop) => searchParams.get(prop),
-                    //});
-                    //console.log(params);
-                    //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-                    //let year = params.year;
-                    //let month = params.month;
-                    //let date = params.date;
+        function checkParams() {
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            let city = params.city;
+            let pop = params.pop;
+            let dateTime = params.dateTime;
 
+            $("#cityFilter").val(city);
+            $("#popFilter").val(pop);
 
-                    const params = new Proxy(new URLSearchParams(window.location.search), {
-                        get: (searchParams, prop) => searchParams.get(prop),
-                    });
-                    console.log(params);
-                    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-                    let addressId = params.address_id;
-                    let year = params.year;
-                    let month = params.month;
-                    let date = params.date;
+            $("#citySpan").text(city);
+            $("#popSpan").text(pop);
+            $("#dateSpan").text(dateTime);
 
-                    let prevDate = new Date(year, month, date);
-                    prevDate.setDate(prevDate.getDate() - 1);
-
-                    window.location.href = "/Montaze/Terms/?address_id=" + addressId + '&year=' + prevDate.getFullYear() + '&month=' + (prevDate.getMonth().toFixed()) + '&date=' + prevDate.getDate();
-                    //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
-
-                    // PART BELOW WAS BEFORE REAL
-
-                    //let currentDateValues = $("#currentdate").val().split('.');
-                    //date = currentDateValues[0];
-                    //month = currentDateValues[1]-1;
-                    //year = currentDateValues[2];
-
-
-
-                    //let prevDate = new Date(year, month, date);
-                    //prevDate.setDate(prevDate.getDate() - 1);
-                    //$("#currentdate").val(prevDate.getDate() + '.' + (Number(prevDate.getMonth()) +1) + '.' + prevDate.getFullYear());
-                    //alert(prevDate);
-                });
-
-                $("#next").click(function() {
-                    //const params = new Proxy(new URLSearchParams(window.location.search), {
-                    //    get: (searchParams, prop) => searchParams.get(prop),
-                    //});
-                    //console.log(params);
-                    //// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-                    //let year = params.year;
-                    //let month = params.month;
-                    //let date = params.date;
-
-
-                    const params = new Proxy(new URLSearchParams(window.location.search), {
-                        get: (searchParams, prop) => searchParams.get(prop),
-                    });
-                    console.log(params);
-                    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-                    let addressId = params.address_id;
-                    let year = params.year;
-                    let month = params.month;
-                    let date = params.date;
-
-                    let nextDate = new Date(year, month, date);
-                    nextDate.setDate(nextDate.getDate() + 1);
-
-                    window.location.href = "/Montaze/Terms/?address_id=" + addressId + '&year=' + nextDate.getFullYear() + '&month=' + (nextDate.getMonth().toFixed()) + '&date=' + nextDate.getDate();
-
-                    // CODE BELOW 
-
-                    //let currentDateValues = $("#currentdate").val().split('.');
-                    //date = currentDateValues[0];
-                    //month = currentDateValues[1] - 1;
-                    //year = currentDateValues[2];
-
-                    //let nextDate = new Date(year, month, date);
-                    //nextDate.setDate(nextDate.getDate() + 1);
-                    //$("#currentdate").val(nextDate.getDate() + '.' + (Number(nextDate.getMonth()) + 1) + '.' + nextDate.getFullYear());
-                    //alert(nextDate);
-                });
-                //alert(value);
-                // document.getElementById("currentdate").valueAsDate = new Date();
-                //// $("#currentDate").val('2022-06-30');
-
-                // $("#prev").on("click", function() {
-                //     console.log(document.getElementById("currentdate").value);// = document.getElementById("currentdate").valueAsDate.addDays(-1);
-                //     console.log(new Date(document.getElementById("currentdate").value));
-                //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(-1);
-                // });
-
-                // $("#next").on("click", function() {
-                //     document.getElementById("currentdate").valueAsDate = new Date(document.getElementById("currentdate").value).addDays(1);
-                //     //document.getElementById("currentdate").valueAsDate = document.getElementById("currentdate").valueAsDate.addDays(1);
-                // });
-
+            if (dateTime != null) {
+                var elems = document.querySelector('.datepicker');
+                var instance = M.Datepicker.init(elems, {});
+                instance.setDate(new Date(dateTime));
+                console.log(new Date(dateTime));
             }
-        );
+        }
+
         $("body").on("click", "#btnAdd", function() {
 
             var row = $(this).closest("tr");
             console.log(row);
-            if (confirm("Da li ste sigurni da želite da unesete stavku?")) {
-                var table = $("#tblMTerms")[0];
-                console.log($('#tblMTerms tbody'));
+            var table = $("#tblMTerms")[0];
+            console.log($('#tblMTerms tbody'));
 
-                var newRow = {}
-                newRow.mfrom = row[0].children[1].children[0].value + ":00";
-                newRow.mto = row[0].children[2].children[0].value + ":00";
-
-                console.log(JSON.stringify(newRow));
-
-                //$("#tblCustomers TBODY TR").each(function () {
-                //                            var row = $(this);
-                //                            var customer = {};
-                //                            customer.Name = row.find("TD").eq(0).html();
-                //                            customer.Country = row.find("TD").eq(1).html();
-                //                            customers.push(customer);
-                //                        });
-
-                //Send the JSON array to Controller using AJAX.
-                $.ajax({
-                    type: "POST",
-                    url: "/api/MontazeDefaultTerm",
-                    data: JSON.stringify(newRow),
-                    contentType: "application/json; charset=utf-8",
-                    //dataType: "json",
-                    success: function(r) {
-                        alert("Success");
-                        $('#tblMTerms tbody').append("<tr><td></td><td>" + newRow.mfrom + "</td><td>" + newRow.mto + "</td><td></td></tr>");
-                    },
-                    error: function(err) {
-                        alert("Error");
-                        console.log(JSON.stringify(err))
-                    }
-                });
-
-                //$('#tblHbTerms tbody').append("<tr><td></td><td>Hello</td><td>world</td><td></td></tr>");
-                //var row1 = table.insertRow(-1);
-                //var cell1 = row1.insertCell(0);
-                //var cell2 = row1.insertCell(1);
-                //var cell3 = row1.insertCell(2);
-                //var cell4 = row1.insertCell(3);
-                //cell1.innerHTML = "NEW CELL1";
-                //cell2.innerHTML = "NEW CELL2";
-                //cell3.innerHTML = "NEW CELL3";
-                //cell4.innerHTML = "NEW CELL4";
-
-                //var id = row[0].children[0].children[0].value;
-                //console.log(id);
-            }
-            //var name = $("TD", row).eq(0).html();
-            //if (confirm("Do you want to delete: " + name)) {
-            //    //Get the reference of the Table.
-            //    var table = $("#tblHbTerms")[0];
-
-            //    console.log(table);
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            let city = params.city;
+            let pop = params.pop;
+            let dateTime = params.dateTime;
 
 
+            let timeFrom = $("#newMFrom")[0].value;
+            let timeTo = $("#newMTo")[0].value;
 
-            //$.ajax({
-            //    type: "DELETE",
-            //    url: "/api/HausbegehungDefaultTerm/" + id,
-            //    success: function(r) {
-            //        alert(JSON.stringify(r))
-            //        alert("Uspjesno obrisana stavka");
-            //        //alert(r + " record(s) deleted.");
-            //    },
-            //    error: function(err) {
-            //        alert(JSON.stringify(err));
-            //        alert("Nije uspjesno obrisana stavka");
-            //    }
-            //});
-            //Reference the Name and Country TextBoxes.
-            //var txtName = $("#txtName");
-            //var txtCountry = $("#txtCountry");
+            console.log(timeFrom);
+            console.log(timeTo);
 
-            ////Get the reference of the Table's TBODY element.
-            //var tBody = $("#tblCustomers > TBODY")[0];
+            var newRow = {}
+            newRow.mfrom = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + timeFrom + ":00Z";
+            newRow.mto = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString() + "T" + timeTo + ":00Z";
+            newRow.mdate = (new Date(dateTime)).getFullYear().toString() + "-" + ((new Date(dateTime)).getMonth() + 1).toString().padStart(2, "0") + "-" + (new Date(dateTime)).getDate().toString();
+            newRow.city = city;
+            newRow.pop = pop;
 
-            ////Add Row.
-            //var row = tBody.insertRow(-1);
-
-            ////Add Name cell.
-            //var cell = $(row.insertCell(-1));
-            //cell.html(txtName.val());
-
-            ////Add Country cell.
-            //cell = $(row.insertCell(-1));
-            //cell.html(txtCountry.val());
-
-            ////Add Button cell.
-            //cell = $(row.insertCell(-1));
-            //var btnRemove = $("<input />");
-            //btnRemove.attr("type", "button");
-            //btnRemove.attr("onclick", "Remove(this);");
-            //btnRemove.val("Remove");
-            //cell.append(btnRemove);
-
-            ////Clear the TextBoxes.
-            //txtName.val("");
-            //txtCountry.val("");
-        });
-
-        $("body").on("click", "#btnRemove", function Remove() {
-            //Determine the reference of the Row using the Button.
-            var row = $(this).closest("tr");
-            console.log(row);
-            if (confirm("Da li ste sigurni da želite da obrišete stavku?")) {
-                var table = $("#tblMTerms")[0];
-                table.deleteRow(row[0].rowIndex);
-                var id = row[0].children[0].children[0].value;
-                console.log(id);
-            }
-            //var name = $("TD", row).eq(0).html();
-            //if (confirm("Do you want to delete: " + name)) {
-            //    //Get the reference of the Table.
-            //    var table = $("#tblHbTerms")[0];
-
-            //    console.log(table);
-
-
+            console.log(newRow);
 
             $.ajax({
-                type: "DELETE",
-                url: "/api/MontazeDefaultTerm/" + id,
+                type: "POST",
+                url: "/api/MontazeTerm",
+                data: JSON.stringify(newRow),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 success: function(r) {
-                    alert(JSON.stringify(r))
-                    alert("Uspjesno obrisana stavka");
-                    //alert(r + " record(s) deleted.");
+                    var toastHTML = '<span>Successfully added new montaze term!</span>';
+                    M.toast({ html: toastHTML });
+                    console.log(r);
+                    $('#tblMTerms tbody').append("<tr id=\"tr_" + r.id + "\"><td hidden><input type=\"text\" value=\"" + r.id + "\" /></td><td>" + timeFrom + "</td><td>" + timeTo + "</td><td></td><td><a class=\"btn btn-danger btnRemove\" id=\"btnRemove_" + r.id + "\" ><i class=\"material-icons left\">close</i>Remove</a></td></tr>");
+
+                    //$('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + row[0].children[1].children[0].value + "</td><td>" + row[0].children[2].children[0].value + "</td><td><input class=\"btn btn-danger\" type=\"button\" id=\"btnRemove\" value=\"Remove\" /></td></tr>");
                 },
                 error: function(err) {
-                    alert(JSON.stringify(err));
-                    alert("Nije uspjesno obrisana stavka");
+                    //alert("Error. Please, try again!");
+                    //console.log(JSON.stringify(err))
+                    var toastHTML = '<span>Error. Please, try again!</span>';
+                    M.toast({ html: toastHTML });
                 }
             });
-
-            //    //Delete the Table row using it's Index.
-            //    table.deleteRow(row[0].rowIndex);
-            //}
         });
 
-                                                                                                                //$("body").on("click", "#btnSave", function () {
-                                                                                                                //    //Loop through the Table rows and build a JSON array.
-                                                                                                                //    var customers = new Array();
-                                                                                                                //    $("#tblCustomers TBODY TR").each(function () {
-                                                                                                                //        var row = $(this);
-                                                                                                                //        var customer = {};
-                                                                                                                //        customer.Name = row.find("TD").eq(0).html();
-                                                                                                                //        customer.Country = row.find("TD").eq(1).html();
-                                                                                                                //        customers.push(customer);
-                                                                                                                //    });
 
-                                                                                                                //    //Send the JSON array to Controller using AJAX.
-                                                                                                                //    $.ajax({
-                                                                                                                //        type: "POST",
-                                                                                                                //        url: "/Home/InsertCustomers",
-                                                                                                                //        data: JSON.stringify(customers),
-                                                                                                                //        contentType: "application/json; charset=utf-8",
-                                                                                                                //        dataType: "json",
-                                                                                                                //        success: function (r) {
-                                                                                                                //            alert(r + " record(s) inserted.");
-                                                                                                                //        }
-                                                                                                                //    });
-                                                                                                                //});
+        $("body").on("click", ".btnRemove", function Confirm() {
+            var row = $(this).closest("tr");
+            console.log(row);
+            console.log(row[0].id.split("_")[1]);
+
+            let index = row[0].rowIndex;
+            let m_id = row[0].id.split("_")[1];
+
+
+            let from = row[0].children[1].innerText;
+            let to = row[0].children[2].innerText;
+            //if (confirm("Are you sure you want to remove the term?")) {
+
+            var toastHTML = '<span>Please, confirm, deleting term from ' + from + '-' + to + '?</span><button class="btn-flat toast-action" id="confirmTermDelete_' + index + '_' + m_id + '">Confirm</button>';
+            var m = M.toast({ html: toastHTML, displayLength: 16000, classes: "toast_" + index });
+            console.log(m);
+
+            $("body").on("click", "#confirmTermDelete_" + index + '_' + m_id, function Remove() {
+
+
+                let index = this.id.split('_')[1];
+                let m_id = this.id.split('_')[2];
+                //console.log(index);
+                //console.log(hb_id);
+
+                var toastElement = document.querySelector('.toast_' + index);
+                var toastInstance = M.Toast.getInstance(toastElement);
+                toastInstance.dismiss();
+
+                var table = $("#tblMTerms")[0];
+                table.deleteRow(index);
+                //var id = row[0].children[0].children[0].value;
+                //console.log(id);
+
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/MontazeTerm/" + m_id,
+                    success: function(r) {
+                        //alert("Successfully removed term!");
+                        setTimeout(() => {
+                            var toastHTML = '<span>Successfully removed term!</span>';
+                            M.toast({ html: toastHTML });
+                        }, 2000);
+
+                    },
+                    error: function(err) {
+                        //alert(JSON.stringify(err));
+                        //alert("Error! Please, try again.");
+                        var toastHTML = '<span>Error! Please, try again.</span>';
+                        M.toast({ html: toastHTML });
+                    }
+                });
+            });
+           
+        });
+
+                                                                                                                                                                                                                                                 
     </script>
 }          
