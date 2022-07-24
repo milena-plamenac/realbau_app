@@ -14,6 +14,9 @@ namespace realbau_app.Services
 
             CreateMap<realbau_app.api.Models.HausbegehungTermDB, realbau_app.Models.HausbegehungTerm>();
             CreateMap<realbau_app.Models.HausbegehungTerm, realbau_app.api.Models.HausbegehungTermDB>();
+
+            CreateMap<realbau_app.api.Models.MontazeTermDB, realbau_app.Models.MontazeTerm>();
+            CreateMap<realbau_app.Models.MontazeTerm, realbau_app.api.Models.MontazeTermDB>();
         }
     }
 }

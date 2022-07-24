@@ -6,7 +6,7 @@
 
 @model realbau_app.Models.AddressDetails;
 
-<h4 class="center-align">Reserve your HB term</h4>
+<h4 class="center-align">Reserve your montaze term</h4>
 
 <h6 class="center-align">Your address: <b>@Model.street @Model.housenumber @Model.subnumber, @Model.city </b></h6>
 
@@ -22,7 +22,7 @@
         <div class="input-field">
             <input id="termsDate_@Model.id" type="text" class="validate center-align" disabled>
         </div>
-        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms">
+        <table class="table table-bordered table-responsive table-hover" id="tblMTerms">
             <thead>
                 <tr>
                     <th hidden>Id</th>
@@ -41,7 +41,7 @@
         <div class="input-field">
             <input id="termsDate_1_@Model.id" type="text" class="validate center-align" disabled>
         </div>
-        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_1">
+        <table class="table table-bordered table-responsive table-hover" id="tblMTerms_1">
             <thead>
                 <tr>
                     <th hidden>Id</th>
@@ -60,7 +60,7 @@
         <div class="input-field">
             <input id="termsDate_2_@Model.id" type="text" class="validate center-align" disabled>
         </div>
-        <table class="table table-bordered table-responsive table-hover" id="tblHbTerms_2">
+        <table class="table table-bordered table-responsive table-hover" id="tblMTerms_2">
             <thead>
                 <tr>
                     <th hidden>Id</th>
@@ -113,18 +113,18 @@
 
             $.ajax({
                 type: "GET",
-                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year + "/" + month + "/" + date,
+                url: "/api/MontazeTerm/" + city + "/" + pop + "/" + year + "/" + month + "/" + date,
 
                 contentType: "application/json; charset=utf-8",
 
                 success: function(r) {
                     //console.log("R: "); console.log(r);
-                    $("#tblHbTerms tbody tr").remove(); for (i = 0; i < r.length; i++) {
+                    $("#tblMTerms tbody tr").remove(); for (i = 0; i < r.length; i++) {
                         if (r[i].busy == 1) {
-                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                            $('#tblMTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
                         }
                         else {
-                            $('#tblHbTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                            $('#tblMTerms tbody').append("<tr><td hidden></td><td>" + new Date(r[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
                         // if (r[i].busy == 1) {
                         //    console.log("Busy for address " + address_id + " and term " + r[i].id);
@@ -141,16 +141,16 @@
 
             $.ajax({
                 type: "GET",
-                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year1 + "/" + month1 + "/" + date1,
+                url: "/api/MontazeTerm/" + city + "/" + pop + "/" + year1 + "/" + month1 + "/" + date1,
                 contentType: "application/json; charset=utf-8",
                 success: function(r1) {
                     //console.log("R1"); console.log(r1);
-                    $("#tblHbTerms_1 tbody tr").remove(); for (i = 0; i < r1.length; i++) {
+                    $("#tblMTerms_1 tbody tr").remove(); for (i = 0; i < r1.length; i++) {
                         if (r1[i].busy == 1) {
-                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                            $('#tblMTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
                         }
                         else {
-                            $('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                            $('#tblMTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
                         //$('#tblHbTerms_1 tbody').append("<tr><td hidden></td><td>" + new Date(r1[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r1[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r1[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r1[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         //if (r1[i].busy == 1) {
@@ -167,17 +167,17 @@
 
             $.ajax({
                 type: "GET",
-                url: "/api/HausbegehungTerm/" + city + "/" + pop + "/" + year2 + "/" + month2 + "/" + date2,
+                url: "/api/MontazeTerm/" + city + "/" + pop + "/" + year2 + "/" + month2 + "/" + date2,
                 contentType: "application/json; charset=utf-8",
                 success: function(r2) {
                     //console.log("R2"); console.log(r2);
                     $("#tblHbTerms_2 tbody tr").remove();
                     for (i = 0; i < r2.length; i++) {
                         if (r2[i].busy == 1) {
-                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
+                            $('#tblMTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td></td></tr>");
                         }
                         else {
-                            $('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
+                            $('#tblMTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].mfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].mfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].mto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].mto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         }
                         //$('#tblHbTerms_2 tbody').append("<tr><td hidden></td><td>" + new Date(r2[i].hbfrom).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbfrom).getMinutes().toString().padStart(2, '0') + "</td><td>" + new Date(r2[i].hbto).getHours().toString().padStart(2, '0') + ":" + new Date(r2[i].hbto).getMinutes().toString().padStart(2, '0') + "</td><td><a class=\"btn btnReserve\" id=\"btnReserve_" + address_id + "_" + r2[i].id + "\"><i class=\"material-icons left\">check</i>Reserve</a></td></tr>");
                         //if (r2[i].busy == 1) {
@@ -197,23 +197,23 @@
                     console.log("Button clicked");
                     console.log(this.id);
                     let address_id = this.id.split('_')[1];
-                    let hbterm_id = this.id.split('_')[2];
+                    let mterm_id = this.id.split('_')[2];
                     console.log(address_id);
-                    console.log(hbterm_id);
+                    console.log(mterm_id);
 
-                    hbReservation = {};
-                    hbReservation.address_id = address_id;
-                    hbReservation.hbterm_id = hbterm_id;
+                    mReservation = {};
+                    mReservation.address_id = address_id;
+                    mReservation.mterm_id = mterm_id;
 
                     $.ajax({
                         type: "POST",
-                        url: "/api/Reservation/HausbegehungTerm",
-                        data: JSON.stringify(hbReservation),
+                        url: "/api/Reservation/MontazeTerm",
+                        data: JSON.stringify(mReservation),
                         contentType: "application/json; charset=utf-8",
                         //dataType: "json",
                         success: function(r) {
                             console.log(r);
-                            var toastHTML = '<span>Successfully updated hausbegehung.</span>';
+                            var toastHTML = '<span>Successfully updated montaze.</span>';
                             M.toast({ html: toastHTML });
                             //alert("Successfully updated hausbegehung.");
                             //hbCommentInput.val(hbData.hbcomment);

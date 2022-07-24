@@ -197,5 +197,11 @@ namespace realbau_app.Controllers
             IEnumerable<MontazeTerm> terms = await this.montazeService.MontazeTermsForDate(city, pop, dateTime.Year, dateTime.Month, dateTime.Day);
             return View("Terms", terms);
         }
+
+        public async Task<IActionResult> Reserve(int id) // there is going to be guid
+        {
+            Models.AddressDetails addressDetails = await this.addressService.GetAddressById(id);
+            return View(addressDetails);
+        }
     }
 }
